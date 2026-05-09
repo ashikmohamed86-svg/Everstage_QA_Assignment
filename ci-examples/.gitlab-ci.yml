@@ -1,0 +1,96 @@
+# GitLab CI pipeline for the Juice Shop Playwright suite.
+#
+# Drop this file at the repo root as `.gitlab-ci.yml` (the leading dot is
+# intentional — GitLab discovers it automatically). On GitHub, the
+# equivalent workflow lives in `.github/workflows/playwright.yml`.
+#
+# Pipeline stages:
+#   - install   : node deps + browsers (cached for fast subsequent runs)
+#   - test      : run the Playwright suite against a Juice Shop service
+#   - report    : publish reports as GitLab Pages and as artifacts
+
+stages:
+  - install
+  - test
+  - report
+
+variables:
+  NODE_VERSION: '20'
+  CI: 'true'
+  TRACE_MODE: 'retain-on-failure'    # bump to 'on' for trace-on-every-test
+  BASE_URL: 'http://juice-shop:3000'
+
+# --- shared cache so npm install / browser install only happens once ---
+.node-cache: &node-cache
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - node_modules/
+      - ~/.cache/ms-playwright/
+
+install:
+  stage: install
+  image: node:${NODE_VERSION}
+  <<: *node-cache
+  script:
+    - npm ci
+    - npx playwright install --with-deps chromium
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 day
+
+test:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.48.0-jammy
+  needs: ['install']
+  <<: *node-cache
+  services:
+    - name: bkimminich/juice-shop:latest
+      alias: juice-shop
+  variables:
+    FF_NETWORK_PER_BUILD: 'true'      # Juice Shop reachable as juice-shop:3000
+  script:
+    # Wait for Juice Shop to come up
+    - |
+      for i in {1..30}; do
+        if wget -qO- "$BASE_URL/rest/admin/application-version" >/dev/null 2>&1; then
+          echo "Juice Shop is up"; break
+        fi
+        echo "waiting for Juice Shop... ($i/30)"; sleep 2
+      done
+
+    # Bootstrap the assignment user (idempotent — succeeds even if it exists).
+    - |
+      USER_JSON=$(cat tests/data/new-user.json)
+      EMAIL=$(node -pe "JSON.parse(process.env.U).email" U="$USER_JSON")
+      PASS=$(node -pe "JSON.parse(process.env.U).password" U="$USER_JSON")
+      ANSWER=$(node -pe "JSON.parse(process.env.U).securityAnswer || 'Everstage'" U="$USER_JSON")
+      curl -sf -X POST "$BASE_URL/api/Users/" -H "Content-Type: application/json" \
+        -d "{\"email\":\"$EMAIL\",\"password\":\"$PASS\",\"passwordRepeat\":\"$PASS\",\"securityQuestion\":{\"id\":1},\"securityAnswer\":\"$ANSWER\"}" \
+        || true
+
+    - npx playwright test
+  artifacts:
+    when: always
+    paths:
+      - reports/
+      - test-results/
+    expire_in: 14 days
+    reports:
+      junit: reports/junit.xml
+
+pages:
+  stage: report
+  needs: ['test']
+  script:
+    - mkdir -p public
+    - cp reports/test-report.html public/index.html
+    - cp -r reports/* public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

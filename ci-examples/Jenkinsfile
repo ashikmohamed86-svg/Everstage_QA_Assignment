@@ -1,0 +1,104 @@
+// Declarative Jenkins pipeline for the Juice Shop Playwright suite.
+//
+// Drop this file at the repo root as `Jenkinsfile`. Requires a Jenkins
+// instance with the Docker plugin (or equivalent agent that can run
+// containers).
+
+pipeline {
+  agent {
+    docker {
+      image 'mcr.microsoft.com/playwright:v1.48.0-jammy'
+      args  '--user 0:0 --network host'
+    }
+  }
+
+  options {
+    timeout(time: 30, unit: 'MINUTES')
+    buildDiscarder(logRotator(numToKeepStr: '20', artifactNumToKeepStr: '10'))
+    timestamps()
+  }
+
+  triggers {
+    // Daily at 06:00 UTC
+    cron('H 6 * * *')
+  }
+
+  parameters {
+    string(name: 'GREP', defaultValue: '', description: 'Tag filter (e.g. @everstage-qa, @smoke). Empty = full suite.')
+    choice(name: 'TRACE_MODE', choices: ['retain-on-failure', 'on-first-retry', 'on'], description: 'Playwright trace capture')
+  }
+
+  environment {
+    CI         = 'true'
+    BASE_URL   = 'http://localhost:3000'
+    TRACE_MODE = "${params.TRACE_MODE}"
+  }
+
+  stages {
+    stage('Start Juice Shop') {
+      steps {
+        sh '''
+          docker rm -f juice-shop 2>/dev/null || true
+          docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop:latest
+          for i in $(seq 1 30); do
+            if curl -sf "$BASE_URL/rest/admin/application-version" >/dev/null; then
+              echo "Juice Shop is up"; exit 0
+            fi
+            echo "waiting for Juice Shop... ($i/30)"; sleep 2
+          done
+          echo "Juice Shop did not come up"; exit 1
+        '''
+      }
+    }
+
+    stage('Install') {
+      steps {
+        sh 'npm ci'
+        sh 'npx playwright install --with-deps chromium'
+      }
+    }
+
+    stage('Bootstrap user') {
+      steps {
+        sh '''
+          USER_JSON=$(cat tests/data/new-user.json)
+          EMAIL=$(node -pe "JSON.parse(process.env.U).email" U="$USER_JSON")
+          PASS=$(node -pe "JSON.parse(process.env.U).password" U="$USER_JSON")
+          ANSWER=$(node -pe "JSON.parse(process.env.U).securityAnswer || 'Everstage'" U="$USER_JSON")
+          curl -sf -X POST "$BASE_URL/api/Users/" \
+            -H "Content-Type: application/json" \
+            -d "{\\"email\\":\\"$EMAIL\\",\\"password\\":\\"$PASS\\",\\"passwordRepeat\\":\\"$PASS\\",\\"securityQuestion\\":{\\"id\\":1},\\"securityAnswer\\":\\"$ANSWER\\"}" \
+            || true
+        '''
+      }
+    }
+
+    stage('Run Playwright') {
+      steps {
+        script {
+          if (params.GREP?.trim()) {
+            sh "npx playwright test --grep '${params.GREP}'"
+          } else {
+            sh 'npx playwright test'
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      junit testResults: 'reports/junit.xml', allowEmptyResults: true
+      archiveArtifacts artifacts: 'reports/**, test-results/**', allowEmptyArchive: true, fingerprint: true
+      publishHTML target: [
+        allowMissing: true,
+        alwaysLinkToLastBuild: true,
+        keepAll: true,
+        reportDir: 'reports',
+        reportFiles: 'test-report.html',
+        reportName: 'Rich Test Report',
+      ]
+      sh 'docker rm -f juice-shop || true'
+    }
+  }
+}

@@ -1,0 +1,87 @@
+# Azure DevOps pipeline for the Juice Shop Playwright suite.
+#
+# Drop this file at the repo root as `azure-pipelines.yml`.
+
+trigger:
+  branches:
+    include: [main]
+
+pr:
+  branches:
+    include: [main]
+
+schedules:
+  - cron: '0 6 * * *'
+    displayName: Daily 06:00 UTC regression
+    branches:
+      include: [main]
+    always: true
+
+variables:
+  CI: 'true'
+  TRACE_MODE: 'retain-on-failure'
+  BASE_URL: 'http://localhost:3000'
+  NODE_VERSION: '20'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(NODE_VERSION)
+    displayName: 'Setup Node $(NODE_VERSION)'
+
+  - task: Cache@2
+    inputs:
+      key: 'npm | "$(Agent.OS)" | package-lock.json'
+      path: '~/.npm'
+    displayName: Cache npm
+
+  - script: |
+      docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop:latest
+      for i in $(seq 1 30); do
+        if curl -sf "$BASE_URL/rest/admin/application-version" >/dev/null; then echo "up"; exit 0; fi
+        echo "waiting... ($i/30)"; sleep 2
+      done
+      exit 1
+    displayName: Start Juice Shop
+
+  - script: npm ci
+    displayName: Install deps
+
+  - script: npx playwright install --with-deps chromium
+    displayName: Install Playwright browsers
+
+  - script: |
+      USER_JSON=$(cat tests/data/new-user.json)
+      EMAIL=$(node -pe "JSON.parse(process.env.U).email" U="$USER_JSON")
+      PASS=$(node -pe "JSON.parse(process.env.U).password" U="$USER_JSON")
+      ANSWER=$(node -pe "JSON.parse(process.env.U).securityAnswer || 'Everstage'" U="$USER_JSON")
+      curl -sf -X POST "$BASE_URL/api/Users/" \
+        -H "Content-Type: application/json" \
+        -d "{\"email\":\"$EMAIL\",\"password\":\"$PASS\",\"passwordRepeat\":\"$PASS\",\"securityQuestion\":{\"id\":1},\"securityAnswer\":\"$ANSWER\"}" \
+        || true
+    displayName: Bootstrap assignment user
+
+  - script: npx playwright test
+    displayName: Run Playwright suite
+
+  - task: PublishTestResults@2
+    condition: always()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'reports/junit.xml'
+      testRunTitle: 'Playwright tests'
+
+  - task: PublishPipelineArtifact@1
+    condition: always()
+    inputs:
+      targetPath: reports/
+      artifactName: playwright-report-html
+
+  - task: PublishPipelineArtifact@1
+    condition: always()
+    inputs:
+      targetPath: test-results/
+      artifactName: playwright-traces

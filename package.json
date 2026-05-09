@@ -1,0 +1,38 @@
+{
+  "name": "juice-shop-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright UI + API tests for OWASP Juice Shop",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test tests/ui",
+    "test:api": "playwright test tests/api",
+    "test:headed": "playwright test --headed",
+    "test:everstage": "playwright test --grep @everstage-qa",
+    "test:task1": "playwright test --grep @task1",
+    "test:task2": "playwright test --grep @task2",
+    "test:task3": "playwright test --grep @task3",
+    "test:security": "playwright test --grep @security",
+    "test:negative": "playwright test --grep @negative",
+    "test:boundary": "playwright test --grep @boundary",
+    "test:load": "playwright test --grep @load",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:e2e": "playwright test --grep @e2e",
+    "test:functional": "playwright test --grep @functional",
+    "test:nonfunctional": "playwright test --grep @nonfunctional",
+    "test:positive": "playwright test --grep @positive",
+    "test:order-flow": "playwright test order-flow",
+    "test:everstage:headed": "playwright test --grep @everstage-qa --headed --workers=1",
+    "report": "playwright show-report",
+    "report:rich": "open reports/test-report.html",
+    "test:with-traces": "playwright test --trace=on",
+    "dashboard": "open reports/dashboard.html",
+    "trace": "playwright show-trace"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.4.0"
+  }
+}

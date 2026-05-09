@@ -1,0 +1,15 @@
+node_modules/
+test-results/
+playwright-report/
+playwright/.cache/
+.playwright-mcp/
+dist/
+.DS_Store
+.env
+.claude/
+
+# Rotated historical CSVs from the custom reporter (kept locally, noisy in git)
+reports/run-history.legacy-*.csv
+
+# LibreOffice / OpenOffice lock files
+.~lock.*#

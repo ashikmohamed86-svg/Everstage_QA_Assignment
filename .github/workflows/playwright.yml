@@ -1,0 +1,182 @@
+# GitHub Actions workflow for the Juice Shop QA Playwright suite.
+#
+# What it does:
+#   1. Spins up a fresh Juice Shop service container on every run so tests
+#      hit a clean DB (no per-user-limit drift, no per-product stockout
+#      drift). The suite is designed to be fully self-bootstrapping —
+#      it registers its own user via `tests/data/new-user.json`.
+#   2. Installs Node, npm-cis the deps, downloads the Chromium browser.
+#   3. Runs the suite. CI sets:
+#        - workers=2  (faster than serial; keeps order-flow specs honest)
+#        - retries=3  (absorbs transient network flakes)
+#        - trace=retain-on-failure  (smaller artifacts than trace=on)
+#      All of those flow through `playwright.config.ts` automatically
+#      because `process.env.CI` is truthy in GitHub Actions.
+#   4. Uploads the rich HTML report, the JUnit XML, and the run-history
+#      CSV as artifacts that survive 30 days.
+#
+# Triggers:
+#   - On every push and PR against `main`
+#   - On a daily schedule at 06:00 UTC for regression
+#   - Manually via "Run workflow" in the Actions tab
+#
+# To use this workflow:
+#   1. Drop this file into `.github/workflows/playwright.yml` (already done).
+#   2. Push to GitHub. The workflow shows up in the Actions tab.
+#   3. After each run, download the `playwright-report-html` artifact and
+#      open `test-report.html` for the rich dashboard.
+
+name: Playwright
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Daily at 06:00 UTC — early-warning regression sweep.
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      grep:
+        description: 'Tag filter (e.g. @everstage-qa, @smoke, @security). Empty = full suite.'
+        required: false
+        default: ''
+      trace_mode:
+        description: 'Trace capture mode'
+        required: false
+        default: 'retain-on-failure'
+        type: choice
+        options:
+          - 'retain-on-failure'
+          - 'on-first-retry'
+          - 'on'
+          - 'off'
+
+# Cancel in-progress runs on the same branch when a new commit lands.
+concurrency:
+  group: playwright-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Run Playwright suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      juice-shop:
+        image: bkimminich/juice-shop:latest
+        ports:
+          - 3000:3000
+        # Wait for Juice Shop to come up before tests start.
+        options: >-
+          --health-cmd "wget -qO- http://localhost:3000/rest/admin/application-version >/dev/null 2>&1"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Wait for Juice Shop to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -sf http://localhost:3000/rest/admin/application-version >/dev/null; then
+              echo "Juice Shop is up"; exit 0
+            fi
+            echo "waiting for Juice Shop... ($i/30)"; sleep 2
+          done
+          echo "Juice Shop did not come up in time"; exit 1
+
+      - name: Bootstrap the assignment user
+        # The suite expects the user defined in tests/data/new-user.json
+        # to exist. On a fresh Juice Shop, register it via the API.
+        run: |
+          USER_JSON=$(cat tests/data/new-user.json)
+          EMAIL=$(node -e "console.log(JSON.parse(process.env.U).email)" U="$USER_JSON")
+          PASS=$(node -e "console.log(JSON.parse(process.env.U).password)" U="$USER_JSON")
+          ANSWER=$(node -e "const u=JSON.parse(process.env.U); console.log(u.securityAnswer || 'Everstage')" U="$USER_JSON")
+          curl -sf -X POST http://localhost:3000/api/Users/ \
+            -H "Content-Type: application/json" \
+            -d "{\"email\":\"$EMAIL\",\"password\":\"$PASS\",\"passwordRepeat\":\"$PASS\",\"securityQuestion\":{\"id\":1},\"securityAnswer\":\"$ANSWER\"}" \
+            || echo "user may already exist"
+          # Link the security answer (Juice Shop's /api/Users/ doesn't link it).
+          TOKEN=$(curl -sf -X POST http://localhost:3000/rest/user/login \
+            -H "Content-Type: application/json" \
+            -d "{\"email\":\"$EMAIL\",\"password\":\"$PASS\"}" \
+            | node -e "let s='';process.stdin.on('data',d=>s+=d);process.stdin.on('end',()=>console.log(JSON.parse(s).authentication.token))")
+          USER_ID=$(node -e "const t='$TOKEN'.split('.'); console.log(JSON.parse(Buffer.from(t[1],'base64').toString()).data.id)")
+          curl -sf -X POST http://localhost:3000/api/SecurityAnswers/ \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"UserId\":$USER_ID,\"SecurityQuestionId\":1,\"answer\":\"$ANSWER\"}" \
+            || echo "security answer may already be linked"
+
+      - name: Run Playwright tests
+        env:
+          CI: 'true'
+          BASE_URL: http://localhost:3000
+          TRACE_MODE: ${{ inputs.trace_mode || 'retain-on-failure' }}
+        run: |
+          if [ -n "${{ inputs.grep }}" ]; then
+            npx playwright test --grep "${{ inputs.grep }}"
+          else
+            npx playwright test
+          fi
+
+      - name: Upload rich HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-html
+          path: |
+            reports/test-report.html
+            reports/last-run.json
+            reports/dashboard.html
+            reports/summary.md
+            reports/junit.xml
+            reports/run-history.csv
+          retention-days: 30
+
+      - name: Upload Playwright trace + screenshot artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 14
+          if-no-files-found: ignore
+
+      - name: Publish JUnit results to PR
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Playwright tests
+          path: reports/junit.xml
+          reporter: java-junit
+          fail-on-error: false
+        continue-on-error: true
+
+      - name: Annotate summary
+        if: always()
+        run: |
+          echo "## Playwright run" >> $GITHUB_STEP_SUMMARY
+          if [ -f reports/summary.md ]; then
+            cat reports/summary.md >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 Download the **playwright-report-html** artifact above and open \`test-report.html\` for the searchable rich report (per-test API request/response, traces, screenshots, videos)." >> $GITHUB_STEP_SUMMARY
