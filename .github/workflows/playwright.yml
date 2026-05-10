@@ -69,12 +69,10 @@ jobs:
         image: bkimminich/juice-shop:latest
         ports:
           - 3000:3000
-        # Wait for Juice Shop to come up before tests start.
-        options: >-
-          --health-cmd "wget -qO- http://localhost:3000/rest/admin/application-version >/dev/null 2>&1"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 12
+        # No --health-cmd: the latest Juice Shop image doesn't ship wget or
+        # curl, so any in-container health check goes unhealthy even when
+        # the server is up. We rely on the "Wait for Juice Shop to be ready"
+        # step below, which curls from the runner host.
 
     steps:
       - name: Checkout
