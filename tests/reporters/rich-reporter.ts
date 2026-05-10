@@ -426,7 +426,7 @@ pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
 .stat-card.flaky .value { color: var(--flaky); }
 
 /* search + filters */
-.controls { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.controls { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); margin-bottom: 16px; position: sticky; top: 8px; z-index: 5; backdrop-filter: saturate(140%) blur(6px); }
 .search-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .search-input { flex: 1 1 280px; min-width: 240px; padding: 9px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; background: var(--panel-soft); }
 .search-input:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
@@ -523,14 +523,18 @@ pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
 .list-empty { padding: 40px; text-align: center; color: var(--ink-soft); }
 .test-group { border-bottom: 1px solid var(--border); }
 .test-group:last-child { border-bottom: none; }
-.group-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: var(--panel-soft); cursor: pointer; user-select: none; font-weight: 600; font-size: 13px; }
+.group-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--panel-soft); cursor: pointer; user-select: none; font-weight: 600; font-size: 13px; transition: background 0.12s; border-left: 4px solid transparent; }
+.group-header:hover { background: #f1f5f9; }
 .group-header .group-name { display: flex; align-items: center; gap: 8px; }
-.group-header .group-name .caret { color: var(--ink-faint); transition: transform 0.15s; }
+.group-header .group-name .caret { color: var(--ink-faint); transition: transform 0.18s; }
 .group-header.collapsed .caret { transform: rotate(-90deg); }
 .group-header .group-summary { color: var(--ink-soft); font-weight: 500; font-size: 12px; }
-.test-row { display: grid; grid-template-columns: 100px 1fr auto auto; gap: 12px; align-items: center; padding: 10px 16px; border-top: 1px solid var(--border); cursor: pointer; transition: background 0.08s; }
-.test-row:hover { background: var(--panel-soft); }
-.test-row.expanded { background: var(--accent-soft); }
+.group-header.group-ui  { border-left-color: #2563eb; background: linear-gradient(90deg, #eff6ff 0%, var(--panel-soft) 60%); }
+.group-header.group-api { border-left-color: #7c3aed; background: linear-gradient(90deg, #f5f3ff 0%, var(--panel-soft) 60%); }
+.test-row { display: grid; grid-template-columns: 100px 1fr auto auto; gap: 12px; align-items: center; padding: 10px 16px; border-top: 1px solid var(--border); cursor: pointer; transition: background 0.08s, padding-left 0.12s; }
+.test-row:hover { background: var(--panel-soft); padding-left: 22px; }
+.test-row.expanded { background: var(--accent-soft); border-left: 3px solid var(--accent); padding-left: 13px; }
+.test-row.expanded:hover { padding-left: 19px; }
 .test-row .id { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); }
 .test-row .title { font-size: 13px; color: var(--ink); }
 .test-row .title .tags { display: inline-flex; gap: 4px; margin-left: 8px; }
@@ -675,7 +679,8 @@ const SCRIPT = `
       gate: new Set(),       // '@smoke', '@regression', '@e2e'
     },
     groupBy: 'area',         // 'area' | 'category' | 'file' | 'tag'
-    expanded: new Set(),     // test indexes
+    expanded: new Set(),     // test ids that are open
+    collapsedGroups: new Set(),  // group keys (e.g. 'UI', 'API') the user has folded
   };
 
   // ---- top-level render ----
@@ -1140,9 +1145,11 @@ const SCRIPT = `
     const passed = rows.filter((r) => r.status === 'passed').length;
     const failed = rows.filter((r) => r.status === 'failed' || r.status === 'timedOut').length;
     const summary = passed + ' passed' + (failed ? ' · ' + failed + ' failed' : '');
-    const list = el('div', {});
+    const isCollapsed = state.collapsedGroups.has(name);
+    const list = el('div', { style: isCollapsed ? 'display:none' : '' });
     for (const r of rows) list.appendChild(renderRow(r));
-    const header = el('div', { class: 'group-header' }, [
+    const areaCls = name === 'UI' ? ' group-ui' : name === 'API' ? ' group-api' : '';
+    const header = el('div', { class: 'group-header' + areaCls + (isCollapsed ? ' collapsed' : '') }, [
       el('div', { class: 'group-name' }, [
         el('span', { class: 'caret' }, ['▾']),
         el('span', {}, [name]),
@@ -1151,13 +1158,18 @@ const SCRIPT = `
       el('div', { class: 'group-summary' }, [summary]),
     ]);
     header.addEventListener('click', () => {
-      header.classList.toggle('collapsed');
-      list.style.display = header.classList.contains('collapsed') ? 'none' : '';
+      // Persist collapse state across re-renders so opening a test row in
+      // one group does not re-show another collapsed group.
+      if (state.collapsedGroups.has(name)) state.collapsedGroups.delete(name);
+      else state.collapsedGroups.add(name);
+      render();
     });
     return el('div', { class: 'test-group' }, [header, list]);
   }
   function renderRow(r) {
-    const isOpen = state.expanded.has(r.title);
+    // Expand-key prefers the TC id over the title — id is stable across renames.
+    const key = r.id || r.title;
+    const isOpen = state.expanded.has(key);
     const stat = normalizedStatus(r);
     const row = el('div', { class: 'test-row' + (isOpen ? ' expanded' : '') }, [
       el('span', { class: 'id' }, [r.id || '—']),
@@ -1169,8 +1181,8 @@ const SCRIPT = `
       el('span', { class: 'status-badge ' + stat }, [stat]),
     ]);
     row.addEventListener('click', () => {
-      if (state.expanded.has(r.title)) state.expanded.delete(r.title);
-      else state.expanded.add(r.title);
+      if (state.expanded.has(key)) state.expanded.delete(key);
+      else state.expanded.add(key);
       render();
     });
     if (!isOpen) return row;
