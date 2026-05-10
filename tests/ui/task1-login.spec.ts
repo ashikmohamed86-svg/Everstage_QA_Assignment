@@ -5,7 +5,18 @@ import { loginBeforeEach } from '../helpers/login';
 import user from '../data/new-user.json';
 
 /**
- * Task 1 — Login.
+ * ════════════════════════════════════════════════════════════════════════
+ *  ⭐  EVERSTAGE ASSESSMENT — TASK 1
+ *  ─────────────────────────────────────────────────────────────────────
+ *  "Manually create a new user and add their credentials [to] the
+ *   new-user.json file. Then create a login script in the beforeEach
+ *   hook to login every time a test runs."
+ *
+ *  Run only this task:    npm run test:task1
+ *  Credentials file:      tests/data/new-user.json
+ *  Login script:          tests/helpers/login.ts (`loginBeforeEach`)
+ *  All tests tagged:      @task1, @everstage-qa
+ * ════════════════════════════════════════════════════════════════════════
  *
  * Every test in the "authenticated session" describe block runs through the
  * shared login script in `beforeEach`, so each test starts already

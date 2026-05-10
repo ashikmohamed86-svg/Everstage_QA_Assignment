@@ -19,11 +19,22 @@ const validCard = (overrides: Partial<CardPayload> = {}): CardPayload => ({
 });
 
 /**
- * Task 3 — API test: add unique card details. Each test uses a fresh card
- * number so parallel runs don't collide and re-runs don't pollute the
- * account. Coverage spans positive / negative / boundary / security / load
- * along the functional / non-functional axis, with smoke / regression /
- * e2e tags so the suite can be sliced for CI gates.
+ * ════════════════════════════════════════════════════════════════════════
+ *  ⭐  EVERSTAGE ASSESSMENT — TASK 3
+ *  ─────────────────────────────────────────────────────────────────────
+ *  "Create an API test that adds a unique card details."
+ *
+ *  Run only this task:    npm run test:task3
+ *  Headline test:         [TC-API-001] (literal brief)
+ *  Uniqueness helper:     tests/helpers/card.ts (`uniqueCardNumber`)
+ *  All tests tagged:      @task3, @everstage-qa
+ * ════════════════════════════════════════════════════════════════════════
+ *
+ * API test: add unique card details. Each test uses a fresh card number
+ * so parallel runs don't collide and re-runs don't pollute the account.
+ * Coverage spans positive / negative / boundary / security / load along
+ * the functional / non-functional axis, with smoke / regression / e2e
+ * tags so the suite can be sliced for CI gates.
  */
 test.describe('Payment Cards - API (Task 3)', () => {
   let token: string;
@@ -865,6 +876,191 @@ test.describe('Payment Cards - API (Task 3)', () => {
       expect(list.ok()).toBeTruthy();
       const body = await list.json();
       expect(body.data.some((c: { id: number }) => c.id === cardId)).toBe(true);
+    }
+  );
+
+  // ---------------------------------------------------------------------------
+  // Live-probe findings — discovered via Playwright MCP exploration of the
+  // running Juice Shop. Each test asserts the *actual* observed behavior so
+  // the suite stays green; the docblock spells out what a hardened build
+  // would do differently.
+  // ---------------------------------------------------------------------------
+
+  test(
+    '[TC-API-160] DOCUMENTED VULN: whitespace-only fullName is accepted as a valid name',
+    { tag: ['@task3', '@everstage-qa', '@negative', '@regression', '@functional'] },
+    async ({ request }) => {
+      // Live-probed: POST with `fullName: "    "` returns 201 and stores
+      // the row with the literal whitespace string. A hardened build
+      // should trim before validating and respond 400.
+      const response = await request.post('/api/Cards/', {
+        headers: authHeaders(),
+        data: validCard({ fullName: '    ' }),
+      });
+      expect(response.status(), 'documented Juice Shop accepts whitespace-only name').toBe(201);
+      expect((await response.json()).data.fullName).toBe('    ');
+    }
+  );
+
+  test(
+    '[TC-API-161] DOCUMENTED VULN: numeric fullName (12345) is coerced to a string and accepted',
+    { tag: ['@task3', '@everstage-qa', '@negative', '@regression', '@functional'] },
+    async ({ request }) => {
+      // Live-probed: POST with `fullName: 12345` (a JS number, not string)
+      // returns 201 with `fullName: "12345"`. A hardened build should
+      // reject the type mismatch with 400.
+      const response = await request.post('/api/Cards/', {
+        headers: authHeaders(),
+        data: { ...validCard(), fullName: 12345 as unknown as string },
+      });
+      expect(response.status(), 'documented Juice Shop coerces numeric name').toBe(201);
+      expect((await response.json()).data.fullName).toBe('12345');
+    }
+  );
+
+  test(
+    '[TC-API-162] DOCUMENTED VULN: string expMonth ("5") is accepted instead of strictly typed int',
+    { tag: ['@task3', '@everstage-qa', '@negative', '@regression', '@functional'] },
+    async ({ request }) => {
+      // Live-probed: POST with `expMonth: "5"` (string) returns 201 — the
+      // server coerces the string to a number. A strictly-typed API
+      // should respond 400. (Float values DO get rejected — see
+      // TC-API-163 — so the validation gap is specifically string-coercion.)
+      const response = await request.post('/api/Cards/', {
+        headers: authHeaders(),
+        data: { ...validCard(), expMonth: '5' as unknown as number },
+      });
+      expect(response.status(), 'documented Juice Shop coerces string expMonth').toBe(201);
+      expect((await response.json()).data.expMonth).toBe(5);
+    }
+  );
+
+  test(
+    '[TC-API-163] expMonth=5.7 (float) is rejected by the isInt validator',
+    { tag: ['@task3', '@everstage-qa', '@negative', '@regression', '@functional'] },
+    async ({ request }) => {
+      // Live-probed: POST with `expMonth: 5.7` returns 400 with
+      // "Validation isInt on expMonth failed". This validation works as
+      // expected — kept in the suite as a positive control for the
+      // string-coercion gap above.
+      const response = await request.post('/api/Cards/', {
+        headers: authHeaders(),
+        data: { ...validCard(), expMonth: 5.7 },
+      });
+      expect(response.status()).toBe(400);
+      expect((await response.json()).message).toMatch(/expMonth/i);
+    }
+  );
+
+  test(
+    '[TC-API-164] GET /api/Cards/{nonexistent-id} returns 400 "Malicious activity detected" instead of 404',
+    { tag: ['@task3', '@everstage-qa', '@negative', '@security', '@regression'] },
+    async ({ request }) => {
+      // Live-probed: GET /api/Cards/9999999 returns 400 with body
+      // { status: "error", data: "Malicious activity detected" }. REST
+      // conventions would say 404 here. Juice Shop's IDOR-detection
+      // middleware fires on any out-of-range card id — useful as a
+      // *defense* signal, but the wrong status code.
+      const response = await request.get('/api/Cards/9999999', {
+        headers: authHeaders(),
+      });
+      expect(response.status()).toBe(400);
+      const body = await response.json();
+      expect(body.data, 'Juice Shop returns its IDOR-detection sentinel').toMatch(/malicious/i);
+    }
+  );
+
+  test(
+    '[TC-API-165] GOOD: cross-user GET /api/Cards/{id} is blocked by the IDOR-detection middleware',
+    { tag: ['@task3', '@everstage-qa', '@security', '@regression'] },
+    async ({ request }) => {
+      // Live-probed: an attacker user trying to read the assignment
+      // user's card by id gets 400 "Malicious activity detected" — the
+      // same middleware that fires on TC-API-164. This is one of the
+      // *correct* behaviors in Juice Shop; documented here as a positive
+      // signal that authorization is enforced on this endpoint.
+      const created = await request.post('/api/Cards/', {
+        headers: authHeaders(),
+        data: validCard({ fullName: 'Victim Card' }),
+      });
+      const cardId = (await created.json()).data.id;
+
+      const ts = Date.now().toString(36);
+      const attackerEmail = `idor-${ts}@x.test`;
+      const attackerPassword = 'StrongPass!23';
+      await request.post('/api/Users/', {
+        data: {
+          email: attackerEmail,
+          password: attackerPassword,
+          passwordRepeat: attackerPassword,
+          securityQuestion: { id: 1 },
+          securityAnswer: 'attacker',
+        },
+      });
+      const attackerToken = await loginViaApi(request, attackerEmail, attackerPassword);
+
+      const cross = await request.get(`/api/Cards/${cardId}`, {
+        headers: { Authorization: `Bearer ${attackerToken}` },
+      });
+      expect(cross.status(), 'cross-user read is blocked').toBe(400);
+      const body = await cross.json();
+      expect(body.data).toMatch(/malicious/i);
+    }
+  );
+
+  test(
+    '[TC-API-166] DOCUMENTED VULN: login email is case-sensitive (UPPER@x.test ≠ upper@x.test)',
+    { tag: ['@task1', '@everstage-qa', '@negative', '@regression', '@functional'] },
+    async ({ request }) => {
+      // Live-probed: logging in with the same email but uppercased
+      // returns 401 even though the registered email is lowercase. Most
+      // modern auth systems normalize email to lowercase at registration
+      // and at login. Juice Shop does neither — a usability defect that
+      // would frustrate real users. (Tagged @task1 because it's about
+      // the login flow.)
+      const response = await request.post('/rest/user/login', {
+        data: {
+          email: user.email.toUpperCase(),
+          password: user.password,
+        },
+      });
+      expect(response.status(), 'documented Juice Shop treats email as case-sensitive').toBe(401);
+    }
+  );
+
+  test(
+    '[TC-API-167] DOCUMENTED VULN: login email leading/trailing whitespace is not trimmed',
+    { tag: ['@task1', '@everstage-qa', '@negative', '@regression', '@functional'] },
+    async ({ request }) => {
+      // Live-probed: logging in with `"  email  "` returns 401 even
+      // though the registered email has no whitespace. Most modern auth
+      // systems trim. Juice Shop doesn't. Defect.
+      const response = await request.post('/rest/user/login', {
+        data: {
+          email: `  ${user.email}  `,
+          password: user.password,
+        },
+      });
+      expect(response.status(), 'documented Juice Shop does not trim whitespace').toBe(401);
+    }
+  );
+
+  test(
+    '[TC-API-168] DOCUMENTED VULN: array as password crashes the server with 500',
+    { tag: ['@task1', '@everstage-qa', '@negative', '@security', '@regression'] },
+    async ({ request }) => {
+      // Live-probed: POST /rest/user/login with `password: [...]`
+      // returns 500. The login handler doesn't type-guard the body, so
+      // a malformed client crashes it. A hardened build should respond
+      // 400 with "invalid request body". Tagged @security because
+      // unhandled-input crashes are a DoS vector.
+      const response = await request.post('/rest/user/login', {
+        data: {
+          email: user.email,
+          password: [user.password] as unknown as string,
+        },
+      });
+      expect(response.status(), 'documented Juice Shop crashes on array password').toBe(500);
     }
   );
 });

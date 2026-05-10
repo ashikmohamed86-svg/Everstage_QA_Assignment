@@ -6,8 +6,20 @@ import { uniqueCardNumber } from '../helpers/card';
 import user from '../data/new-user.json';
 
 /**
- * Task 2 — UI test: navigate to "My Payment Options" from the home screen
- * and add card details, with positive / negative / boundary / security /
+ * ════════════════════════════════════════════════════════════════════════
+ *  ⭐  EVERSTAGE ASSESSMENT — TASK 2
+ *  ─────────────────────────────────────────────────────────────────────
+ *  "Create a UI test that navigates to My Payments options from
+ *   homescreen (UI tests) and add card details."
+ *
+ *  Run only this task:    npm run test:task2
+ *  Headline test:         [TC-UI-001] (literal brief)
+ *  Page Object Model:     tests/pages/PaymentPage.ts
+ *  All tests tagged:      @task2, @everstage-qa
+ * ════════════════════════════════════════════════════════════════════════
+ *
+ * UI test: navigate to "My Payment Options" from the home screen and
+ * add card details, with positive / negative / boundary / security /
  * load coverage. Each test starts already authenticated thanks to the
  * shared `loginBeforeEach` helper (Task 1).
  */

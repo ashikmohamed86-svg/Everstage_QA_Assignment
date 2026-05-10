@@ -1,12 +1,42 @@
 # Juice Shop QA Automation — Everstage Assignment
 
-Playwright + TypeScript end-to-end test suite for OWASP Juice Shop, built
-as a job-assessment deliverable. Three required tasks plus a deep-coverage
-expansion across UI and REST APIs, organised so a hiring manager can run
-any slice (smoke / regression / e2e / security / load …) in one command.
+Playwright + TypeScript end-to-end test suite for OWASP Juice Shop,
+built as a job-assessment deliverable for **Everstage**. The three
+required tasks are delivered, plus a deep-coverage expansion across UI
+and REST APIs and the full checkout flow that the existing Juice Shop
+suite never connected end-to-end.
 
-> **Result on a live `localhost:3000` Juice Shop:** 191 tests, all green,
-> sub-2 minute serial runtime.
+> **Result on a live `localhost:3000` Juice Shop:**
+> **223 / 223 tests passing**, sub-3-minute serial runtime,
+> 84 of those tests carry `@everstage-qa` (the assessment scope).
+
+## At a glance
+
+| Metric | Value |
+|---|---|
+| Total tests | **223** (100% pass) |
+| Assessment-scope (`@everstage-qa`) | 84 |
+| **Assignment specs** (renamed for visibility) | `tests/ui/task1-login.spec.ts`, `tests/ui/task2-add-card.spec.ts`, `tests/api/task3-add-card.spec.ts` |
+| Page Object Models | 12 |
+| Custom Playwright fixtures | 3 (`apiSession`, `authenticatedPage`, `seededCheckout`) |
+| Helper modules | 7 |
+| API request/response payloads captured per run | 240+ |
+| CI/CD pipelines (GH Actions / GitLab / Jenkins / Azure) | 4 |
+| Custom reporters (CSV history + rich HTML) | 2 |
+| Documented OWASP Juice Shop vulnerabilities + UX defects surfaced | 20 |
+
+## For interviewers / assessors
+
+| Document | Open this if you want… |
+|---|---|
+| [`docs/ASSIGNMENT.md`](docs/ASSIGNMENT.md) | The Everstage brief verbatim, plus a one-table map from each line of the brief to the file that satisfies it |
+| [`docs/PRESENTATION.md`](docs/PRESENTATION.md) | **Slide-by-slide deck** (12 slides, ~15 min) focused on Tasks 1 / 2 / 3. Paste into PowerPoint / Keynote / Slides. Speaker notes + tempo guide + talking-points cheat sheet. |
+| [`docs/DEMO-SCRIPT.md`](docs/DEMO-SCRIPT.md) | **Live demo runbook** — read it while presenting. Each slide has verbatim speech, live-coding cues (open file X, run command Y), and plain-English explanations for non-technical reviewers. Includes a pre-demo checklist, a "what to say if X fails" cheat sheet, and a tempo guide. |
+| [`docs/CODE-TOUR.md`](docs/CODE-TOUR.md) | Linear demo script for the pairing call — every assignment file embedded with its actual source code, split into **PART A (brief)** and **PART B (extras)** |
+| [`docs/INTERVIEW-PREP.md`](docs/INTERVIEW-PREP.md) | Locator-strategy rationale, 9 anticipated interview Q&As with prepared answers, troubleshooting cheat sheet, "what I'd add with more time" |
+| [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md) | The full catalogue of every test case with steps and expected results |
+| [`docs/test-cases.csv`](docs/test-cases.csv) / [`.xlsx`](docs/JuiceShop-TestCases.xlsx) | Same catalogue as machine-readable CSV / polished Excel |
+| this README | Architecture, scope, how to run, design decisions, findings |
 
 ---
 
@@ -32,9 +62,9 @@ exercised end-to-end.
 
 | Task | What it asks for | Where it lives |
 |---|---|---|
-| **Task 1 — beforeEach login** | Manually create a new user, save credentials in `tests/data/new-user.json`, run a login script in `beforeEach` so every test starts authenticated. | `tests/data/new-user.json`, `tests/helpers/login.ts`, `tests/fixtures.ts#authenticatedPage`, `tests/ui/login.spec.ts` (15 tests) |
-| **Task 2 — UI: add card** | Navigate to *My Payment Options* from the home screen and add card details. | `tests/ui/add-card.spec.ts` (16 tests), `tests/pages/PaymentPage.ts` |
-| **Task 3 — API: add card** | Add unique card details via the REST API. | `tests/api/add-card.spec.ts` (28 tests) |
+| **Task 1 — beforeEach login** | Manually create a new user, save credentials in `tests/data/new-user.json`, run a login script in `beforeEach` so every test starts authenticated. | `tests/data/new-user.json`, `tests/helpers/login.ts`, `tests/fixtures.ts#authenticatedPage`, `tests/ui/task1-login.spec.ts` (15 tests) |
+| **Task 2 — UI: add card** | Navigate to *My Payment Options* from the home screen and add card details. | `tests/ui/task2-add-card.spec.ts` (23 tests), `tests/pages/PaymentPage.ts` |
+| **Task 3 — API: add card** | Add unique card details via the REST API. | `tests/api/task3-add-card.spec.ts` (46 tests) |
 | **Bonus — Order flow** | Full checkout funnel (basket → address → delivery → payment → place order → order confirmation). The pre-existing suite never connected these pieces. | `tests/ui/order-flow.spec.ts`, `tests/api/order-flow.spec.ts`, `tests/pages/CheckoutPage.ts`, `tests/pages/OrderHistoryPage.ts` (22 tests) |
 
 Every assignment test carries `@everstage-qa` plus `@task1` / `@task2` /
