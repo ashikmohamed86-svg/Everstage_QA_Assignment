@@ -515,6 +515,20 @@ pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
 .sev-high     { background: #fff7ed; color: #9a3412; border: 1px solid #fdba74; }
 .sev-medium   { background: #fefce8; color: #854d0e; border: 1px solid #fde68a; }
 .sev-low      { background: #f0f9ff; color: #075985; border: 1px solid #bae6fd; }
+.sev-badge.click { cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; }
+.sev-badge.click:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+.sev-badge.click.active { outline: 2px solid currentColor; outline-offset: 1px; }
+
+/* findings toolbar — dropdowns + reset + collapse */
+.finding-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 8px 0 10px; flex-wrap: wrap; }
+.finding-filters { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.finding-select { font: inherit; font-size: 12px; padding: 5px 28px 5px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel-soft); color: var(--ink); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 4l3 3 3-3' stroke='%2364748b' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>"); background-repeat: no-repeat; background-position: right 8px center; }
+.finding-select:hover { border-color: var(--accent); background-color: white; }
+.finding-select:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
+.finding-reset, .finding-collapse { font: inherit; font-size: 12px; padding: 5px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel-soft); color: var(--ink-soft); cursor: pointer; }
+.finding-reset:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.finding-collapse:hover { background: var(--panel-soft); border-color: var(--ink-soft); color: var(--ink); }
+
 .finding-row.sev-critical { border-left: 3px solid #dc2626; }
 .finding-row.sev-high     { border-left: 3px solid #ea580c; }
 .finding-row.sev-medium   { border-left: 3px solid #ca8a04; }
@@ -759,6 +773,9 @@ const SCRIPT = `
     expanded: new Set(),     // test ids that are open
     collapsedGroups: new Set(),  // group keys (e.g. 'UI', 'API') the user has folded
     expandedFindings: new Set(), // finding ids whose Quick-fix panel is open
+    findingFilters: { sev: 'all', kind: 'all' }, // severity / kind dropdowns
+    findingSort: 'sev',          // 'sev' | 'id' | 'file'
+    findingsCollapsed: false,    // panel collapsed entirely
   };
 
   // ---- top-level render ----
@@ -1022,13 +1039,82 @@ const SCRIPT = `
     }
 
     const counts = findings.reduce((a, f) => { a[f.sev] = (a[f.sev] || 0) + 1; return a; }, {});
-    const sevBadge = (sev, label) =>
-      counts[sev] ? el('span', { class: 'sev-badge sev-' + sev }, [counts[sev] + ' ' + label]) : null;
-
     const SEV_LABEL = { critical: 'Critical', high: 'High', medium: 'Medium', low: 'Low' };
     const KIND_LABEL = { VULN: 'Security bug', UX: 'UX gap' };
 
-    const rows = findings.map((f) => {
+    // ---- toolbar state + helpers ----
+    if (!state.findingFilters) state.findingFilters = { sev: 'all', kind: 'all' };
+    if (!state.findingSort)    state.findingSort = 'sev';
+    const ff = state.findingFilters;
+    const sortKey = state.findingSort;
+
+    // Click handler for the severity count pills — toggle filter to that sev.
+    const clickPill = (sev) => () => {
+      ff.sev = ff.sev === sev ? 'all' : sev;
+      render();
+    };
+    const sevBadge = (sev, label) => {
+      if (!counts[sev]) return null;
+      const isActive = ff.sev === sev;
+      const pill = el('span', {
+        class: 'sev-badge sev-' + sev + ' click' + (isActive ? ' active' : ''),
+        title: 'Show only ' + label + ' bugs (click again to clear)',
+      }, [counts[sev] + ' ' + label]);
+      pill.addEventListener('click', clickPill(sev));
+      return pill;
+    };
+
+    // ---- apply filters + sort ----
+    let visible = findings.slice();
+    if (ff.sev !== 'all')  visible = visible.filter((f) => f.sev === ff.sev);
+    if (ff.kind !== 'all') visible = visible.filter((f) => f.kind === ff.kind);
+    if (sortKey === 'sev')  visible.sort((a, b) => sevOrder[a.sev] - sevOrder[b.sev] || a.id.localeCompare(b.id));
+    if (sortKey === 'id')   visible.sort((a, b) => a.id.localeCompare(b.id));
+    if (sortKey === 'file') visible.sort((a, b) => (a.file || '').localeCompare(b.file || '') || a.id.localeCompare(b.id));
+
+    // ---- toolbar ----
+    const optEl = (value, label, selected) => el('option', selected ? { value, selected: 'selected' } : { value }, [label]);
+    const sevSelect = el('select', { class: 'finding-select', title: 'Filter by severity' }, [
+      optEl('all', 'All severities', ff.sev === 'all'),
+      optEl('critical', 'Critical only', ff.sev === 'critical'),
+      optEl('high',     'High only',     ff.sev === 'high'),
+      optEl('medium',   'Medium only',   ff.sev === 'medium'),
+      optEl('low',      'Low only',      ff.sev === 'low'),
+    ]);
+    sevSelect.addEventListener('change', (ev) => { ff.sev = ev.target.value; render(); });
+    const kindSelect = el('select', { class: 'finding-select', title: 'Filter by kind' }, [
+      optEl('all',  'All kinds',       ff.kind === 'all'),
+      optEl('VULN', 'Security bugs',   ff.kind === 'VULN'),
+      optEl('UX',   'UX gaps',         ff.kind === 'UX'),
+    ]);
+    kindSelect.addEventListener('change', (ev) => { ff.kind = ev.target.value; render(); });
+    const sortSelect = el('select', { class: 'finding-select', title: 'Sort by' }, [
+      optEl('sev',  'Sort: severity', sortKey === 'sev'),
+      optEl('id',   'Sort: test id',  sortKey === 'id'),
+      optEl('file', 'Sort: file',     sortKey === 'file'),
+    ]);
+    sortSelect.addEventListener('change', (ev) => { state.findingSort = ev.target.value; render(); });
+
+    const filtersActive = ff.sev !== 'all' || ff.kind !== 'all';
+    const resetBtn = filtersActive
+      ? (function() {
+          const b = el('button', { class: 'finding-reset', title: 'Clear severity + kind filters' }, ['↺  Reset filters']);
+          b.addEventListener('click', () => { state.findingFilters = { sev: 'all', kind: 'all' }; render(); });
+          return b;
+        })()
+      : null;
+
+    const collapseBtn = el('button', {
+      class: 'finding-collapse',
+      title: state.findingsCollapsed ? 'Show the bug list' : 'Hide the bug list',
+    }, [state.findingsCollapsed ? '▸  Show list' : '▾  Hide list']);
+    collapseBtn.addEventListener('click', () => {
+      state.findingsCollapsed = !state.findingsCollapsed;
+      render();
+    });
+
+    // ---- per-row render ----
+    const rows = visible.map((f) => {
       const isOpen = state.expandedFindings && state.expandedFindings.has(f.id);
       const head = el('div', { class: 'finding-head' }, [
         el('span', { class: 'fail-pill' }, ['● BUG FOUND']),
@@ -1050,6 +1136,18 @@ const SCRIPT = `
                 b.addEventListener('click', (ev) => { ev.stopPropagation(); state.search = f.id.toLowerCase(); render(); });
                 return b;
               })(),
+              f.fix ? (function() {
+                const c = el('button', { class: 'btn-secondary' }, ['📋  Copy fix']);
+                c.addEventListener('click', (ev) => {
+                  ev.stopPropagation();
+                  try {
+                    navigator.clipboard.writeText(f.id + ': ' + f.fix);
+                    c.textContent = '✓  Copied';
+                    setTimeout(() => { c.textContent = '📋  Copy fix'; }, 1500);
+                  } catch {}
+                });
+                return c;
+              })() : null,
               el('a', { class: 'btn-secondary', href: '../docs/SECURITY-FINDINGS.md' }, ['Full write-up ↗']),
             ]),
           ])
@@ -1067,11 +1165,15 @@ const SCRIPT = `
       return node;
     });
 
+    const showingLabel = visible.length === findings.length
+      ? findings.length + ' active'
+      : 'showing ' + visible.length + ' of ' + findings.length;
+
     return el('div', { class: 'chart-panel findings' }, [
       el('div', { class: 'chart-panel-head' }, [
         el('h3', {}, [
           '🐞 Bugs found ',
-          el('span', { class: 'subtle' }, ['· ' + findings.length + ' active']),
+          el('span', { class: 'subtle' }, ['· ' + showingLabel]),
         ]),
         el('div', { class: 'kpi-line' }, [
           sevBadge('critical', 'critical'),
@@ -1080,13 +1182,25 @@ const SCRIPT = `
           sevBadge('low', 'low'),
         ]),
       ]),
-      el('div', { class: 'plain warn' }, [
+      el('div', { class: 'finding-toolbar' }, [
+        el('div', { class: 'finding-filters' }, [
+          sevSelect, kindSelect, sortSelect, resetBtn,
+        ]),
+        collapseBtn,
+      ]),
+      state.findingsCollapsed ? null : el('div', { class: 'plain warn' }, [
         el('span', { class: 'icon' }, ['⚠️']),
         el('strong', {}, [findings.length + ' real bugs']),
-        ' were found in the build. Each row is one bug — click it for a one-line fix. The underlying tests pass only because the suite is currently asserting "yes, this bug still exists" — that is how we track them. The day a bug is fixed, its test will go red on this report so the team can confirm the fix landed.',
+        ' were found in the build. Each row is one bug — click it for a one-line fix. Use the dropdowns above to slice the list, or click any severity pill (e.g. ',
+        el('em', {}, ['1 critical']),
+        ') to jump to that severity.',
       ]),
-      el('div', { class: 'findings-grid' }, rows),
-      el('div', { class: 'tagbar-hint' }, ['Full write-up with severity, repro, and impact lives in ', el('a', { href: '../docs/SECURITY-FINDINGS.md' }, ['docs/SECURITY-FINDINGS.md']), '.']),
+      state.findingsCollapsed
+        ? null
+        : (visible.length === 0
+            ? el('div', { class: 'list-empty' }, ['No bugs match the current filters. Click ', el('strong', {}, ['Reset filters']), ' above to see all ' + findings.length + '.'])
+            : el('div', { class: 'findings-grid' }, rows)),
+      state.findingsCollapsed ? null : el('div', { class: 'tagbar-hint' }, ['Full write-up with severity, repro, and impact lives in ', el('a', { href: '../docs/SECURITY-FINDINGS.md' }, ['docs/SECURITY-FINDINGS.md']), '.']),
     ]);
   }
   function renderTrendChart() {
