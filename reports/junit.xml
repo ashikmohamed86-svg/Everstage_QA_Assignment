@@ -1,20 +1,94 @@
-<testsuites id="" name="" tests="154" failures="0" skipped="0" errors="0" time="101.363542">
-<testsuite name="api/captcha.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="4" failures="0" skipped="0" time="0.255" errors="0">
-<testcase name="Captcha endpoints - API › [TC-API-1400] GET /rest/captcha returns a math captcha and answer pair" classname="api/captcha.spec.ts" time="0.11">
+<testsuites id="" name="" tests="227" failures="0" skipped="0" errors="0" time="161.469719">
+<testsuite name="api/address.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="5" failures="0" skipped="0" time="0.651" errors="0">
+<testcase name="Addresses - API › [TC-API-600] POST /api/Addresss creates an address" classname="api/address.spec.ts" time="0.193">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-address-Addresses---AP-6c119-Addresss-creates-an-address-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Addresses - API › [TC-API-601] GET /api/Addresss returns the user addresses" classname="api/address.spec.ts" time="0.274">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-address-Addresses---AP-cc0ec--returns-the-user-addresses-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Addresses - API › [TC-API-602] DELETE /api/Addresss/{id} removes the address" classname="api/address.spec.ts" time="0.133">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-address-Addresses---AP-8c103-esss-id-removes-the-address-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Addresses - API › [TC-API-603] Address creation without token is rejected" classname="api/address.spec.ts" time="0.03">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-address-Addresses---AP-136ab-n-without-token-is-rejected-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Addresses - API › [TC-API-604] Boundary: ZIP code longer than 8 chars is rejected" classname="api/address.spec.ts" time="0.021">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-address-Addresses---AP-ddd2d-er-than-8-chars-is-rejected-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="api/basket.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="5" failures="0" skipped="0" time="0.36" errors="0">
+<testcase name="Basket - API › [TC-API-500] GET /rest/basket/{id} returns the user&apos;s basket" classname="api/basket.spec.ts" time="0.07">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-basket-Basket---API-TC-01484-d-returns-the-user-s-basket-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Basket - API › [TC-API-501] POST /api/BasketItems adds an item" classname="api/basket.spec.ts" time="0.115">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-basket-Basket---API-TC-33688-pi-BasketItems-adds-an-item-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Basket - API › [TC-API-502] Adding a basket item without auth returns 401" classname="api/basket.spec.ts" time="0.073">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-basket-Basket---API-TC-d6535-em-without-auth-returns-401-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Basket - API › [TC-API-503] DOCUMENTED VULN: zero-quantity basket item is accepted" classname="api/basket.spec.ts" time="0.046">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-basket-Basket---API-TC-c1f2d-ity-basket-item-is-accepted-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Basket - API › [TC-API-504] DOCUMENTED VULN: negative-quantity basket item is accepted" classname="api/basket.spec.ts" time="0.056">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-basket-Basket---API-TC-c3456-ity-basket-item-is-accepted-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="api/captcha.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="4" failures="0" skipped="0" time="0.072" errors="0">
+<testcase name="Captcha endpoints - API › [TC-API-1400] GET /rest/captcha returns a math captcha and answer pair" classname="api/captcha.spec.ts" time="0.021">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-captcha-Captcha-endpoi-fc9f5-ath-captcha-and-answer-pair-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Captcha endpoints - API › [TC-API-1401] DOCUMENTED VULN: /rest/captcha leaks the correct answer in the response" classname="api/captcha.spec.ts" time="0.04">
+<testcase name="Captcha endpoints - API › [TC-API-1401] DOCUMENTED VULN: /rest/captcha leaks the correct answer in the response" classname="api/captcha.spec.ts" time="0.012">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-captcha-Captcha-endpoi-017ac-rect-answer-in-the-response-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Captcha endpoints - API › [TC-API-1402] GET /rest/image-captcha returns an SVG payload (authenticated)" classname="api/captcha.spec.ts" time="0.095">
+<testcase name="Captcha endpoints - API › [TC-API-1402] GET /rest/image-captcha returns an SVG payload (authenticated)" classname="api/captcha.spec.ts" time="0.029">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-captcha-Captcha-endpoi-403a9--SVG-payload-authenticated--chromium/trace.zip]]
@@ -29,36 +103,36 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="api/complaint.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="5" failures="0" skipped="0" time="0.218" errors="0">
-<testcase name="Customer complaints - API › [TC-API-1300] POST /api/Complaints creates a complaint" classname="api/complaint.spec.ts" time="0.075">
+<testsuite name="api/complaint.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="5" failures="0" skipped="0" time="0.177" errors="0">
+<testcase name="Customer complaints - API › [TC-API-1300] POST /api/Complaints creates a complaint" classname="api/complaint.spec.ts" time="0.034">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-complaint-Customer-com-90581-plaints-creates-a-complaint-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Customer complaints - API › [TC-API-1301] DOCUMENTED VULN: Complaint stored with UserId=null" classname="api/complaint.spec.ts" time="0.032">
+<testcase name="Customer complaints - API › [TC-API-1301] DOCUMENTED VULN: Complaint stored with UserId=null" classname="api/complaint.spec.ts" time="0.024">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-complaint-Customer-com-e1223-int-stored-with-UserId-null-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Customer complaints - API › [TC-API-1302] GET /api/Complaints returns a list" classname="api/complaint.spec.ts" time="0.026">
+<testcase name="Customer complaints - API › [TC-API-1302] GET /api/Complaints returns a list" classname="api/complaint.spec.ts" time="0.043">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-complaint-Customer-com-d7509-i-Complaints-returns-a-list-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Customer complaints - API › [TC-API-1303] Complaint without auth token is rejected" classname="api/complaint.spec.ts" time="0.027">
+<testcase name="Customer complaints - API › [TC-API-1303] Complaint without auth token is rejected" classname="api/complaint.spec.ts" time="0.026">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-complaint-Customer-com-3ab0c-hout-auth-token-is-rejected-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Customer complaints - API › [TC-API-1304] XSS payload in complaint message is stored as a literal string" classname="api/complaint.spec.ts" time="0.058">
+<testcase name="Customer complaints - API › [TC-API-1304] XSS payload in complaint message is stored as a literal string" classname="api/complaint.spec.ts" time="0.05">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-complaint-Customer-com-5bd1a--stored-as-a-literal-string-chromium/trace.zip]]
@@ -66,15 +140,15 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="api/deliveries.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="2" failures="0" skipped="0" time="0.07" errors="0">
-<testcase name="Delivery methods - API › [TC-API-1000] GET /api/Deliverys returns the catalog of delivery methods" classname="api/deliveries.spec.ts" time="0.065">
+<testsuite name="api/deliveries.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="2" failures="0" skipped="0" time="0.051" errors="0">
+<testcase name="Delivery methods - API › [TC-API-1000] GET /api/Deliverys returns the catalog of delivery methods" classname="api/deliveries.spec.ts" time="0.041">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-deliveries-Delivery-me-e91e0-catalog-of-delivery-methods-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Delivery methods - API › [TC-API-1001] DOCUMENTED VULN: GET /api/Deliverys is reachable without authentication" classname="api/deliveries.spec.ts" time="0.005">
+<testcase name="Delivery methods - API › [TC-API-1001] DOCUMENTED VULN: GET /api/Deliverys is reachable without authentication" classname="api/deliveries.spec.ts" time="0.01">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-deliveries-Delivery-me-c3f43-able-without-authentication-chromium/trace.zip]]
@@ -82,92 +156,159 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="api/order-flow.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="14" failures="0" skipped="0" time="1.507" errors="0">
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1600] POST /rest/basket/{bid}/checkout returns an orderConfirmation id" classname="api/order-flow.spec.ts" time="0.127">
+<testsuite name="api/feedback.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="4" failures="0" skipped="0" time="0.253" errors="0">
+<testcase name="Feedback - API › [TC-API-800] POST /api/Feedbacks creates feedback with valid captcha" classname="api/feedback.spec.ts" time="0.087">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-feedback-Feedback---AP-eae36-feedback-with-valid-captcha-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Feedback - API › [TC-API-801] Wrong captcha answer is rejected" classname="api/feedback.spec.ts" time="0.044">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-feedback-Feedback---AP-09a07--captcha-answer-is-rejected-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Feedback - API › [TC-API-802] DOCUMENTED VULN: rating above 5 is accepted" classname="api/feedback.spec.ts" time="0.076">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-feedback-Feedback---AP-ddf0c--rating-above-5-is-accepted-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Feedback - API › [TC-API-803] DOCUMENTED VULN: rating below 1 is accepted" classname="api/feedback.spec.ts" time="0.046">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-feedback-Feedback---AP-f6f1a--rating-below-1-is-accepted-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="api/login.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="5" failures="0" skipped="0" time="0.136" errors="0">
+<testcase name="Login - API › [TC-API-200] POST /rest/user/login returns a token for valid credentials" classname="api/login.spec.ts" time="0.02">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-login-Login---API-TC-A-25f2f-token-for-valid-credentials-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Login - API › [TC-API-201] Login with wrong password returns 401" classname="api/login.spec.ts" time="0.063">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-login-Login---API-TC-A-4b72d--wrong-password-returns-401-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Login - API › [TC-API-202] Login with non-existent email returns 401" classname="api/login.spec.ts" time="0.015">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-login-Login---API-TC-A-dfbca--existent-email-returns-401-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Login - API › [TC-API-203] Login without body fields returns an error" classname="api/login.spec.ts" time="0.007">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-login-Login---API-TC-A-60b46-ody-fields-returns-an-error-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Login - API › [TC-API-204] DOCUMENTED VULN: SQL injection in email field bypasses auth on default Juice Shop" classname="api/login.spec.ts" time="0.031">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-login-Login---API-TC-A-77daa--auth-on-default-Juice-Shop-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="api/order-flow.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="14" failures="0" skipped="0" time="1.73" errors="0">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1600] POST /rest/basket/{bid}/checkout returns an orderConfirmation id" classname="api/order-flow.spec.ts" time="0.145">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-f5d15-rns-an-orderConfirmation-id-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1601] Order is retrievable via /rest/track-order/{id} after checkout" classname="api/order-flow.spec.ts" time="0.089">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1601] Order is retrievable via /rest/track-order/{id} after checkout" classname="api/order-flow.spec.ts" time="0.101">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-98046-ack-order-id-after-checkout-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1602] Basket is emptied after a successful checkout" classname="api/order-flow.spec.ts" time="0.085">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1602] Basket is emptied after a successful checkout" classname="api/order-flow.spec.ts" time="0.097">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-b7117-after-a-successful-checkout-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1603] Multi-item basket places a single order" classname="api/order-flow.spec.ts" time="0.165">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1603] Multi-item basket places a single order" classname="api/order-flow.spec.ts" time="0.135">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-2cb6d-asket-places-a-single-order-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1610] Checkout without an auth token is rejected" classname="api/order-flow.spec.ts" time="0.092">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1610] Checkout without an auth token is rejected" classname="api/order-flow.spec.ts" time="0.073">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-5c0be-t-an-auth-token-is-rejected-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1611] DOCUMENTED VULN: empty-basket checkout still mints an order on default Juice Shop" classname="api/order-flow.spec.ts" time="0.085">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1611] DOCUMENTED VULN: empty-basket checkout still mints an order on default Juice Shop" classname="api/order-flow.spec.ts" time="0.081">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-5ebfe-order-on-default-Juice-Shop-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1612] Checkout with a non-existent addressId fails cleanly" classname="api/order-flow.spec.ts" time="0.075">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1612] Checkout with a non-existent addressId fails cleanly" classname="api/order-flow.spec.ts" time="0.15">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-b13eb-ent-addressId-fails-cleanly-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1613] Checkout with a non-existent deliveryMethodId fails cleanly" classname="api/order-flow.spec.ts" time="0.088">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1613] Checkout with a non-existent deliveryMethodId fails cleanly" classname="api/order-flow.spec.ts" time="0.178">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-bea01-iveryMethodId-fails-cleanly-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1620] Tampered JWT cannot place an order" classname="api/order-flow.spec.ts" time="0.057">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1620] Tampered JWT cannot place an order" classname="api/order-flow.spec.ts" time="0.116">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-4d251-d-JWT-cannot-place-an-order-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1621] DOCUMENTED VULN: another user can checkout the assignment user&apos;s basket (BOLA)" classname="api/order-flow.spec.ts" time="0.109">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1621] DOCUMENTED VULN: another user can checkout the assignment user&apos;s basket (BOLA)" classname="api/order-flow.spec.ts" time="0.162">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-28adc-ignment-user-s-basket-BOLA--chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1622] SQL-injection in couponData does not bypass coupon validation" classname="api/order-flow.spec.ts" time="0.073">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1622] SQL-injection in couponData does not bypass coupon validation" classname="api/order-flow.spec.ts" time="0.109">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-6836a-ot-bypass-coupon-validation-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1630] Checkout with the maximum-eta delivery method is accepted" classname="api/order-flow.spec.ts" time="0.077">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1630] Checkout with the maximum-eta delivery method is accepted" classname="api/order-flow.spec.ts" time="0.097">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-98ce7-delivery-method-is-accepted-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1640] 5 sequential orders all succeed and produce distinct order ids" classname="api/order-flow.spec.ts" time="0.26">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1640] 5 sequential orders all succeed and produce distinct order ids" classname="api/order-flow.spec.ts" time="0.2">
 <properties>
 <property name="slow" value="">
 </property>
@@ -178,7 +319,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1641] Single checkout latency under 3000ms" classname="api/order-flow.spec.ts" time="0.125">
+<testcase name="Order / Checkout flow - API (missing flow) › [TC-API-1641] Single checkout latency under 3000ms" classname="api/order-flow.spec.ts" time="0.086">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-order-flow-Order-Check-bb0dc-eckout-latency-under-3000ms-chromium/trace.zip]]
@@ -186,36 +327,73 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="api/recycle.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="5" failures="0" skipped="0" time="0.103" errors="0">
-<testcase name="Recycle requests - API › [TC-API-900] POST /api/Recycles creates a recycle request" classname="api/recycle.spec.ts" time="0.022">
+<testsuite name="api/products.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="5" failures="0" skipped="0" time="0.068" errors="0">
+<testcase name="Products - API › [TC-API-400] GET /api/Products returns the catalog" classname="api/products.spec.ts" time="0.014">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-products-Products---AP-89647-roducts-returns-the-catalog-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Products - API › [TC-API-401] GET /api/Products/{id} returns a product" classname="api/products.spec.ts" time="0.02">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-products-Products---AP-6a19e-oducts-id-returns-a-product-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Products - API › [TC-API-402] GET /api/Products/{nonexistent} returns 404 or empty" classname="api/products.spec.ts" time="0.01">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-products-Products---AP-ac144-istent-returns-404-or-empty-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Products - API › [TC-API-403] GET /rest/products/search returns matches for a real product" classname="api/products.spec.ts" time="0.013">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-products-Products---AP-9bff1--matches-for-a-real-product-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Products - API › [TC-API-404] Search endpoint UNION SQLi probe — should not leak schema" classname="api/products.spec.ts" time="0.011">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-products-Products---AP-45d54-be-—-should-not-leak-schema-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="api/recycle.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="5" failures="0" skipped="0" time="0.105" errors="0">
+<testcase name="Recycle requests - API › [TC-API-900] POST /api/Recycles creates a recycle request" classname="api/recycle.spec.ts" time="0.024">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-recycle-Recycle-reques-eee7d-s-creates-a-recycle-request-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Recycle requests - API › [TC-API-901] DOCUMENTED VULN: Recycle request is created with UserId=null" classname="api/recycle.spec.ts" time="0.024">
+<testcase name="Recycle requests - API › [TC-API-901] DOCUMENTED VULN: Recycle request is created with UserId=null" classname="api/recycle.spec.ts" time="0.02">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-recycle-Recycle-reques-2a402-is-created-with-UserId-null-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Recycle requests - API › [TC-API-902] Recycle request without auth token is rejected" classname="api/recycle.spec.ts" time="0.012">
+<testcase name="Recycle requests - API › [TC-API-902] Recycle request without auth token is rejected" classname="api/recycle.spec.ts" time="0.013">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-recycle-Recycle-reques-2f38e-hout-auth-token-is-rejected-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Recycle requests - API › [TC-API-903] DOCUMENTED VULN: Recycle accepts negative quantity" classname="api/recycle.spec.ts" time="0.021">
+<testcase name="Recycle requests - API › [TC-API-903] DOCUMENTED VULN: Recycle accepts negative quantity" classname="api/recycle.spec.ts" time="0.025">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-recycle-Recycle-reques-19cb0-e-accepts-negative-quantity-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Recycle requests - API › [TC-API-904] DOCUMENTED VULN: GET /api/Recycles/{id} returns ALL recycles, not just the requested id" classname="api/recycle.spec.ts" time="0.024">
+<testcase name="Recycle requests - API › [TC-API-904] DOCUMENTED VULN: GET /api/Recycles/{id} returns ALL recycles, not just the requested id" classname="api/recycle.spec.ts" time="0.023">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-recycle-Recycle-reques-db87f-s-not-just-the-requested-id-chromium/trace.zip]]
@@ -223,204 +401,234 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="api/task3-add-card.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="55" failures="0" skipped="0" time="1.621" errors="0">
-<testcase name="Payment Cards - API (Task 3) › [TC-API-001] POST /api/Cards/ creates a card with unique details" classname="api/task3-add-card.spec.ts" time="0.022">
+<testsuite name="api/register.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="4" failures="0" skipped="0" time="0.063" errors="0">
+<testcase name="Registration - API › [TC-API-300] POST /api/Users/ creates a new user with valid input" classname="api/register.spec.ts" time="0.014">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-register-Registration--294c6-a-new-user-with-valid-input-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Registration - API › [TC-API-301] Re-registering an existing email is rejected" classname="api/register.spec.ts" time="0.011">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-register-Registration--4751a--existing-email-is-rejected-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Registration - API › [TC-API-302] DOCUMENTED VULN: Missing password is accepted on default Juice Shop" classname="api/register.spec.ts" time="0.022">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-register-Registration--fda14-epted-on-default-Juice-Shop-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Registration - API › [TC-API-303] DOCUMENTED VULN: Malformed email is accepted on default Juice Shop" classname="api/register.spec.ts" time="0.016">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/api-register-Registration--0a0f6-epted-on-default-Juice-Shop-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="api/task3-add-card.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="55" failures="0" skipped="0" time="2.254" errors="0">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-001] POST /api/Cards/ creates a card with unique details" classname="api/task3-add-card.spec.ts" time="0.029">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-79ea5--a-card-with-unique-details-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-002] GET /api/Cards/ returns the newly created card in the list" classname="api/task3-add-card.spec.ts" time="0.026">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-002] GET /api/Cards/ returns the newly created card in the list" classname="api/task3-add-card.spec.ts" time="0.033">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-32bd5-ly-created-card-in-the-list-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-003] DELETE /api/Cards/{id} removes the card from the list" classname="api/task3-add-card.spec.ts" time="0.028">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-003] DELETE /api/Cards/{id} removes the card from the list" classname="api/task3-add-card.spec.ts" time="0.027">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-b94bb-oves-the-card-from-the-list-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-004] GET /api/Cards/ list response masks the full card number (last 4 digits visible)" classname="api/task3-add-card.spec.ts" time="0.025">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-004] GET /api/Cards/ list response masks the full card number (last 4 digits visible)" classname="api/task3-add-card.spec.ts" time="0.043">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-9802e-mber-last-4-digits-visible--chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-005] Add card with maximum allowed expYear (2099)" classname="api/task3-add-card.spec.ts" time="0.023">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-005] Add card with maximum allowed expYear (2099)" classname="api/task3-add-card.spec.ts" time="0.026">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-a4abf-ximum-allowed-expYear-2099--chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-101] Reject card with expYear below allowed minimum" classname="api/task3-add-card.spec.ts" time="0.015">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-101] Reject card with expYear below allowed minimum" classname="api/task3-add-card.spec.ts" time="0.017">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-1b509-pYear-below-allowed-minimum-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-102] Reject card with expMonth above maximum" classname="api/task3-add-card.spec.ts" time="0.015">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-102] Reject card with expMonth above maximum" classname="api/task3-add-card.spec.ts" time="0.02">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-50e3f-with-expMonth-above-maximum-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-103] Reject add-card request without auth token" classname="api/task3-add-card.spec.ts" time="0.013">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-103] Reject add-card request without auth token" classname="api/task3-add-card.spec.ts" time="0.017">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-dcbb4--request-without-auth-token-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-104] Reject card with expMonth below minimum (0)" classname="api/task3-add-card.spec.ts" time="0.018">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-104] Reject card with expMonth below minimum (0)" classname="api/task3-add-card.spec.ts" time="0.015">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-32053-h-expMonth-below-minimum-0--chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-105] Reject card at expYear boundary just below minimum (2079)" classname="api/task3-add-card.spec.ts" time="0.023">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-105] Reject card at expYear boundary just below minimum (2079)" classname="api/task3-add-card.spec.ts" time="0.018">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-ef9f4-ry-just-below-minimum-2079--chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-106] Reject add-card request with invalid bearer token" classname="api/task3-add-card.spec.ts" time="0.015">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-106] Reject add-card request with invalid bearer token" classname="api/task3-add-card.spec.ts" time="0.014">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-13c3d-t-with-invalid-bearer-token-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-110] DOCUMENTED VULN: Missing cardNum is accepted on default Juice Shop" classname="api/task3-add-card.spec.ts" time="0.022">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-110] DOCUMENTED VULN: Missing cardNum is accepted on default Juice Shop" classname="api/task3-add-card.spec.ts" time="0.03">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-bd1c5-epted-on-default-Juice-Shop-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-111] DOCUMENTED VULN: Missing expMonth is accepted on default Juice Shop" classname="api/task3-add-card.spec.ts" time="0.022">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-111] DOCUMENTED VULN: Missing expMonth is accepted on default Juice Shop" classname="api/task3-add-card.spec.ts" time="0.023">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-c8a51-epted-on-default-Juice-Shop-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-112] DOCUMENTED VULN: Missing expYear is accepted on default Juice Shop" classname="api/task3-add-card.spec.ts" time="0.021">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-112] DOCUMENTED VULN: Missing expYear is accepted on default Juice Shop" classname="api/task3-add-card.spec.ts" time="0.023">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-377bf-epted-on-default-Juice-Shop-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-113] Reject card with non-numeric expMonth string" classname="api/task3-add-card.spec.ts" time="0.016">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-113] Reject card with non-numeric expMonth string" classname="api/task3-add-card.spec.ts" time="0.018">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-24d33-non-numeric-expMonth-string-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-114] Reject card with negative expMonth" classname="api/task3-add-card.spec.ts" time="0.018">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-114] Reject card with negative expMonth" classname="api/task3-add-card.spec.ts" time="0.019">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-757dc-card-with-negative-expMonth-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-120] SQL-injection payload in fullName is stored as a literal string" classname="api/task3-add-card.spec.ts" time="0.035">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-120] SQL-injection payload in fullName is stored as a literal string" classname="api/task3-add-card.spec.ts" time="0.036">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-fdd5a--stored-as-a-literal-string-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-121] XSS payload in fullName is stored verbatim and not interpreted server-side" classname="api/task3-add-card.spec.ts" time="0.022">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-121] XSS payload in fullName is stored verbatim and not interpreted server-side" classname="api/task3-add-card.spec.ts" time="0.025">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-ddaa1-not-interpreted-server-side-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-122] Cannot create a card on another userId via mass-assignment" classname="api/task3-add-card.spec.ts" time="0.022">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-122] Cannot create a card on another userId via mass-assignment" classname="api/task3-add-card.spec.ts" time="0.031">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-0b2a3--userId-via-mass-assignment-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-123] Tampered JWT signature is rejected" classname="api/task3-add-card.spec.ts" time="0.012">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-123] Tampered JWT signature is rejected" classname="api/task3-add-card.spec.ts" time="0.013">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-161a2-d-JWT-signature-is-rejected-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-124] Oversized fullName payload (10KB) does not crash the server" classname="api/task3-add-card.spec.ts" time="0.024">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-124] Oversized fullName payload (10KB) does not crash the server" classname="api/task3-add-card.spec.ts" time="0.027">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-e0a88-B-does-not-crash-the-server-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-125] Another user cannot read or delete this user&apos;s cards (IDOR probe)" classname="api/task3-add-card.spec.ts" time="0.047">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-125] Another user cannot read or delete this user&apos;s cards (IDOR probe)" classname="api/task3-add-card.spec.ts" time="0.068">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-e2d22-is-user-s-cards-IDOR-probe--chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-130] expMonth=1 (lower valid bound) is accepted" classname="api/task3-add-card.spec.ts" time="0.024">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-130] expMonth=1 (lower valid bound) is accepted" classname="api/task3-add-card.spec.ts" time="0.022">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-3552d-wer-valid-bound-is-accepted-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-131] expMonth=12 (upper valid bound) is accepted" classname="api/task3-add-card.spec.ts" time="0.023">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-131] expMonth=12 (upper valid bound) is accepted" classname="api/task3-add-card.spec.ts" time="0.022">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-05e9f-per-valid-bound-is-accepted-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-132] expYear=2080 (lower valid bound) is accepted" classname="api/task3-add-card.spec.ts" time="0.021">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-132] expYear=2080 (lower valid bound) is accepted" classname="api/task3-add-card.spec.ts" time="0.034">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-81707-wer-valid-bound-is-accepted-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-133] expYear=2100 (just past upper bound) is rejected" classname="api/task3-add-card.spec.ts" time="0.016">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-133] expYear=2100 (just past upper bound) is rejected" classname="api/task3-add-card.spec.ts" time="0.02">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-b352d-ast-upper-bound-is-rejected-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-134] cardNum at 16-digit standard length is accepted" classname="api/task3-add-card.spec.ts" time="0.023">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-134] cardNum at 16-digit standard length is accepted" classname="api/task3-add-card.spec.ts" time="0.025">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-b8297-standard-length-is-accepted-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-140] 10 cards created concurrently all return 201" classname="api/task3-add-card.spec.ts" time="0.119">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-140] 10 cards created concurrently all return 201" classname="api/task3-add-card.spec.ts" time="0.117">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-021cf-concurrently-all-return-201-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-141] 25 cards created sequentially all return 201" classname="api/task3-add-card.spec.ts" time="0.259">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-141] 25 cards created sequentially all return 201" classname="api/task3-add-card.spec.ts" time="0.366">
 <properties>
 <property name="slow" value="">
 </property>
@@ -431,7 +639,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-142] Single add-card P95 latency under 1500ms across 10 sequential calls" classname="api/task3-add-card.spec.ts" time="0.109">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-142] Single add-card P95 latency under 1500ms across 10 sequential calls" classname="api/task3-add-card.spec.ts" time="0.113">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-83457--across-10-sequential-calls-chromium/trace.zip]]
@@ -445,14 +653,14 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-115] DOCUMENTED VULN: POST with an empty body is accepted on default Juice Shop" classname="api/task3-add-card.spec.ts" time="0.023">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-115] DOCUMENTED VULN: POST with an empty body is accepted on default Juice Shop" classname="api/task3-add-card.spec.ts" time="0.024">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-a1360-epted-on-default-Juice-Shop-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-116] POST with malformed JSON body is rejected" classname="api/task3-add-card.spec.ts" time="0.019">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-116] POST with malformed JSON body is rejected" classname="api/task3-add-card.spec.ts" time="0.013">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-c6801-ormed-JSON-body-is-rejected-chromium/trace.zip]]
@@ -466,147 +674,147 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-118] POST with very short cardNum (4 digits) is rejected" classname="api/task3-add-card.spec.ts" time="0.02">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-118] POST with very short cardNum (4 digits) is rejected" classname="api/task3-add-card.spec.ts" time="0.016">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-2c9ef-ardNum-4-digits-is-rejected-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-119] POST with very long cardNum (32 digits) is rejected" classname="api/task3-add-card.spec.ts" time="0.017">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-119] POST with very long cardNum (32 digits) is rejected" classname="api/task3-add-card.spec.ts" time="0.019">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-46075-rdNum-32-digits-is-rejected-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-126] DELETE a non-existent card id is handled cleanly" classname="api/task3-add-card.spec.ts" time="0.013">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-126] DELETE a non-existent card id is handled cleanly" classname="api/task3-add-card.spec.ts" time="0.016">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-d3ff0--card-id-is-handled-cleanly-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-127] PUT /api/Cards/{id} must not silently mutate a stored card" classname="api/task3-add-card.spec.ts" time="0.027">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-127] PUT /api/Cards/{id} must not silently mutate a stored card" classname="api/task3-add-card.spec.ts" time="0.081">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-5dfbf-lently-mutate-a-stored-card-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-128] POST with extra unknown fields ignores them (no mass-assignment)" classname="api/task3-add-card.spec.ts" time="0.022">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-128] POST with extra unknown fields ignores them (no mass-assignment)" classname="api/task3-add-card.spec.ts" time="0.032">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-3a8b2-es-them-no-mass-assignment--chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-150] DOCUMENTED VULN: re-posting an identical card is accepted (no idempotency / no de-dup)" classname="api/task3-add-card.spec.ts" time="0.031">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-150] DOCUMENTED VULN: re-posting an identical card is accepted (no idempotency / no de-dup)" classname="api/task3-add-card.spec.ts" time="0.033">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-0052a-d-no-idempotency-no-de-dup--chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-151] Concurrent identical-card POSTs do not crash the server" classname="api/task3-add-card.spec.ts" time="0.029">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-151] Concurrent identical-card POSTs do not crash the server" classname="api/task3-add-card.spec.ts" time="0.03">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-80641-STs-do-not-crash-the-server-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-152] Response shape is JSON-schema-stable (id, fullName, expMonth, expYear, cardNum)" classname="api/task3-add-card.spec.ts" time="0.023">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-152] Response shape is JSON-schema-stable (id, fullName, expMonth, expYear, cardNum)" classname="api/task3-add-card.spec.ts" time="0.071">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-0a88f-e-expMonth-expYear-cardNum--chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-153] DOCUMENTED VULN: PATCH on /api/Cards/{id} crashes with 500 instead of returning 405" classname="api/task3-add-card.spec.ts" time="0.024">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-153] DOCUMENTED VULN: PATCH on /api/Cards/{id} crashes with 500 instead of returning 405" classname="api/task3-add-card.spec.ts" time="0.095">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-b679f-00-instead-of-returning-405-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-154] POST with text/plain Content-Type is rejected with 4xx" classname="api/task3-add-card.spec.ts" time="0.013">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-154] POST with text/plain Content-Type is rejected with 4xx" classname="api/task3-add-card.spec.ts" time="0.031">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-75fa0-t-Type-is-rejected-with-4xx-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-155] cardholderName with Unicode (हिंदी, 中文, emoji) is stored verbatim" classname="api/task3-add-card.spec.ts" time="0.022">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-155] cardholderName with Unicode (हिंदी, 中文, emoji) is stored verbatim" classname="api/task3-add-card.spec.ts" time="0.071">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-35a0e-中文-emoji-is-stored-verbatim-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-156] Cross-layer: card created via API is visible to a fresh authenticated session" classname="api/task3-add-card.spec.ts" time="0.033">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-156] Cross-layer: card created via API is visible to a fresh authenticated session" classname="api/task3-add-card.spec.ts" time="0.053">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-18152-fresh-authenticated-session-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-160] DOCUMENTED VULN: whitespace-only fullName is accepted as a valid name" classname="api/task3-add-card.spec.ts" time="0.02">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-160] DOCUMENTED VULN: whitespace-only fullName is accepted as a valid name" classname="api/task3-add-card.spec.ts" time="0.029">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-10ec4-is-accepted-as-a-valid-name-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-161] DOCUMENTED VULN: numeric fullName (12345) is coerced to a string and accepted" classname="api/task3-add-card.spec.ts" time="0.022">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-161] DOCUMENTED VULN: numeric fullName (12345) is coerced to a string and accepted" classname="api/task3-add-card.spec.ts" time="0.024">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-50a3d-ed-to-a-string-and-accepted-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-162] DOCUMENTED VULN: string expMonth (&quot;5&quot;) is accepted instead of strictly typed int" classname="api/task3-add-card.spec.ts" time="0.021">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-162] DOCUMENTED VULN: string expMonth (&quot;5&quot;) is accepted instead of strictly typed int" classname="api/task3-add-card.spec.ts" time="0.025">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-c05dd-stead-of-strictly-typed-int-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-163] expMonth=5.7 (float) is rejected by the isInt validator" classname="api/task3-add-card.spec.ts" time="0.016">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-163] expMonth=5.7 (float) is rejected by the isInt validator" classname="api/task3-add-card.spec.ts" time="0.033">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-059b5-cted-by-the-isInt-validator-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-164] GET /api/Cards/{nonexistent-id} returns 400 &quot;Malicious activity detected&quot; instead of 404" classname="api/task3-add-card.spec.ts" time="0.015">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-164] GET /api/Cards/{nonexistent-id} returns 400 &quot;Malicious activity detected&quot; instead of 404" classname="api/task3-add-card.spec.ts" time="0.027">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-0baab-ity-detected-instead-of-404-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-165] GOOD: cross-user GET /api/Cards/{id} is blocked by the IDOR-detection middleware" classname="api/task3-add-card.spec.ts" time="0.044">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-165] GOOD: cross-user GET /api/Cards/{id} is blocked by the IDOR-detection middleware" classname="api/task3-add-card.spec.ts" time="0.14">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-269da-e-IDOR-detection-middleware-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-166] DOCUMENTED VULN: login email is case-sensitive (UPPER@x.test ≠ upper@x.test)" classname="api/task3-add-card.spec.ts" time="0.016">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-166] DOCUMENTED VULN: login email is case-sensitive (UPPER@x.test ≠ upper@x.test)" classname="api/task3-add-card.spec.ts" time="0.029">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-39e52-PPER-x-test-≠-upper-x-test--chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-167] DOCUMENTED VULN: login email leading/trailing whitespace is not trimmed" classname="api/task3-add-card.spec.ts" time="0.017">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-167] DOCUMENTED VULN: login email leading/trailing whitespace is not trimmed" classname="api/task3-add-card.spec.ts" time="0.014">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-c69cf-g-whitespace-is-not-trimmed-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Payment Cards - API (Task 3) › [TC-API-168] DOCUMENTED VULN: array as password crashes the server with 500" classname="api/task3-add-card.spec.ts" time="0.016">
+<testcase name="Payment Cards - API (Task 3) › [TC-API-168] DOCUMENTED VULN: array as password crashes the server with 500" classname="api/task3-add-card.spec.ts" time="0.017">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-task3-add-card-Payment-85f89-crashes-the-server-with-500-chromium/trace.zip]]
@@ -614,22 +822,22 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="api/track-order.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="3" failures="0" skipped="0" time="0.022" errors="0">
-<testcase name="Track order - API › [TC-API-1100] GET /rest/track-order/{id} returns a tracking record" classname="api/track-order.spec.ts" time="0.008">
+<testsuite name="api/track-order.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="3" failures="0" skipped="0" time="0.038" errors="0">
+<testcase name="Track order - API › [TC-API-1100] GET /rest/track-order/{id} returns a tracking record" classname="api/track-order.spec.ts" time="0.019">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-track-order-Track-orde-e6f40-d-returns-a-tracking-record-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Track order - API › [TC-API-1101] GET /rest/track-order/{nonexistent} still returns 200 with empty data" classname="api/track-order.spec.ts" time="0.007">
+<testcase name="Track order - API › [TC-API-1101] GET /rest/track-order/{nonexistent} still returns 200 with empty data" classname="api/track-order.spec.ts" time="0.009">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-track-order-Track-orde-27b1d-returns-200-with-empty-data-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Track order - API › [TC-API-1102] Track-order id with traversal characters does not crash the server" classname="api/track-order.spec.ts" time="0.007">
+<testcase name="Track order - API › [TC-API-1102] Track-order id with traversal characters does not crash the server" classname="api/track-order.spec.ts" time="0.01">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-track-order-Track-orde-29e05-s-does-not-crash-the-server-chromium/trace.zip]]
@@ -637,22 +845,22 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="api/two-factor.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="3" failures="0" skipped="0" time="0.044" errors="0">
-<testcase name="Two-factor authentication - API › [TC-API-1200] GET /rest/2fa/status returns setup state for the user" classname="api/two-factor.spec.ts" time="0.014">
+<testsuite name="api/two-factor.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="3" failures="0" skipped="0" time="0.042" errors="0">
+<testcase name="Two-factor authentication - API › [TC-API-1200] GET /rest/2fa/status returns setup state for the user" classname="api/two-factor.spec.ts" time="0.016">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-two-factor-Two-factor--34ad4-ns-setup-state-for-the-user-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Two-factor authentication - API › [TC-API-1201] POST /rest/2fa/setup with a tampered initialToken is rejected" classname="api/two-factor.spec.ts" time="0.016">
+<testcase name="Two-factor authentication - API › [TC-API-1201] POST /rest/2fa/setup with a tampered initialToken is rejected" classname="api/two-factor.spec.ts" time="0.013">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-two-factor-Two-factor--fbfdc-ed-initialToken-is-rejected-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Two-factor authentication - API › [TC-API-1202] GET /rest/2fa/status without a token is rejected" classname="api/two-factor.spec.ts" time="0.014">
+<testcase name="Two-factor authentication - API › [TC-API-1202] GET /rest/2fa/status without a token is rejected" classname="api/two-factor.spec.ts" time="0.013">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-two-factor-Two-factor--86b02-without-a-token-is-rejected-chromium/trace.zip]]
@@ -660,22 +868,22 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="api/wallet.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="3" failures="0" skipped="0" time="0.057" errors="0">
-<testcase name="Wallet - API › [TC-API-700] GET /rest/wallet/balance returns the user balance" classname="api/wallet.spec.ts" time="0.019">
+<testsuite name="api/wallet.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="3" failures="0" skipped="0" time="0.045" errors="0">
+<testcase name="Wallet - API › [TC-API-700] GET /rest/wallet/balance returns the user balance" classname="api/wallet.spec.ts" time="0.021">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-wallet-Wallet---API-TC-b77bd-ce-returns-the-user-balance-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Wallet - API › [TC-API-701] GET /rest/wallet/balance without auth is rejected" classname="api/wallet.spec.ts" time="0.02">
+<testcase name="Wallet - API › [TC-API-701] GET /rest/wallet/balance without auth is rejected" classname="api/wallet.spec.ts" time="0.013">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-wallet-Wallet---API-TC-ba3cb-ce-without-auth-is-rejected-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Wallet - API › [TC-API-702] GET /rest/wallet/balance with tampered JWT is rejected" classname="api/wallet.spec.ts" time="0.018">
+<testcase name="Wallet - API › [TC-API-702] GET /rest/wallet/balance with tampered JWT is rejected" classname="api/wallet.spec.ts" time="0.011">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-wallet-Wallet---API-TC-9be04-th-tampered-JWT-is-rejected-chromium/trace.zip]]
@@ -683,29 +891,29 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="api/whoami.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="4" failures="0" skipped="0" time="0.052" errors="0">
-<testcase name="User identity &amp; lookup - API › [TC-API-1500] GET /rest/user/whoami returns the current user when authenticated via cookie" classname="api/whoami.spec.ts" time="0.012">
+<testsuite name="api/whoami.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="4" failures="0" skipped="0" time="0.052" errors="0">
+<testcase name="User identity &amp; lookup - API › [TC-API-1500] GET /rest/user/whoami returns the current user when authenticated via cookie" classname="api/whoami.spec.ts" time="0.013">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-whoami-User-identity-l-06224-en-authenticated-via-cookie-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="User identity &amp; lookup - API › [TC-API-1501] GET /rest/user/whoami without a token returns an empty user" classname="api/whoami.spec.ts" time="0.005">
+<testcase name="User identity &amp; lookup - API › [TC-API-1501] GET /rest/user/whoami without a token returns an empty user" classname="api/whoami.spec.ts" time="0.007">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-whoami-User-identity-l-dc6e4-token-returns-an-empty-user-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="User identity &amp; lookup - API › [TC-API-1502] GET /rest/user/security-question returns the question for a known email" classname="api/whoami.spec.ts" time="0.014">
+<testcase name="User identity &amp; lookup - API › [TC-API-1502] GET /rest/user/security-question returns the question for a known email" classname="api/whoami.spec.ts" time="0.012">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-whoami-User-identity-l-0f11f--question-for-a-known-email-chromium/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="User identity &amp; lookup - API › [TC-API-1503] DOCUMENTED VULN: security-question endpoint is an enumeration oracle" classname="api/whoami.spec.ts" time="0.021">
+<testcase name="User identity &amp; lookup - API › [TC-API-1503] DOCUMENTED VULN: security-question endpoint is an enumeration oracle" classname="api/whoami.spec.ts" time="0.02">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/api-whoami-User-identity-l-33fdf-nt-is-an-enumeration-oracle-chromium/trace.zip]]
@@ -713,8 +921,279 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="ui/extra-pages.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="10" failures="0" skipped="0" time="5.454" errors="0">
-<testcase name="Account-area pages reachability - UI › [TC-UI-1500] Wallet page renders the current balance" classname="ui/extra-pages.spec.ts" time="0.879">
+<testsuite name="ui/accessibility.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="3" failures="0" skipped="0" time="5.672" errors="0">
+<testcase name="Accessibility - UI › [TC-UI-A11Y-100] Landing page has no new serious/critical axe violations" classname="ui/accessibility.spec.ts" time="1.869">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-accessibility-Accessibi-2ad59-ous-critical-axe-violations-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-accessibility-Accessibi-2ad59-ous-critical-axe-violations-chromium/video-1.webm]]
+
+[[ATTACHMENT|../test-results/ui-accessibility-Accessibi-2ad59-ous-critical-axe-violations-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-accessibility-Accessibi-2ad59-ous-critical-axe-violations-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Accessibility - UI › [TC-UI-A11Y-101] Login page has no new serious/critical axe violations" classname="ui/accessibility.spec.ts" time="1.547">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-accessibility-Accessibi-ce730-ous-critical-axe-violations-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-accessibility-Accessibi-ce730-ous-critical-axe-violations-chromium/video-1.webm]]
+
+[[ATTACHMENT|../test-results/ui-accessibility-Accessibi-ce730-ous-critical-axe-violations-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-accessibility-Accessibi-ce730-ous-critical-axe-violations-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Accessibility - UI › [TC-UI-A11Y-102] Saved-payment-methods page has no new serious/critical axe violations" classname="ui/accessibility.spec.ts" time="2.256">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-accessibility-Accessibi-790e1-ous-critical-axe-violations-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-accessibility-Accessibi-790e1-ous-critical-axe-violations-chromium/video-1.webm]]
+
+[[ATTACHMENT|../test-results/ui-accessibility-Accessibi-790e1-ous-critical-axe-violations-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-accessibility-Accessibi-790e1-ous-critical-axe-violations-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui/account-areas.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="2" failures="0" skipped="0" time="1.467" errors="0">
+<testcase name="Account areas - UI › [TC-UI-1300] Profile page is reachable for logged-in users" classname="ui/account-areas.spec.ts" time="0.669">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-account-areas-Account-a-43414-achable-for-logged-in-users-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-account-areas-Account-a-43414-achable-for-logged-in-users-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-account-areas-Account-a-43414-achable-for-logged-in-users-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Account areas - UI › [TC-UI-1400] Order history is reachable for logged-in users" classname="ui/account-areas.spec.ts" time="0.798">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-account-areas-Account-a-59d19-achable-for-logged-in-users-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-account-areas-Account-a-59d19-achable-for-logged-in-users-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-account-areas-Account-a-59d19-achable-for-logged-in-users-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui/address.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="5" failures="0" skipped="0" time="2.987" errors="0">
+<testcase name="Address - UI › [TC-UI-600] User can create a new address with valid input" classname="ui/address.spec.ts" time="0.712">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-7734b-ew-address-with-valid-input-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-7734b-ew-address-with-valid-input-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-7734b-ew-address-with-valid-input-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Address - UI › [TC-UI-601] Submit is disabled until all required fields are filled" classname="ui/address.spec.ts" time="0.596">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-96838--required-fields-are-filled-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-96838--required-fields-are-filled-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-96838--required-fields-are-filled-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Address - UI › [TC-UI-602] Mobile number is enforced to numeric / sane length" classname="ui/address.spec.ts" time="0.591">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-573ee-rced-to-numeric-sane-length-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-573ee-rced-to-numeric-sane-length-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-573ee-rced-to-numeric-sane-length-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Address - UI › [TC-UI-603] Mobile number rejects non-numeric input" classname="ui/address.spec.ts" time="0.544">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-fd936-r-rejects-non-numeric-input-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-fd936-r-rejects-non-numeric-input-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-fd936-r-rejects-non-numeric-input-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Address - UI › [TC-UI-604] ZIP code accepts long input without client-side truncation" classname="ui/address.spec.ts" time="0.544">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-506db-hout-client-side-truncation-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-506db-hout-client-side-truncation-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-address-Address---UI-TC-506db-hout-client-side-truncation-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui/basket.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="5" failures="0" skipped="0" time="4.052" errors="0">
+<testcase name="Basket - UI › [TC-UI-500] Add a product to the basket from search" classname="ui/basket.spec.ts" time="0.749">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-fa9f9-t-to-the-basket-from-search-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-fa9f9-t-to-the-basket-from-search-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-fa9f9-t-to-the-basket-from-search-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Basket - UI › [TC-UI-501] Adding the same product twice increases its basket quantity" classname="ui/basket.spec.ts" time="0.876">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-9fcf4-creases-its-basket-quantity-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-9fcf4-creases-its-basket-quantity-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-9fcf4-creases-its-basket-quantity-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Basket - UI › [TC-UI-502] Increment and decrement basket item updates quantity" classname="ui/basket.spec.ts" time="1.054">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-954b5-asket-item-updates-quantity-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-954b5-asket-item-updates-quantity-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-954b5-asket-item-updates-quantity-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Basket - UI › [TC-UI-503] Removing the only basket item leaves the basket empty" classname="ui/basket.spec.ts" time="0.806">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-94496-tem-leaves-the-basket-empty-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-94496-tem-leaves-the-basket-empty-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-94496-tem-leaves-the-basket-empty-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Basket - UI › [TC-UI-504] Empty basket — checkout button is observed (Juice Shop UX finding)" classname="ui/basket.spec.ts" time="0.567">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-6744c-rved-Juice-Shop-UX-finding--chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-6744c-rved-Juice-Shop-UX-finding--chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-basket-Basket---UI-TC-U-6744c-rved-Juice-Shop-UX-finding--chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui/change-password.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="4" failures="0" skipped="0" time="7.075" errors="0">
+<testcase name="Change Password - UI › [TC-UI-800] User can change password with valid input" classname="ui/change-password.spec.ts" time="1.881">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-change-password-Change--15fc7-e-password-with-valid-input-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-change-password-Change--15fc7-e-password-with-valid-input-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-change-password-Change--15fc7-e-password-with-valid-input-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Change Password - UI › [TC-UI-801] Wrong current password is rejected" classname="ui/change-password.spec.ts" time="1.755">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-change-password-Change--fc260-urrent-password-is-rejected-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-change-password-Change--fc260-urrent-password-is-rejected-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-change-password-Change--fc260-urrent-password-is-rejected-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Change Password - UI › [TC-UI-802] New / repeat mismatch keeps the Change button disabled" classname="ui/change-password.spec.ts" time="1.692">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-change-password-Change--1e8ed--the-Change-button-disabled-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-change-password-Change--1e8ed--the-Change-button-disabled-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-change-password-Change--1e8ed--the-Change-button-disabled-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Change Password - UI › [TC-UI-803] Submit disabled while any field is empty" classname="ui/change-password.spec.ts" time="1.747">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-change-password-Change--fd2c3-ed-while-any-field-is-empty-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-change-password-Change--fd2c3-ed-while-any-field-is-empty-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-change-password-Change--fd2c3-ed-while-any-field-is-empty-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui/contact.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="4" failures="0" skipped="0" time="2.587" errors="0">
+<testcase name="Customer Feedback - UI › [TC-UI-900] User can submit feedback with comment, rating, and captcha" classname="ui/contact.spec.ts" time="0.717">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-contact-Customer-Feedba-09b85--comment-rating-and-captcha-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-contact-Customer-Feedba-09b85--comment-rating-and-captcha-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-contact-Customer-Feedba-09b85--comment-rating-and-captcha-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Customer Feedback - UI › [TC-UI-901] Comment max length is enforced at 160 chars" classname="ui/contact.spec.ts" time="0.593">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-contact-Customer-Feedba-e2808-th-is-enforced-at-160-chars-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-contact-Customer-Feedba-e2808-th-is-enforced-at-160-chars-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-contact-Customer-Feedba-e2808-th-is-enforced-at-160-chars-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Customer Feedback - UI › [TC-UI-902] Submit disabled when no rating is selected" classname="ui/contact.spec.ts" time="0.546">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-contact-Customer-Feedba-80828--when-no-rating-is-selected-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-contact-Customer-Feedba-80828--when-no-rating-is-selected-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-contact-Customer-Feedba-80828--when-no-rating-is-selected-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Customer Feedback - UI › [TC-UI-903] Wrong captcha answer is rejected" classname="ui/contact.spec.ts" time="0.731">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-contact-Customer-Feedba-79dfd--captcha-answer-is-rejected-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-contact-Customer-Feedba-79dfd--captcha-answer-is-rejected-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-contact-Customer-Feedba-79dfd--captcha-answer-is-rejected-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui/extra-pages.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="10" failures="0" skipped="0" time="5.833" errors="0">
+<testcase name="Account-area pages reachability - UI › [TC-UI-1500] Wallet page renders the current balance" classname="ui/extra-pages.spec.ts" time="0.51">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-extra-pages-Account-are-ec2bc-renders-the-current-balance-chromium/test-finished-1.png]]
@@ -725,7 +1204,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Account-area pages reachability - UI › [TC-UI-1501] Last login IP page is reachable" classname="ui/extra-pages.spec.ts" time="0.644">
+<testcase name="Account-area pages reachability - UI › [TC-UI-1501] Last login IP page is reachable" classname="ui/extra-pages.spec.ts" time="0.633">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-extra-pages-Account-are-a1ad0--login-IP-page-is-reachable-chromium/test-finished-1.png]]
@@ -736,7 +1215,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Account-area pages reachability - UI › [TC-UI-1502] Privacy &amp; Security menu route loads without redirect" classname="ui/extra-pages.spec.ts" time="0.793">
+<testcase name="Account-area pages reachability - UI › [TC-UI-1502] Privacy &amp; Security menu route loads without redirect" classname="ui/extra-pages.spec.ts" time="1.255">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-extra-pages-Account-are-d3e7e-oute-loads-without-redirect-chromium/test-finished-1.png]]
@@ -747,7 +1226,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Account-area pages reachability - UI › [TC-UI-1503] Two-factor authentication setup page is reachable" classname="ui/extra-pages.spec.ts" time="0.645">
+<testcase name="Account-area pages reachability - UI › [TC-UI-1503] Two-factor authentication setup page is reachable" classname="ui/extra-pages.spec.ts" time="0.743">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-extra-pages-Account-are-04942-ion-setup-page-is-reachable-chromium/test-finished-1.png]]
@@ -758,7 +1237,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Account-area pages reachability - UI › [TC-UI-1504] Data-export page is reachable" classname="ui/extra-pages.spec.ts" time="0.635">
+<testcase name="Account-area pages reachability - UI › [TC-UI-1504] Data-export page is reachable" classname="ui/extra-pages.spec.ts" time="0.693">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-extra-pages-Account-are-92c0e-ta-export-page-is-reachable-chromium/test-finished-1.png]]
@@ -769,7 +1248,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Account-area pages reachability - UI › [TC-UI-1505] Complain page is reachable for logged-in users" classname="ui/extra-pages.spec.ts" time="0.511">
+<testcase name="Account-area pages reachability - UI › [TC-UI-1505] Complain page is reachable for logged-in users" classname="ui/extra-pages.spec.ts" time="0.536">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-extra-pages-Account-are-ae3b0-achable-for-logged-in-users-chromium/test-finished-1.png]]
@@ -780,7 +1259,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Public information pages reachability - UI › [TC-UI-1600] Privacy policy page is reachable without login" classname="ui/extra-pages.spec.ts" time="0.416">
+<testcase name="Public information pages reachability - UI › [TC-UI-1600] Privacy policy page is reachable without login" classname="ui/extra-pages.spec.ts" time="0.452">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-extra-pages-Public-info-4aab1--is-reachable-without-login-chromium/test-finished-1.png]]
@@ -791,7 +1270,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Public information pages reachability - UI › [TC-UI-1601] Photo wall page is reachable without login" classname="ui/extra-pages.spec.ts" time="0.325">
+<testcase name="Public information pages reachability - UI › [TC-UI-1601] Photo wall page is reachable without login" classname="ui/extra-pages.spec.ts" time="0.354">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-extra-pages-Public-info-faff1--is-reachable-without-login-chromium/test-finished-1.png]]
@@ -802,7 +1281,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Public information pages reachability - UI › [TC-UI-1602] Track-result lookup page is reachable" classname="ui/extra-pages.spec.ts" time="0.319">
+<testcase name="Public information pages reachability - UI › [TC-UI-1602] Track-result lookup page is reachable" classname="ui/extra-pages.spec.ts" time="0.326">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-extra-pages-Public-info-3724c-lt-lookup-page-is-reachable-chromium/test-finished-1.png]]
@@ -813,7 +1292,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Public information pages reachability - UI › [TC-UI-1603] 403 error page renders the error layout" classname="ui/extra-pages.spec.ts" time="0.287">
+<testcase name="Public information pages reachability - UI › [TC-UI-1603] 403 error page renders the error layout" classname="ui/extra-pages.spec.ts" time="0.331">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-extra-pages-Public-info-0ebd6-ge-renders-the-error-layout-chromium/test-finished-1.png]]
@@ -825,8 +1304,78 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="ui/order-flow.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="8" failures="0" skipped="0" time="14.526" errors="0">
-<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-700] End-to-end order: basket → address → delivery → payment → place order" classname="ui/order-flow.spec.ts" time="2.04">
+<testsuite name="ui/forgot-password.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="2" failures="0" skipped="0" time="6.209" errors="0">
+<testcase name="Forgot Password - UI › [TC-UI-1200] User can reset password with correct security answer" classname="ui/forgot-password.spec.ts" time="3.089">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-forgot-password-Forgot--607d6-ith-correct-security-answer-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-forgot-password-Forgot--607d6-ith-correct-security-answer-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-forgot-password-Forgot--607d6-ith-correct-security-answer-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Forgot Password - UI › [TC-UI-1201] Reset is rejected when security answer is wrong" classname="ui/forgot-password.spec.ts" time="3.12">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-forgot-password-Forgot--e6407-en-security-answer-is-wrong-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-forgot-password-Forgot--e6407-en-security-answer-is-wrong-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-forgot-password-Forgot--e6407-en-security-answer-is-wrong-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui/navigation.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="4" failures="0" skipped="0" time="1.841" errors="0">
+<testcase name="Site navigation &amp; UX - UI › [TC-UI-1100] Landing page renders header, search, and product list" classname="ui/navigation.spec.ts" time="0.451">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-navigation-Site-navigat-37dde-der-search-and-product-list-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-navigation-Site-navigat-37dde-der-search-and-product-list-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-navigation-Site-navigat-37dde-der-search-and-product-list-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Site navigation &amp; UX - UI › [TC-UI-1101] About Us page is reachable from the side menu" classname="ui/navigation.spec.ts" time="0.497">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-navigation-Site-navigat-0983c-eachable-from-the-side-menu-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-navigation-Site-navigat-0983c-eachable-from-the-side-menu-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-navigation-Site-navigat-0983c-eachable-from-the-side-menu-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Site navigation &amp; UX - UI › [TC-UI-1102] Language picker exposes multiple languages" classname="ui/navigation.spec.ts" time="0.555">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-navigation-Site-navigat-441cd--exposes-multiple-languages-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-navigation-Site-navigat-441cd--exposes-multiple-languages-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-navigation-Site-navigat-441cd--exposes-multiple-languages-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Site navigation &amp; UX - UI › [TC-UI-1103] Score Board page is reachable directly via /#/score-board" classname="ui/navigation.spec.ts" time="0.338">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-navigation-Site-navigat-d7dde-le-directly-via-score-board-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-navigation-Site-navigat-d7dde-le-directly-via-score-board-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-navigation-Site-navigat-d7dde-le-directly-via-score-board-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui/order-flow.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="9" failures="0" skipped="0" time="15.742" errors="0">
+<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-700] End-to-end order: basket → address → delivery → payment → place order" classname="ui/order-flow.spec.ts" time="2.324">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-order-flow-Order-Checko-94ea7-ery-→-payment-→-place-order-chromium/test-finished-1.png]]
@@ -837,7 +1386,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-701] Order confirmation surfaces a non-empty order id" classname="ui/order-flow.spec.ts" time="1.955">
+<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-701] Order confirmation surfaces a non-empty order id" classname="ui/order-flow.spec.ts" time="2.267">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-order-flow-Order-Checko-a162f-rfaces-a-non-empty-order-id-chromium/test-finished-1.png]]
@@ -848,7 +1397,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-702] Placed order shows up in the user&apos;s order history" classname="ui/order-flow.spec.ts" time="3.972">
+<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-702] Placed order shows up in the user&apos;s order history" classname="ui/order-flow.spec.ts" time="4.908">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-order-flow-Order-Checko-b6874-in-the-user-s-order-history-chromium/test-finished-1.png]]
@@ -859,7 +1408,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-710] Checkout button is unreachable when the basket is empty" classname="ui/order-flow.spec.ts" time="1.203">
+<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-710] Checkout button is unreachable when the basket is empty" classname="ui/order-flow.spec.ts" time="0.509">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-order-flow-Order-Checko-af720-le-when-the-basket-is-empty-chromium/test-finished-1.png]]
@@ -870,7 +1419,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-711] DOCUMENTED UX: address selection is reset when navigating back from delivery" classname="ui/order-flow.spec.ts" time="1.826">
+<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-711] DOCUMENTED UX: address selection is reset when navigating back from delivery" classname="ui/order-flow.spec.ts" time="1.943">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-order-flow-Order-Checko-d0ee6-vigating-back-from-delivery-chromium/test-finished-1.png]]
@@ -881,7 +1430,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-720] DOCUMENTED VULN: /address/select is reachable without auth on default Juice Shop" classname="ui/order-flow.spec.ts" time="0.843">
+<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-720] DOCUMENTED VULN: /address/select is reachable without auth on default Juice Shop" classname="ui/order-flow.spec.ts" time="0.753">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-order-flow-Order-Checko-f530b--auth-on-default-Juice-Shop-chromium/test-finished-1.png]]
@@ -892,7 +1441,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-721] Direct navigation to /order-completion/&lt;random&gt; does not reveal another user&apos;s order" classname="ui/order-flow.spec.ts" time="0.586">
+<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-721] Direct navigation to /order-completion/&lt;random&gt; does not reveal another user&apos;s order" classname="ui/order-flow.spec.ts" time="0.527">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-order-flow-Order-Checko-ec10c-reveal-another-user-s-order-chromium/test-finished-1.png]]
@@ -903,7 +1452,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-730] Place an order with a high-quantity basket (3 of one item)" classname="ui/order-flow.spec.ts" time="2.101">
+<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-730] Place an order with a high-quantity basket (3 of one item)" classname="ui/order-flow.spec.ts" time="2.346">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-order-flow-Order-Checko-34774-ntity-basket-3-of-one-item--chromium/test-finished-1.png]]
@@ -914,9 +1463,187 @@
 ]]>
 </system-out>
 </testcase>
+<testcase name="Order / Checkout flow - UI (missing flow) › [TC-UI-740] DOCUMENTED UX: Juice Shop inventory depletes across test runs with no replenishment endpoint" classname="ui/order-flow.spec.ts" time="0.165">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-order-flow-Order-Checko-da6b1-h-no-replenishment-endpoint-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
 </testsuite>
-<testsuite name="ui/task1-login.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="15" failures="0" skipped="0" time="8.621" errors="0">
-<testcase name="Login - UI (Task 1: beforeEach login) › authenticated session › [TC-UI-100] beforeEach login lands on a logged-in homepage" classname="ui/task1-login.spec.ts" time="0.567">
+<testsuite name="ui/product-reviews.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="3" failures="0" skipped="0" time="2.53" errors="0">
+<testcase name="Product details and reviews - UI › [TC-UI-1000] Clicking a product opens the detail dialog" classname="ui/product-reviews.spec.ts" time="0.71">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-product-reviews-Product-f2a2b-uct-opens-the-detail-dialog-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-product-reviews-Product-f2a2b-uct-opens-the-detail-dialog-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-product-reviews-Product-f2a2b-uct-opens-the-detail-dialog-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Product details and reviews - UI › [TC-UI-1001] Logged-in user can submit a review" classname="ui/product-reviews.spec.ts" time="0.874">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-product-reviews-Product-e9e3a-in-user-can-submit-a-review-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-product-reviews-Product-e9e3a-in-user-can-submit-a-review-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-product-reviews-Product-e9e3a-in-user-can-submit-a-review-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Product details and reviews - UI › [TC-UI-1002] Closing the product dialog returns to the catalog" classname="ui/product-reviews.spec.ts" time="0.946">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-product-reviews-Product-cf5fc-alog-returns-to-the-catalog-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-product-reviews-Product-cf5fc-alog-returns-to-the-catalog-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-product-reviews-Product-cf5fc-alog-returns-to-the-catalog-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui/register.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="7" failures="0" skipped="0" time="8.748" errors="0">
+<testcase name="Registration - UI › [TC-UI-200] User can register with valid data" classname="ui/register.spec.ts" time="1.561">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-register-Registration---14476-an-register-with-valid-data-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---14476-an-register-with-valid-data-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---14476-an-register-with-valid-data-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Registration - UI › [TC-UI-201] Submit is disabled when required fields are empty" classname="ui/register.spec.ts" time="0.899">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-register-Registration---4eadb-n-required-fields-are-empty-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---4eadb-n-required-fields-are-empty-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---4eadb-n-required-fields-are-empty-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Registration - UI › [TC-UI-202] Repeat password mismatch keeps Register disabled" classname="ui/register.spec.ts" time="1.238">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-register-Registration---68462-tch-keeps-Register-disabled-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---68462-tch-keeps-Register-disabled-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---68462-tch-keeps-Register-disabled-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Registration - UI › [TC-UI-203] Malformed email keeps Register disabled" classname="ui/register.spec.ts" time="0.98">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-register-Registration---1bf38-ail-keeps-Register-disabled-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---1bf38-ail-keeps-Register-disabled-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---1bf38-ail-keeps-Register-disabled-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Registration - UI › [TC-UI-204] Password shorter than 5 chars is rejected (form-level)" classname="ui/register.spec.ts" time="0.995">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-register-Registration---2e537-ars-is-rejected-form-level--chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---2e537-ars-is-rejected-form-level--chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---2e537-ars-is-rejected-form-level--chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Registration - UI › [TC-UI-205] Boundary: password length of exactly 5 chars is accepted" classname="ui/register.spec.ts" time="1.545">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-register-Registration---fd162-exactly-5-chars-is-accepted-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---fd162-exactly-5-chars-is-accepted-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---fd162-exactly-5-chars-is-accepted-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Registration - UI › [TC-UI-206] Re-registering an existing email is rejected" classname="ui/register.spec.ts" time="1.53">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-register-Registration---67fce--existing-email-is-rejected-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---67fce--existing-email-is-rejected-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-register-Registration---67fce--existing-email-is-rejected-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui/search.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="5" failures="0" skipped="0" time="2.324" errors="0">
+<testcase name="Search - UI › [TC-UI-400] Searching &quot;apple&quot; returns at least one product" classname="ui/search.spec.ts" time="0.429">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-e11a4-eturns-at-least-one-product-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-e11a4-eturns-at-least-one-product-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-e11a4-eturns-at-least-one-product-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Search - UI › [TC-UI-401] Search returns the empty-state message for a nonsense query" classname="ui/search.spec.ts" time="0.387">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-15a71-essage-for-a-nonsense-query-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-15a71-essage-for-a-nonsense-query-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-15a71-essage-for-a-nonsense-query-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Search - UI › [TC-UI-402] Empty search shows the full catalog" classname="ui/search.spec.ts" time="0.42">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-50ec6-arch-shows-the-full-catalog-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-50ec6-arch-shows-the-full-catalog-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-50ec6-arch-shows-the-full-catalog-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Search - UI › [TC-UI-403] XSS payload in search is rendered as text, not executed" classname="ui/search.spec.ts" time="0.8">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-0979b-ndered-as-text-not-executed-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-0979b-ndered-as-text-not-executed-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-0979b-ndered-as-text-not-executed-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Search - UI › [TC-UI-404] Long search term (200 chars) is handled without crash" classname="ui/search.spec.ts" time="0.288">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-3e205-rs-is-handled-without-crash-chromium/test-finished-1.png]]
+
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-3e205-rs-is-handled-without-crash-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/ui-search-Search---UI-TC-U-3e205-rs-is-handled-without-crash-chromium/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui/task1-login.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="15" failures="0" skipped="0" time="11.183" errors="0">
+<testcase name="Login - UI (Task 1: beforeEach login) › authenticated session › [TC-UI-100] beforeEach login lands on a logged-in homepage" classname="ui/task1-login.spec.ts" time="0.565">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--89636-nds-on-a-logged-in-homepage-chromium/test-finished-1.png]]
@@ -927,7 +1654,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › authenticated session › [TC-UI-101] Logged-in user can open the account menu and see the email" classname="ui/task1-login.spec.ts" time="0.564">
+<testcase name="Login - UI (Task 1: beforeEach login) › authenticated session › [TC-UI-101] Logged-in user can open the account menu and see the email" classname="ui/task1-login.spec.ts" time="0.819">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--fe074-ount-menu-and-see-the-email-chromium/test-finished-1.png]]
@@ -938,7 +1665,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › authenticated session › [TC-UI-102] /rest/user/whoami responds with the authenticated user after beforeEach login" classname="ui/task1-login.spec.ts" time="0.568">
+<testcase name="Login - UI (Task 1: beforeEach login) › authenticated session › [TC-UI-102] /rest/user/whoami responds with the authenticated user after beforeEach login" classname="ui/task1-login.spec.ts" time="1.731">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--50a1f-user-after-beforeEach-login-chromium/test-finished-1.png]]
@@ -949,7 +1676,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › authenticated session › [TC-UI-103] Logout returns to a logged-out state" classname="ui/task1-login.spec.ts" time="0.97">
+<testcase name="Login - UI (Task 1: beforeEach login) › authenticated session › [TC-UI-103] Logout returns to a logged-out state" classname="ui/task1-login.spec.ts" time="1.714">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--782f7-turns-to-a-logged-out-state-chromium/test-finished-1.png]]
@@ -960,7 +1687,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-110] Login button is disabled while either field is empty" classname="ui/task1-login.spec.ts" time="0.378">
+<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-110] Login button is disabled while either field is empty" classname="ui/task1-login.spec.ts" time="0.436">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--6d680-while-either-field-is-empty-chromium/test-finished-1.png]]
@@ -971,7 +1698,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-111] Login fails with a wrong password" classname="ui/task1-login.spec.ts" time="0.497">
+<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-111] Login fails with a wrong password" classname="ui/task1-login.spec.ts" time="0.57">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--ecc34-fails-with-a-wrong-password-chromium/test-finished-1.png]]
@@ -982,7 +1709,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-112] Login fails for an unregistered email" classname="ui/task1-login.spec.ts" time="0.471">
+<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-112] Login fails for an unregistered email" classname="ui/task1-login.spec.ts" time="0.596">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--0663a-s-for-an-unregistered-email-chromium/test-finished-1.png]]
@@ -993,7 +1720,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-113] Whitespace-only credentials are rejected" classname="ui/task1-login.spec.ts" time="0.499">
+<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-113] Whitespace-only credentials are rejected" classname="ui/task1-login.spec.ts" time="0.531">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--913e3-ly-credentials-are-rejected-chromium/test-finished-1.png]]
@@ -1004,7 +1731,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-114] Password case mismatch is rejected" classname="ui/task1-login.spec.ts" time="0.477">
+<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-114] Password case mismatch is rejected" classname="ui/task1-login.spec.ts" time="0.487">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--abbc8-d-case-mismatch-is-rejected-chromium/test-finished-1.png]]
@@ -1015,7 +1742,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-120] DOCUMENTED VULN: SQL-injection email comment bypass logs in on default Juice Shop" classname="ui/task1-login.spec.ts" time="0.515">
+<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-120] DOCUMENTED VULN: SQL-injection email comment bypass logs in on default Juice Shop" classname="ui/task1-login.spec.ts" time="0.524">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--51452-gs-in-on-default-Juice-Shop-chromium/test-finished-1.png]]
@@ -1026,7 +1753,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-121] XSS payload in email field is not executed" classname="ui/task1-login.spec.ts" time="0.486">
+<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-121] XSS payload in email field is not executed" classname="ui/task1-login.spec.ts" time="0.483">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--f6683-email-field-is-not-executed-chromium/test-finished-1.png]]
@@ -1037,7 +1764,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-122] Error message does not disclose whether the email exists" classname="ui/task1-login.spec.ts" time="0.466">
+<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-122] Error message does not disclose whether the email exists" classname="ui/task1-login.spec.ts" time="0.478">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--d8356-se-whether-the-email-exists-chromium/test-finished-1.png]]
@@ -1048,7 +1775,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-130] Very long email input is handled without crashing" classname="ui/task1-login.spec.ts" time="0.5">
+<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-130] Very long email input is handled without crashing" classname="ui/task1-login.spec.ts" time="0.504">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--77775-is-handled-without-crashing-chromium/test-finished-1.png]]
@@ -1059,7 +1786,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-131] Very long password input is handled without crashing" classname="ui/task1-login.spec.ts" time="0.479">
+<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-131] Very long password input is handled without crashing" classname="ui/task1-login.spec.ts" time="0.461">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--ffb26-is-handled-without-crashing-chromium/test-finished-1.png]]
@@ -1070,7 +1797,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-140] Load: 5 sequential failed logins in &lt;10s do not lock or 5xx" classname="ui/task1-login.spec.ts" time="1.184">
+<testcase name="Login - UI (Task 1: beforeEach login) › login form validation › [TC-UI-140] Load: 5 sequential failed logins in &lt;10s do not lock or 5xx" classname="ui/task1-login.spec.ts" time="1.284">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task1-login-Login---UI--4ac42-s-in-10s-do-not-lock-or-5xx-chromium/test-finished-1.png]]
@@ -1082,8 +1809,8 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="ui/task2-add-card.spec.ts" timestamp="2026-05-10T08:02:52.912Z" hostname="chromium" tests="23" failures="0" skipped="0" time="62.346" errors="0">
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-001] User can add card details from My Payment Options" classname="ui/task2-add-card.spec.ts" time="1.616">
+<testsuite name="ui/task2-add-card.spec.ts" timestamp="2026-05-10T16:40:38.150Z" hostname="chromium" tests="23" failures="0" skipped="0" time="66.357" errors="0">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-001] User can add card details from My Payment Options" classname="ui/task2-add-card.spec.ts" time="2.001">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-86946-ils-from-My-Payment-Options-chromium/test-finished-1.png]]
@@ -1094,7 +1821,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-002] Submit button is disabled when the add-card form is empty" classname="ui/task2-add-card.spec.ts" time="1.189">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-002] Submit button is disabled when the add-card form is empty" classname="ui/task2-add-card.spec.ts" time="1.248">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-b1cbc--the-add-card-form-is-empty-chromium/test-finished-1.png]]
@@ -1105,7 +1832,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-003] Adding multiple cards in sequence lists each one" classname="ui/task2-add-card.spec.ts" time="1.502">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-003] Adding multiple cards in sequence lists each one" classname="ui/task2-add-card.spec.ts" time="1.726">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-ff15c--in-sequence-lists-each-one-chromium/test-finished-1.png]]
@@ -1116,7 +1843,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-004] My Payment Options menu item navigates to /saved-payment-methods" classname="ui/task2-add-card.spec.ts" time="1.004">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-004] My Payment Options menu item navigates to /saved-payment-methods" classname="ui/task2-add-card.spec.ts" time="1.095">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-d2a8d-es-to-saved-payment-methods-chromium/test-finished-1.png]]
@@ -1127,7 +1854,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-010] Submit stays disabled when only the name is filled" classname="ui/task2-add-card.spec.ts" time="1.026">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-010] Submit stays disabled when only the name is filled" classname="ui/task2-add-card.spec.ts" time="1.179">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-842dc-hen-only-the-name-is-filled-chromium/test-finished-1.png]]
@@ -1138,7 +1865,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-011] Submit stays disabled when card number is missing" classname="ui/task2-add-card.spec.ts" time="0.994">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-011] Submit stays disabled when card number is missing" classname="ui/task2-add-card.spec.ts" time="1.181">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-6180b-when-card-number-is-missing-chromium/test-finished-1.png]]
@@ -1149,7 +1876,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-012] Non-digit keystrokes are filtered by the Card Number field" classname="ui/task2-add-card.spec.ts" time="1.212">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-012] Non-digit keystrokes are filtered by the Card Number field" classname="ui/task2-add-card.spec.ts" time="1.199">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-96f7c-ed-by-the-Card-Number-field-chromium/test-finished-1.png]]
@@ -1160,7 +1887,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-013] Submit stays disabled when only month is selected" classname="ui/task2-add-card.spec.ts" time="1.169">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-013] Submit stays disabled when only month is selected" classname="ui/task2-add-card.spec.ts" time="1.167">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-c8c50-when-only-month-is-selected-chromium/test-finished-1.png]]
@@ -1171,7 +1898,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-020] XSS payload in cardholder name is rendered as text, not script" classname="ui/task2-add-card.spec.ts" time="1.306">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-020] XSS payload in cardholder name is rendered as text, not script" classname="ui/task2-add-card.spec.ts" time="1.359">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-e83ec-rendered-as-text-not-script-chromium/test-finished-1.png]]
@@ -1182,7 +1909,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-021] SQL-injection style cardholder name is treated as a literal string" classname="ui/task2-add-card.spec.ts" time="1.404">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-021] SQL-injection style cardholder name is treated as a literal string" classname="ui/task2-add-card.spec.ts" time="1.419">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-b5ee2-treated-as-a-literal-string-chromium/test-finished-1.png]]
@@ -1193,7 +1920,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-022] Card list masks the card number (only last 4 digits visible)" classname="ui/task2-add-card.spec.ts" time="1.33">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-022] Card list masks the card number (only last 4 digits visible)" classname="ui/task2-add-card.spec.ts" time="2.359">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-20708-only-last-4-digits-visible--chromium/test-finished-1.png]]
@@ -1204,7 +1931,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-030] Card with minimum allowed expiry year (2080) is accepted" classname="ui/task2-add-card.spec.ts" time="1.321">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-030] Card with minimum allowed expiry year (2080) is accepted" classname="ui/task2-add-card.spec.ts" time="1.859">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-76885-xpiry-year-2080-is-accepted-chromium/test-finished-1.png]]
@@ -1215,7 +1942,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-031] Card with maximum offered expiry year (2099) is accepted" classname="ui/task2-add-card.spec.ts" time="1.314">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-031] Card with maximum offered expiry year (2099) is accepted" classname="ui/task2-add-card.spec.ts" time="1.357">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-073b1-xpiry-year-2099-is-accepted-chromium/test-finished-1.png]]
@@ -1226,7 +1953,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-032] Cardholder name at long boundary (200 chars) is accepted" classname="ui/task2-add-card.spec.ts" time="1.302">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-032] Cardholder name at long boundary (200 chars) is accepted" classname="ui/task2-add-card.spec.ts" time="1.678">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-a1580-ndary-200-chars-is-accepted-chromium/test-finished-1.png]]
@@ -1237,7 +1964,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-040] Adding 5 cards in rapid succession all succeed and are listed" classname="ui/task2-add-card.spec.ts" time="28.856">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-040] Adding 5 cards in rapid succession all succeed and are listed" classname="ui/task2-add-card.spec.ts" time="28.966">
 <properties>
 <property name="slow" value="">
 </property>
@@ -1252,7 +1979,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-041] Add-card round-trip from menu click to confirmation completes under 15s" classname="ui/task2-add-card.spec.ts" time="1.489">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-041] Add-card round-trip from menu click to confirmation completes under 15s" classname="ui/task2-add-card.spec.ts" time="1.443">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-a8a25-rmation-completes-under-15s-chromium/test-finished-1.png]]
@@ -1263,7 +1990,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-005] Saved card persists across a full page reload" classname="ui/task2-add-card.spec.ts" time="1.522">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-005] Saved card persists across a full page reload" classname="ui/task2-add-card.spec.ts" time="1.627">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-a4e7b-s-across-a-full-page-reload-chromium/test-finished-1.png]]
@@ -1274,7 +2001,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-006] Saved card row exposes the cardholder name and the last 4 digits" classname="ui/task2-add-card.spec.ts" time="1.317">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-006] Saved card row exposes the cardholder name and the last 4 digits" classname="ui/task2-add-card.spec.ts" time="1.343">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-20d2d--name-and-the-last-4-digits-chromium/test-finished-1.png]]
@@ -1285,7 +2012,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-014] Submit stays disabled when only the year is selected" classname="ui/task2-add-card.spec.ts" time="0.971">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-014] Submit stays disabled when only the year is selected" classname="ui/task2-add-card.spec.ts" time="1.183">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-b2f88-n-only-the-year-is-selected-chromium/test-finished-1.png]]
@@ -1296,7 +2023,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-015] Empty-string cardholder name is not enough to enable Submit" classname="ui/task2-add-card.spec.ts" time="1.183">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-015] Empty-string cardholder name is not enough to enable Submit" classname="ui/task2-add-card.spec.ts" time="1.224">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-d8cd0-not-enough-to-enable-Submit-chromium/test-finished-1.png]]
@@ -1307,7 +2034,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-016] DOCUMENTED UX: whitespace-only cardholder name passes form validation" classname="ui/task2-add-card.spec.ts" time="1.233">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-016] DOCUMENTED UX: whitespace-only cardholder name passes form validation" classname="ui/task2-add-card.spec.ts" time="1.223">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-e8779-name-passes-form-validation-chromium/test-finished-1.png]]
@@ -1318,7 +2045,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-017] Submit is briefly disabled during in-flight save (no double-submit)" classname="ui/task2-add-card.spec.ts" time="6.75">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-017] Submit is briefly disabled during in-flight save (no double-submit)" classname="ui/task2-add-card.spec.ts" time="6.865">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-582d8-ight-save-no-double-submit--chromium/test-finished-1.png]]
@@ -1329,7 +2056,7 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="My Payment Options - UI (Task 2) › [TC-UI-033] Unicode characters in cardholder name are accepted and rendered" classname="ui/task2-add-card.spec.ts" time="1.336">
+<testcase name="My Payment Options - UI (Task 2) › [TC-UI-033] Unicode characters in cardholder name are accepted and rendered" classname="ui/task2-add-card.spec.ts" time="1.656">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|../test-results/ui-task2-add-card-My-Payme-d8752-e-are-accepted-and-rendered-chromium/test-finished-1.png]]

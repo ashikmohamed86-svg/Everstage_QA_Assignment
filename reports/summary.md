@@ -1,23 +1,23 @@
 # Juice Shop QA — Run Summary
 
-_Run at 2026-05-10T08:02:52.912Z_
+_Run at 2026-05-10T16:40:38.150Z_
 
 ## Latest run
-- **154/154 passed** (100% pass rate)
+- **227/227 passed** (100% pass rate)
 - **0 failed**
-- Wall time: 94.9s
+- Wall time: 150.7s
 
 ## Coverage by tag
 
 - `@boundary` — 18/18 (100%)
 - `@e2e` — 14/14 (100%)
-- `@everstage-qa` — 154/154 (100%)
-- `@functional` — 69/69 (100%)
+- `@everstage-qa` — 158/158 (100%)
+- `@functional` — 70/70 (100%)
 - `@load` — 6/6 (100%)
-- `@negative` — 50/50 (100%)
-- `@nonfunctional` — 12/12 (100%)
+- `@negative` — 51/51 (100%)
+- `@nonfunctional` — 15/15 (100%)
 - `@positive` — 42/42 (100%)
-- `@regression` — 107/107 (100%)
+- `@regression` — 111/111 (100%)
 - `@security` — 45/45 (100%)
 - `@smoke` — 9/9 (100%)
 - `@task1` — 18/18 (100%)
