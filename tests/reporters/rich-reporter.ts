@@ -214,10 +214,18 @@ function inferArea(file: string): 'UI' | 'API' | 'OTHER' {
   return 'OTHER';
 }
 
+// Only accept @-tags whose body is a clean identifier. Playwright's built-in
+// title scanner uses `@\S+`, which mistakenly turns email addresses inside a
+// title (e.g. UPPER@x.test) into "tags" like @x.test and @x.test) — they end
+// up polluting the tag-coverage panel. Whitelisting the body to [\w-]+ drops
+// those without affecting any real tag we set via `{ tag: [...] }`.
+const TAG_BODY = /^@[\w-]+$/;
+
 function collectTags(test: TestCase): string[] {
   const direct = (test as TestCase & { tags?: string[] }).tags ?? [];
-  if (direct.length > 0) return [...direct].sort();
-  return (test.title.match(/@[a-zA-Z0-9_-]+/g) ?? []).sort();
+  const fromTitle = direct.length > 0 ? [] : (test.title.match(/@[\w-]+/g) ?? []);
+  const merged = [...new Set([...direct, ...fromTitle])];
+  return merged.filter((t) => TAG_BODY.test(t)).sort();
 }
 
 function inferCategory(tags: string[]): string {
@@ -439,9 +447,14 @@ pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
 .chip .count { opacity: 0.6; margin-left: 4px; font-size: 10px; }
 
 /* charts */
-.chart-grid { display: grid; grid-template-columns: 2fr 3fr; gap: 12px; margin-bottom: 16px; align-items: start; }
+.chart-grid { display: grid; grid-template-columns: 2fr 3fr; gap: 12px; margin-bottom: 16px; align-items: stretch; }
 @media (max-width: 900px) { .chart-grid { grid-template-columns: 1fr; } }
-.chart-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); }
+.chart-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+.chart-panel.tag-coverage { max-height: 520px; }
+.chart-panel.tag-coverage .tagbar-groups { flex: 1 1 auto; overflow-y: auto; padding-right: 6px; margin-right: -6px; }
+.chart-panel.tag-coverage .tagbar-hint { flex: 0 0 auto; }
+.chart-panel.trend { min-height: 0; }
+.chart-panel.trend .spark-chart { flex: 1 1 auto; }
 .chart-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
 .chart-panel h3 { margin: 0; font-size: 14px; }
 .chart-panel h3 .subtle { color: var(--ink-faint); font-weight: 500; font-size: 12px; }
@@ -781,7 +794,7 @@ const SCRIPT = `
   function renderTrendChart() {
     const points = data.history.slice(-30);
     if (points.length === 0) {
-      return el('div', { class: 'chart-panel' }, [
+      return el('div', { class: 'chart-panel trend' }, [
         el('h3', {}, ['Pass-rate trend']),
         el('div', { class: 'list-empty' }, ['No history yet — this is the first run.']),
       ]);
@@ -835,7 +848,7 @@ const SCRIPT = `
       el('div', { class: 'gridline' }),  // 0%
     ]);
 
-    return el('div', { class: 'chart-panel' }, [
+    return el('div', { class: 'chart-panel trend' }, [
       el('div', { class: 'chart-panel-head' }, [
         el('h3', {}, ['Pass-rate trend ', el('span', { class: 'subtle' }, ['· last ' + points.length + ' runs'])]),
         el('div', { class: 'kpi-line' }, [
@@ -863,10 +876,14 @@ const SCRIPT = `
     ]);
   }
   function renderTagBars() {
+    // Also filter at render-time so older reports whose persisted data
+    // already contains junk tags (e.g. an email substring like @x.test
+    // captured by Playwright's @\S+ scanner) still render cleanly.
+    const validTag = /^@[\w-]+$/;
     const map = new Map();
     for (const r of data.records) {
       for (const t of r.tags) {
-        if (!t.startsWith('@')) continue;
+        if (!validTag.test(t)) continue;
         if (!map.has(t)) map.set(t, { passed: 0, failed: 0 });
         const e = map.get(t);
         if (r.status === 'passed') e.passed++;
@@ -967,7 +984,7 @@ const SCRIPT = `
         ])
       );
 
-    return el('div', { class: 'chart-panel' }, [
+    return el('div', { class: 'chart-panel tag-coverage' }, [
       el('div', { class: 'chart-panel-head' }, [
         el('h3', {}, ['Coverage by tag ', el('span', { class: 'subtle' }, ['· ' + all.length + ' tags total'])]),
         el('div', { class: 'kpi-line' }, [
