@@ -28,6 +28,13 @@
 
 name: Playwright
 
+# dorny/test-reporter posts a Check Run summary on the commit; that needs
+# write access to the Checks API. The default GITHUB_TOKEN scope is
+# read-only outside of pull-request triggers.
+permissions:
+  contents: read
+  checks: write
+
 on:
   push:
     branches: [main]
@@ -103,26 +110,49 @@ jobs:
       - name: Bootstrap the assignment user
         # The suite expects the user defined in tests/data/new-user.json
         # to exist. On a fresh Juice Shop, register it via the API.
+        # Uses jq for clarity — earlier `node -e "..." U=$JSON` form was a
+        # subtle bash gotcha (U= is a positional arg to node, not an env
+        # var, so process.env.U was always undefined and JSON.parse blew up).
         run: |
-          USER_JSON=$(cat tests/data/new-user.json)
-          EMAIL=$(node -e "console.log(JSON.parse(process.env.U).email)" U="$USER_JSON")
-          PASS=$(node -e "console.log(JSON.parse(process.env.U).password)" U="$USER_JSON")
-          ANSWER=$(node -e "const u=JSON.parse(process.env.U); console.log(u.securityAnswer || 'Everstage')" U="$USER_JSON")
-          curl -sf -X POST http://localhost:3000/api/Users/ \
+          set -euo pipefail
+          EMAIL=$(jq -r '.email'    tests/data/new-user.json)
+          PASS=$(jq -r '.password'  tests/data/new-user.json)
+          ANSWER=$(jq -r '.securityAnswer // "Everstage"' tests/data/new-user.json)
+          QID=$(jq -r '.securityQuestionId // 1' tests/data/new-user.json)
+
+          # Register user (idempotent — log a note if Juice Shop says it
+          # already exists or rejects the payload, but don't fail the build).
+          REG_BODY=$(jq -n --arg e "$EMAIL" --arg p "$PASS" --arg a "$ANSWER" --argjson q "$QID" \
+            '{email:$e, password:$p, passwordRepeat:$p, securityQuestion:{id:$q}, securityAnswer:$a}')
+          curl -s -o /tmp/reg.json -w "register http=%{http_code}\n" \
+            -X POST http://localhost:3000/api/Users/ \
             -H "Content-Type: application/json" \
-            -d "{\"email\":\"$EMAIL\",\"password\":\"$PASS\",\"passwordRepeat\":\"$PASS\",\"securityQuestion\":{\"id\":1},\"securityAnswer\":\"$ANSWER\"}" \
-            || echo "user may already exist"
-          # Link the security answer (Juice Shop's /api/Users/ doesn't link it).
-          TOKEN=$(curl -sf -X POST http://localhost:3000/rest/user/login \
+            -d "$REG_BODY" || true
+          cat /tmp/reg.json || true
+
+          # Login and grab the token.
+          LOGIN_BODY=$(jq -n --arg e "$EMAIL" --arg p "$PASS" '{email:$e, password:$p}')
+          curl -s -o /tmp/login.json -w "login http=%{http_code}\n" \
+            -X POST http://localhost:3000/rest/user/login \
             -H "Content-Type: application/json" \
-            -d "{\"email\":\"$EMAIL\",\"password\":\"$PASS\"}" \
-            | node -e "let s='';process.stdin.on('data',d=>s+=d);process.stdin.on('end',()=>console.log(JSON.parse(s).authentication.token))")
-          USER_ID=$(node -e "const t='$TOKEN'.split('.'); console.log(JSON.parse(Buffer.from(t[1],'base64').toString()).data.id)")
-          curl -sf -X POST http://localhost:3000/api/SecurityAnswers/ \
+            -d "$LOGIN_BODY"
+          TOKEN=$(jq -r '.authentication.token // empty' /tmp/login.json)
+          if [ -z "$TOKEN" ]; then
+            echo "::error::Could not log in as $EMAIL — registration probably failed"
+            cat /tmp/reg.json /tmp/login.json
+            exit 1
+          fi
+
+          # Link the security answer so forgot-password flows work.
+          USER_ID=$(node -e "const t=process.argv[1].split('.'); console.log(JSON.parse(Buffer.from(t[1],'base64').toString()).data.id)" "$TOKEN")
+          ANSWER_BODY=$(jq -n --argjson u "$USER_ID" --argjson q "$QID" --arg a "$ANSWER" \
+            '{UserId:$u, SecurityQuestionId:$q, answer:$a}')
+          curl -s -o /tmp/sec.json -w "secAnswer http=%{http_code}\n" \
+            -X POST http://localhost:3000/api/SecurityAnswers/ \
             -H "Authorization: Bearer $TOKEN" \
             -H "Content-Type: application/json" \
-            -d "{\"UserId\":$USER_ID,\"SecurityQuestionId\":1,\"answer\":\"$ANSWER\"}" \
-            || echo "security answer may already be linked"
+            -d "$ANSWER_BODY" || true
+          cat /tmp/sec.json || true
 
       - name: Run Playwright tests
         env:
