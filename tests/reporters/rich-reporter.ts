@@ -432,6 +432,13 @@ pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
 .stat-card.pass .value { color: var(--pass); }
 .stat-card.fail .value { color: var(--fail); }
 .stat-card.flaky .value { color: var(--flaky); }
+.stat-card.bugs { background: linear-gradient(135deg, #fff7f7 0%, #ffe4e6 100%); border-color: #fca5a5; }
+.stat-card.bugs .label { color: #991b1b; }
+.stat-card.bugs .value { color: #dc2626; }
+.stat-card.bugs .delta { color: #9f1239; }
+.stat-card.bugs.clickable { cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; }
+.stat-card.bugs.clickable:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(220,38,38,0.18); }
+.sub-bugs { color: #b91c1c; }
 
 /* search + filters */
 .controls { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); margin-bottom: 16px; position: sticky; top: 8px; z-index: 5; backdrop-filter: saturate(140%) blur(6px); }
@@ -802,17 +809,26 @@ const SCRIPT = `
   }
 
   // ---- header ----
+  // Count of DOCUMENTED VULN/UX rows in the run. The associated tests do
+  // pass (they assert the bug is still there), but for the user the panel
+  // and the headline want this count to be visible alongside pass/fail.
+  function bugsFound() {
+    return data.records.filter((r) => /DOCUMENTED (VULN|UX)/.test(r.title)).length;
+  }
+
   function renderHeader() {
     const passRate = data.summary.total
       ? Math.round((data.summary.passed / data.summary.total) * 100)
       : 0;
+    const bugs = bugsFound();
     return el('div', { class: 'header' }, [
       el('div', {}, [
         el('h1', {}, ['Juice Shop QA — Test Report']),
         el('div', { class: 'sub' }, [
           'Run started ' + fmtDate(data.summary.startedAt) + ' · ',
           el('strong', {}, [data.summary.total + ' tests']),
-          ' · ' + passRate + '% passing · ' + fmtMs(data.summary.durationMs) + ' total runtime',
+          ' · ' + passRate + '% passing · ' + fmtMs(data.summary.durationMs) + ' runtime',
+          bugs > 0 ? el('span', { class: 'sub-bugs' }, [' · 🐞 ', el('strong', {}, [bugs + ' bugs']), ' found in build']) : null,
         ]),
       ]),
       el('div', { class: 'meta' }, [
@@ -875,12 +891,25 @@ const SCRIPT = `
   function renderStats() {
     const s = data.summary;
     const passRate = s.total ? Math.round((s.passed / s.total) * 100) : 0;
+    const bugs = bugsFound();
     return el('div', { class: 'stat-grid' }, [
       statCard('Total tests', s.total, ''),
-      statCard('Passed', s.passed, passRate + '% pass rate', 'pass'),
-      statCard('Failed', s.failed, s.failed === 0 ? 'no failures 🎉' : 'see failures below', 'fail'),
+      statCard(
+        'Passed',
+        s.passed,
+        bugs > 0
+          ? passRate + '% test pass · bugs tracked separately ↓'
+          : passRate + '% pass rate',
+        'pass'
+      ),
+      statCard(
+        'Failed',
+        s.failed,
+        s.failed === 0 ? 'no failed tests' : 'see failures below',
+        'fail'
+      ),
+      bugCard(bugs),
       statCard('Flaky', s.flaky, s.flaky === 0 ? 'none retried' : 'passed on retry', 'flaky'),
-      statCard('Skipped', s.skipped, ''),
       statCard('Total runtime', fmtMs(s.durationMs), 'serial'),
     ]);
   }
@@ -890,6 +919,21 @@ const SCRIPT = `
       el('div', { class: 'value' }, [String(value)]),
       delta ? el('div', { class: 'delta' }, [delta]) : null,
     ]);
+  }
+  function bugCard(bugs) {
+    const sub = bugs === 0 ? 'no known bugs in this build 🎉' : 'click to jump to the bug list ↓';
+    const card = el('div', { class: 'stat-card bugs' + (bugs > 0 ? ' clickable' : ''), title: bugs > 0 ? 'Scroll to the Bugs found panel' : '' }, [
+      el('div', { class: 'label' }, ['Bugs found']),
+      el('div', { class: 'value' }, [String(bugs)]),
+      el('div', { class: 'delta' }, [sub]),
+    ]);
+    if (bugs > 0) {
+      card.addEventListener('click', () => {
+        const target = document.querySelector('.chart-panel.findings');
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+    return card;
   }
 
   // ---- charts ----
