@@ -23,6 +23,7 @@ TC-UI-711,UI,Negative,"DOCUMENTED UX: address selection is reset when navigating
 TC-UI-720,UI,Security,"DOCUMENTED VULN: /address/select is reachable without auth on default Juice Shop",@everstage-qa @security @regression,ui/order-flow.spec.ts,yes
 TC-UI-721,UI,Security,"Direct navigation to /order-completion/<random> does not reveal another user's order",@everstage-qa @security @regression,ui/order-flow.spec.ts,
 TC-UI-730,UI,Boundary,"Place an order with a high-quantity basket (3 of one item)",@everstage-qa @boundary @regression @e2e,ui/order-flow.spec.ts,
+TC-UI-740,UI,Negative,"DOCUMENTED UX: Juice Shop inventory depletes across test runs with no replenishment endpoint",@everstage-qa @negative @regression @functional,ui/order-flow.spec.ts,yes
 TC-API-1600,API,Positive,"POST /rest/basket/{bid}/checkout returns an orderConfirmation id",@everstage-qa @positive @smoke @e2e @functional,api/order-flow.spec.ts,
 TC-API-1601,API,Positive,"Order is retrievable via /rest/track-order/{id} after checkout",@everstage-qa @positive @smoke @e2e @functional,api/order-flow.spec.ts,
 TC-API-1602,API,Positive,"Basket is emptied after a successful checkout",@everstage-qa @positive @regression @functional,api/order-flow.spec.ts,

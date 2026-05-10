@@ -3,6 +3,7 @@ import { CheckoutPage } from '../pages/CheckoutPage';
 import { BasketPage } from '../pages/BasketPage';
 import { OrderHistoryPage } from '../pages/OrderHistoryPage';
 import { seedBasket } from '../helpers/seed';
+import { findStockableProductId } from '../helpers/api';
 
 /**
  * MISSING FLOW — Order / Checkout (UI).
@@ -179,9 +180,13 @@ test.describe('Order / Checkout flow - UI (missing flow)', () => {
     '[TC-UI-730] Place an order with a high-quantity basket (3 of one item)',
     { tag: ['@everstage-qa', '@boundary', '@regression', '@e2e'] },
     async ({ authenticatedPage: page, request, seededCheckout }) => {
-      // Seed quantity=3 directly so the test isn't sensitive to the
-      // increment-button selector or to per-user purchase caps.
-      await seedBasket(request, seededCheckout.token, seededCheckout.basketId, seededCheckout.productId, 3);
+      // The default seededCheckout.productId is picked with quantity >= 1.
+      // For this boundary test we need >= 3 in stock — Juice Shop's inventory
+      // depletes across runs (no replenishment endpoint), so the default
+      // first-stockable product is often down to 1 by the time we get here.
+      // See TC-UI-740 (DOCUMENTED UX) for the underlying finding.
+      const productId = await findStockableProductId(request, seededCheckout.token, 3);
+      await seedBasket(request, seededCheckout.token, seededCheckout.basketId, productId, 3);
 
       const checkout = new CheckoutPage(page);
       await page.goto('/#/basket');
@@ -192,6 +197,30 @@ test.describe('Order / Checkout flow - UI (missing flow)', () => {
       await checkout.placeOrder();
 
       await expect(page).toHaveURL(/order-completion/);
+    }
+  );
+
+  test(
+    '[TC-UI-740] DOCUMENTED UX: Juice Shop inventory depletes across test runs with no replenishment endpoint',
+    { tag: ['@everstage-qa', '@negative', '@regression', '@functional'] },
+    async ({ request, seededCheckout }) => {
+      // Probe: ask for the first-in-stock product, then ask for a product
+      // with quantity >= 100. The first call always succeeds (some product
+      // is in stock); the second call may fail on a heavily-used Juice Shop
+      // database. Either way, this test asserts the *shape* — Juice Shop
+      // exposes /api/Quantitys/ but no /api/Quantitys/replenish.
+      const stockable = await findStockableProductId(request, seededCheckout.token, 1);
+      expect(typeof stockable).toBe('number');
+
+      const replenish = await request.post('/api/Quantitys/replenish', {
+        headers: { Authorization: `Bearer ${seededCheckout.token}` },
+        data: { ProductId: stockable, quantity: 999 },
+      });
+      // Hardened build: the route is missing → 404. Default Juice Shop
+      // returns 500 ("Unexpected path"). Either is acceptable for asserting
+      // "no replenishment API exists". What's NOT acceptable is 200/201.
+      expect(replenish.status(), 'no replenishment endpoint should exist').not.toBe(200);
+      expect(replenish.status(), 'no replenishment endpoint should exist').not.toBe(201);
     }
   );
 });

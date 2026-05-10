@@ -4,16 +4,16 @@ _Generated from the live test suite (2026-05-10). Single source of truth: re-run
 
 ## Summary
 
-- **Total: 226 tests** across 31 spec files (100 UI · 126 API)
-- **Tagged with `@everstage-qa`: 157** assignment tests
-- **Documented vulnerabilities / UX findings**: 32 (asserted as actual Juice Shop behavior — see [Findings](#findings-against-the-default-juice-shop-build))
+- **Total: 227 tests** across 31 spec files (101 UI · 126 API)
+- **Tagged with `@everstage-qa`: 158** assignment tests
+- **Documented vulnerabilities / UX findings**: 33 (asserted as actual Juice Shop behavior — see [Findings](#findings-against-the-default-juice-shop-build))
 
 ### Coverage by category (from tags)
 
 | Category | Count | Notes |
 |---|---|---|
 | @positive | 42 | Happy-path assertions |
-| @negative | 50 | Bad input is rejected; errors are surfaced |
+| @negative | 51 | Bad input is rejected; errors are surfaced |
 | @security | 45 | SQLi, XSS, JWT, IDOR/BOLA, mass-assignment, oversized payloads |
 | @boundary | 18 | Values at and just past min/max limits |
 | @load | 6 | Concurrent or sequential bursts; no lockouts, no 5xx |
@@ -31,9 +31,9 @@ _Generated from the live test suite (2026-05-10). Single source of truth: re-run
 | Bucket | Tag | Count | Use |
 |---|---|---|---|
 | smoke | `@smoke` | 9 | PR-gate slice — must pass before merge |
-| regression | `@regression` | 110 | Full nightly slice |
+| regression | `@regression` | 111 | Full nightly slice |
 | e2e | `@e2e` | 14 | End-to-end user journeys |
-| functional | `@functional` | 69 | Behavior tests |
+| functional | `@functional` | 70 | Behavior tests |
 | nonfunctional | `@nonfunctional` | 15 | Latency, masking, robustness |
 
 ---
@@ -89,7 +89,7 @@ _api/register.spec.ts · 4 tests_
 
 ### Checkout / Order flow — UI (Bonus)
 
-_ui/order-flow.spec.ts · 8 tests_
+_ui/order-flow.spec.ts · 9 tests_
 
 | ID | Type | Title | Tags |
 |---|---|---|---|
@@ -101,6 +101,7 @@ _ui/order-flow.spec.ts · 8 tests_
 | `TC-UI-720` | Security | DOCUMENTED VULN: /address/select is reachable without auth on default Juice Shop | `@everstage-qa` `@security` `@regression` |
 | `TC-UI-721` | Security | Direct navigation to /order-completion/<random> does not reveal another user's order | `@everstage-qa` `@security` `@regression` |
 | `TC-UI-730` | Boundary | Place an order with a high-quantity basket (3 of one item) | `@everstage-qa` `@boundary` `@regression` `@e2e` |
+| `TC-UI-740` | Negative | DOCUMENTED UX: Juice Shop inventory depletes across test runs with no replenishment endpoint | `@everstage-qa` `@negative` `@regression` `@functional` |
 
 ### Checkout / Order flow — API (Bonus)
 
@@ -533,6 +534,7 @@ These tests are written so they **pass on the default vulnerable Juice Shop**. T
 | `TC-UI-120` | SQL-injection email comment bypass logs in on default Juice Shop | High | `ui/task1-login.spec.ts` |
 | `TC-UI-711` | address selection is reset when navigating back from delivery | Low / UX | `ui/order-flow.spec.ts` |
 | `TC-UI-720` | /address/select is reachable without auth on default Juice Shop | High | `ui/order-flow.spec.ts` |
+| `TC-UI-740` | Juice Shop inventory depletes across test runs with no replenishment endpoint | Low / UX | `ui/order-flow.spec.ts` |
 
 ---
 

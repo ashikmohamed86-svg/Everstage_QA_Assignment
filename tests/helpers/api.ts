@@ -58,16 +58,20 @@ export async function loginSession(
 }
 
 /**
- * Returns the id of a product that's currently in stock AND has no
- * per-user purchase limit. Juice Shop drains some products to zero across
- * many test runs (Apple Juice in particular), and others have a
- * `limitPerUser=5` cap that the assignment user hits after enough
- * purchases. Picking on the fly keeps order-flow tests resilient against
- * accumulated state.
+ * Returns the id of a product that's currently in stock (with at least
+ * `minQty` units available) AND has no per-user purchase limit. Juice Shop
+ * drains some products to zero across many test runs (Apple Juice in
+ * particular), and others have a `limitPerUser=5` cap that the assignment
+ * user hits after enough purchases. Picking on the fly keeps order-flow
+ * tests resilient against accumulated state.
+ *
+ * Pass `minQty` when the test needs to seed several units of one item
+ * (e.g. the high-quantity boundary test seeds 3 of one product).
  */
 export async function findStockableProductId(
   request: APIRequestContext,
-  token: string
+  token: string,
+  minQty = 1
 ): Promise<number> {
   const api = logged(request);
   const response = await api.get('/api/Quantitys/', {
@@ -81,9 +85,12 @@ export async function findStockableProductId(
     limitPerUser: number | null;
   }>;
   const usable = rows.find(
-    (r) => r.quantity > 0 && (r.limitPerUser === null || r.limitPerUser >= 1)
+    (r) => r.quantity >= minQty && (r.limitPerUser === null || r.limitPerUser >= minQty)
   );
-  expect(usable, 'at least one product with stock and no per-user limit must exist').toBeTruthy();
+  expect(
+    usable,
+    `at least one product with quantity >= ${minQty} and no per-user limit must exist`
+  ).toBeTruthy();
   return usable!.ProductId;
 }
 

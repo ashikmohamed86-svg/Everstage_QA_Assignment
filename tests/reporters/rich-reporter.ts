@@ -998,6 +998,7 @@ const SCRIPT = `
       'TC-API-1611': 'Block /rest/basket/{bid}/checkout when the basket is empty (return 400).',
       'TC-UI-016':   'Trim the cardholder-name input client-side and disable Submit on a blank/whitespace-only value.',
       'TC-UI-711':   'Persist the selected address on /address/select so the user does not lose it on browser-back.',
+      'TC-UI-740':   'Add an admin-only POST /api/Quantitys/replenish endpoint or a periodic restock job; tests should not have to hunt for in-stock products.',
     };
 
     const findings = data.records
