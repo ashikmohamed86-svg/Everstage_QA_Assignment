@@ -453,13 +453,26 @@ pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
 .chart-panel.tag-coverage .tagbar-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 14px 24px; }
 @media (max-width: 720px) { .chart-panel.tag-coverage .tagbar-groups { grid-template-columns: 1fr; } }
 
-/* documented findings panel */
-.chart-panel.findings .findings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 6px 16px; margin-top: 8px; }
-.finding-row { display: grid; grid-template-columns: auto 90px auto 1fr; gap: 8px; align-items: center; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel-soft); cursor: pointer; transition: background 0.1s, transform 0.1s; }
+/* intro / "what is this report" panel */
+.intro { position: relative; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px solid #7dd3fc; border-radius: 12px; padding: 14px 18px 14px 16px; margin-bottom: 16px; }
+.intro-title { font-weight: 700; font-size: 13px; color: #075985; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.intro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 16px; }
+.intro-card { background: rgba(255,255,255,0.6); border: 1px solid rgba(125,211,252,0.4); border-radius: 8px; padding: 10px 12px; }
+.intro-h { font-weight: 600; font-size: 12.5px; color: #0c4a6e; margin-bottom: 4px; }
+.intro-p { font-size: 12px; color: #155e75; line-height: 1.5; }
+.intro-p em { font-style: italic; color: #075985; }
+.intro-close { position: absolute; top: 8px; right: 10px; background: transparent; border: none; cursor: pointer; font-size: 18px; line-height: 1; color: #0369a1; padding: 2px 8px; border-radius: 4px; }
+.intro-close:hover { background: rgba(255,255,255,0.6); color: #0c4a6e; }
+.intro-reopen { display: inline-block; background: var(--panel-soft); border: 1px solid var(--border); border-radius: 999px; font-size: 11px; padding: 4px 12px; margin-bottom: 12px; color: var(--ink-soft); cursor: pointer; }
+.intro-reopen:hover { background: #f0f9ff; border-color: #7dd3fc; color: #0369a1; }
+
+/* known-issues panel */
+.chart-panel.findings .findings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 6px 16px; margin-top: 8px; }
+.finding-row { display: grid; grid-template-columns: 90px 90px 110px 1fr; gap: 8px; align-items: center; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel-soft); cursor: pointer; transition: background 0.1s, transform 0.1s; }
 .finding-row:hover { background: var(--accent-soft); transform: translateX(2px); }
 .finding-id { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); }
 .finding-title { font-size: 12.5px; color: var(--ink); }
-.kind { font-family: var(--mono); font-size: 9.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; letter-spacing: 0.04em; }
+.kind { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.02em; text-align: center; }
 .kind-vuln { background: #fee2e2; color: #991b1b; }
 .kind-ux   { background: #e0e7ff; color: #3730a3; }
 
@@ -725,6 +738,7 @@ const SCRIPT = `
     root.innerHTML = '';
     root.appendChild(el('div', { class: 'shell' }, [
       renderHeader(),
+      renderIntro(),
       renderStats(),
       renderCharts(),
       renderControls(),
@@ -776,6 +790,55 @@ const SCRIPT = `
       el('div', { class: 'meta' }, [
         el('span', { class: 'tag-pill' }, ['Run ' + data.summary.runId.slice(0, 19)]),
         el('span', { class: 'tag-pill' }, ['Playwright']),
+      ]),
+    ]);
+  }
+
+  // ---- intro / "what is this?" panel ----
+  function renderIntro() {
+    const dismissed = (function() {
+      try { return localStorage.getItem('jsqa_intro_dismissed') === '1'; } catch { return false; }
+    })();
+    if (dismissed) {
+      const reopen = el('button', { class: 'intro-reopen', title: 'Show the help banner again' }, ['ⓘ  What is this report?']);
+      reopen.addEventListener('click', () => {
+        try { localStorage.removeItem('jsqa_intro_dismissed'); } catch {}
+        render();
+      });
+      return reopen;
+    }
+
+    const close = el('button', { class: 'intro-close', title: 'Hide this banner (you can reopen it from the link below the header)' }, ['×']);
+    close.addEventListener('click', () => {
+      try { localStorage.setItem('jsqa_intro_dismissed', '1'); } catch {}
+      render();
+    });
+
+    return el('div', { class: 'intro' }, [
+      close,
+      el('div', { class: 'intro-title' }, ['What this report shows']),
+      el('div', { class: 'intro-grid' }, [
+        el('div', { class: 'intro-card' }, [
+          el('div', { class: 'intro-h' }, ['1.  Pass / fail at a glance']),
+          el('div', { class: 'intro-p' }, ['The cards below show how many tests passed, failed, retried, or were skipped, plus the wall-clock runtime.']),
+        ]),
+        el('div', { class: 'intro-card' }, [
+          el('div', { class: 'intro-h' }, ['2.  Trend & coverage']),
+          el('div', { class: 'intro-p' }, ['The Pass-rate trend bars show how recent runs went. The Coverage panel shows which tags (assignment, CI gates, categories) were exercised.']),
+        ]),
+        el('div', { class: 'intro-card' }, [
+          el('div', { class: 'intro-h' }, ['3.  Known issues we test for']),
+          el('div', { class: 'intro-p' }, [
+            'Some of these tests don’t check that a feature works — they check that a ',
+            el('em', {}, ['known bug']),
+            ' is still present. They pass on the default vulnerable Juice Shop. The day the build is hardened, those tests fail and tell the team “a thing changed”. ',
+            el('em', {}, ['Green = bug still exists, by design.']),
+          ]),
+        ]),
+        el('div', { class: 'intro-card' }, [
+          el('div', { class: 'intro-h' }, ['4.  Search & drill in']),
+          el('div', { class: 'intro-p' }, ['Use the search box or filters to narrow the list. Click any test row to see its steps, captured API calls, error stack, and trace / screenshot links.']),
+        ]),
       ]),
     ]);
   }
@@ -837,7 +900,7 @@ const SCRIPT = `
     if (findings.length === 0) {
       return el('div', { class: 'chart-panel findings' }, [
         el('div', { class: 'chart-panel-head' }, [
-          el('h3', {}, ['Documented findings ', el('span', { class: 'subtle' }, ['· none in this run'])]),
+          el('h3', {}, ['Known issues we test for ', el('span', { class: 'subtle' }, ['· none in this run'])]),
         ]),
       ]);
     }
@@ -846,11 +909,22 @@ const SCRIPT = `
     const sevBadge = (sev, label) =>
       counts[sev] ? el('span', { class: 'sev-badge sev-' + sev }, [counts[sev] + ' ' + label]) : null;
 
+    const SEV_LABEL = {
+      critical: 'Critical',
+      high:     'High',
+      medium:   'Medium',
+      low:      'Low',
+    };
+    const KIND_LABEL = {
+      VULN: 'Security bug',
+      UX:   'UX gap',
+    };
+
     const rows = findings.map((f) => {
-      const node = el('div', { class: 'finding-row sev-' + f.sev, title: 'Click to filter the list to ' + f.id }, [
-        el('span', { class: 'sev-badge sev-' + f.sev }, [f.sev]),
+      const node = el('div', { class: 'finding-row sev-' + f.sev, title: 'Click to filter the test list to ' + f.id }, [
+        el('span', { class: 'sev-badge sev-' + f.sev }, [SEV_LABEL[f.sev]]),
         el('code', { class: 'finding-id' }, [f.id]),
-        el('span', { class: 'kind kind-' + f.kind.toLowerCase() }, [f.kind]),
+        el('span', { class: 'kind kind-' + f.kind.toLowerCase() }, [KIND_LABEL[f.kind]]),
         el('span', { class: 'finding-title' }, [f.title]),
       ]);
       node.addEventListener('click', () => { state.search = f.id.toLowerCase(); render(); });
@@ -860,7 +934,7 @@ const SCRIPT = `
     return el('div', { class: 'chart-panel findings' }, [
       el('div', { class: 'chart-panel-head' }, [
         el('h3', {}, [
-          'Documented findings ',
+          'Known issues we test for ',
           el('span', { class: 'subtle' }, ['· ' + findings.length + ' total']),
         ]),
         el('div', { class: 'kpi-line' }, [
@@ -870,8 +944,14 @@ const SCRIPT = `
           sevBadge('low', 'low'),
         ]),
       ]),
+      el('div', { class: 'plain' }, [
+        el('span', { class: 'icon' }, ['💡']),
+        'These tests pass because they assert that a known bug is still present in the build. ',
+        el('strong', {}, ['Green = bug still there, by design.']),
+        ' If a row turns red after a future code change, the team has fixed (or accidentally changed) something — investigate that test.',
+      ]),
       el('div', { class: 'findings-grid' }, rows),
-      el('div', { class: 'tagbar-hint' }, ['💡  Click a row to filter the test list to that finding · full audit lives in docs/SECURITY-FINDINGS.md']),
+      el('div', { class: 'tagbar-hint' }, ['Click any row to filter the test list to that issue. Full write-up lives in ', el('a', { href: '../docs/SECURITY-FINDINGS.md' }, ['docs/SECURITY-FINDINGS.md']), '.']),
     ]);
   }
   function renderTrendChart() {
