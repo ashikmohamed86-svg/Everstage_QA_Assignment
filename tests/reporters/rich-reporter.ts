@@ -466,15 +466,42 @@ pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
 .intro-reopen { display: inline-block; background: var(--panel-soft); border: 1px solid var(--border); border-radius: 999px; font-size: 11px; padding: 4px 12px; margin-bottom: 12px; color: var(--ink-soft); cursor: pointer; }
 .intro-reopen:hover { background: #f0f9ff; border-color: #7dd3fc; color: #0369a1; }
 
-/* known-issues panel */
-.chart-panel.findings .findings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 6px 16px; margin-top: 8px; }
-.finding-row { display: grid; grid-template-columns: 90px 90px 110px 1fr; gap: 8px; align-items: center; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel-soft); cursor: pointer; transition: background 0.1s, transform 0.1s; }
-.finding-row:hover { background: var(--accent-soft); transform: translateX(2px); }
+/* "Bugs found" panel — visually treats each finding like a failed/active issue */
+.chart-panel.findings .plain.warn { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-color: #fca5a5; color: #7f1d1d; }
+.chart-panel.findings .findings-grid { display: grid; grid-template-columns: 1fr; gap: 6px; margin-top: 8px; }
+@media (min-width: 1100px) { .chart-panel.findings .findings-grid { grid-template-columns: 1fr 1fr; gap: 6px 16px; } }
+.finding-row { display: flex; flex-direction: column; padding: 8px 12px; border: 1px solid #fca5a5; border-left: 4px solid #dc2626; border-radius: 8px; background: #fff7f7; cursor: pointer; transition: background 0.1s, transform 0.1s, box-shadow 0.1s; }
+.finding-row:hover { background: #fee2e2; transform: translateX(2px); box-shadow: 0 2px 8px rgba(220,38,38,0.10); }
+.finding-row.sev-high     { border-left-color: #ea580c; background: #fff8f1; }
+.finding-row.sev-high:hover { background: #ffedd5; }
+.finding-row.sev-medium   { border-left-color: #ca8a04; background: #fffaeb; }
+.finding-row.sev-medium:hover { background: #fef3c7; }
+.finding-row.sev-low      { border-left-color: #0284c7; background: #f0f9ff; }
+.finding-row.sev-low:hover { background: #e0f2fe; }
+.finding-row.open { box-shadow: 0 4px 14px rgba(220,38,38,0.12); }
+
+.finding-head { display: grid; grid-template-columns: 90px 78px 90px 92px 1fr 16px; gap: 8px; align-items: center; }
 .finding-id { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); }
-.finding-title { font-size: 12.5px; color: var(--ink); }
+.finding-title { font-size: 12.5px; color: var(--ink); font-weight: 500; }
+.finding-caret { color: var(--ink-faint); font-size: 11px; text-align: right; }
 .kind { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.02em; text-align: center; }
 .kind-vuln { background: #fee2e2; color: #991b1b; }
 .kind-ux   { background: #e0e7ff; color: #3730a3; }
+.fail-pill { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 4px; background: #dc2626; color: white; letter-spacing: 0.04em; text-align: center; }
+.finding-row.sev-high .fail-pill   { background: #ea580c; }
+.finding-row.sev-medium .fail-pill { background: #ca8a04; }
+.finding-row.sev-low .fail-pill    { background: #0284c7; }
+
+.finding-body { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+.finding-fix { display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; }
+.fix-label { font-size: 11px; font-weight: 700; color: #166534; white-space: nowrap; }
+.fix-text { font-size: 12.5px; color: var(--ink); line-height: 1.45; }
+.finding-actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+
+@media (max-width: 720px) {
+  .finding-head { grid-template-columns: auto 1fr 16px; row-gap: 4px; }
+  .finding-head .fail-pill { grid-column: 1 / -1; }
+}
 
 .sev-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
 .sev-critical { background: #fef2f2; color: #7f1d1d; border: 1px solid #fca5a5; }
@@ -724,6 +751,7 @@ const SCRIPT = `
     groupBy: 'area',         // 'area' | 'category' | 'file' | 'tag'
     expanded: new Set(),     // test ids that are open
     collapsedGroups: new Set(),  // group keys (e.g. 'UI', 'API') the user has folded
+    expandedFindings: new Set(), // finding ids whose Quick-fix panel is open
   };
 
   // ---- top-level render ----
@@ -872,9 +900,13 @@ const SCRIPT = `
       renderFindings(),
     ]);
   }
-  // Surfaces every DOCUMENTED VULN: / DOCUMENTED UX: row with a severity
-  // badge, mirroring docs/SECURITY-FINDINGS.md so the runtime report doubles
-  // as a security audit at a glance.
+  // Surfaces every DOCUMENTED VULN: / DOCUMENTED UX: row as an active bug
+  // entry — visually treated as a failure ("BUG FOUND" red badge) with a
+  // one-line Quick Fix suggestion, even though the underlying test is green.
+  // Reasoning: the test is green only because it asserts that the buggy
+  // behaviour is still present; for a non-security reviewer that nuance is
+  // misleading. Treating each finding as a failed-but-tracked issue with a
+  // suggested fix is more honest about what the suite actually found.
   function renderFindings() {
     const CRITICAL = ['TC-UI-120', 'TC-API-204'];
     const HIGH     = ['TC-API-901','TC-API-1301','TC-API-904','TC-API-1621','TC-API-1001','TC-UI-720','TC-API-153','TC-API-168'];
@@ -887,6 +919,43 @@ const SCRIPT = `
     }
     const sevOrder = { critical: 0, high: 1, medium: 2, low: 3 };
 
+    // Per-finding quick fix: one-line suggestion the engineer can act on.
+    // Mirrored at length in docs/SECURITY-FINDINGS.md.
+    const QUICK_FIX = {
+      'TC-UI-120':   'Use parameterised queries on the login endpoint and reject email values that fail RFC-5322 parsing.',
+      'TC-API-204':  'Same as TC-UI-120 — parameterise the SQL and validate email format server-side.',
+      'TC-API-901':  'Server must ignore client-supplied UserId and stamp it from req.user.id before insert.',
+      'TC-API-1301': 'Same as TC-API-901 — bind UserId to the authenticated session, not to the request body.',
+      'TC-API-904':  "Filter the controller query by 'id = :id AND UserId = :authUserId', never return the full collection.",
+      'TC-API-1621': 'Verify Basket.UserId === req.user.id before placing the order.',
+      'TC-API-1001': 'Add the JWT auth middleware to /api/Deliverys (or document it as intentionally public).',
+      'TC-UI-720':   'Wrap the /address/select route in an AuthGuard so unauthenticated traffic is redirected to /login.',
+      'TC-API-153':  'Reject unsupported HTTP methods at the router with 405 + Allow header — never let them hit the handler.',
+      'TC-API-168':  'Validate request body shape (e.g. zod / ajv) before bcrypt — reject non-string passwords with 400.',
+      'TC-API-1401': 'Store the captcha answer server-side keyed by captchaId; only return the puzzle to the client.',
+      'TC-API-1503': 'Always return the same response shape for /security-question whether the email exists or not.',
+      'TC-API-110':  'Mark cardNum as required in the schema and 400 the request when missing.',
+      'TC-API-111':  'Mark expMonth as required (1–12) and 400 the request when missing.',
+      'TC-API-112':  'Mark expYear as required (>= currentYear) and 400 the request when missing.',
+      'TC-API-115':  'Reject empty bodies on POST /api/Cards/ with 400 — never persist a row with all NULLs.',
+      'TC-API-302':  'Mark password as required on POST /api/Users/ and 400 the request when missing.',
+      'TC-API-303':  'Validate email format (RFC-5322) on POST /api/Users/ and reject with 400.',
+      'TC-API-150':  'Return 409 on duplicate cardNum + expiry per user (or accept idempotently with the same id).',
+      'TC-API-160':  'Trim the cardholder name and reject blank/whitespace-only with 400.',
+      'TC-API-161':  'Reject non-string fullName with 400 instead of coercing to "12345".',
+      'TC-API-162':  'Reject string-typed expMonth/expYear with 400 (use schema-validated int).',
+      'TC-API-166':  'Lower-case the email before lookup so login is case-insensitive.',
+      'TC-API-167':  'Trim leading/trailing whitespace on the email before lookup.',
+      'TC-API-503':  'Reject quantity = 0 on POST /api/BasketItems with 400.',
+      'TC-API-504':  'Reject quantity < 1 on POST /api/BasketItems with 400.',
+      'TC-API-802':  'Reject rating > 5 on POST /api/Feedbacks with 400.',
+      'TC-API-803':  'Reject rating < 1 on POST /api/Feedbacks with 400.',
+      'TC-API-903':  'Reject negative quantity on POST /api/Recycles with 400.',
+      'TC-API-1611': 'Block /rest/basket/{bid}/checkout when the basket is empty (return 400).',
+      'TC-UI-016':   'Trim the cardholder-name input client-side and disable Submit on a blank/whitespace-only value.',
+      'TC-UI-711':   'Persist the selected address on /address/select so the user does not lose it on browser-back.',
+    };
+
     const findings = data.records
       .filter((r) => /DOCUMENTED (VULN|UX)/.test(r.title))
       .map((r) => ({
@@ -894,13 +963,15 @@ const SCRIPT = `
         kind: /DOCUMENTED UX/.test(r.title) ? 'UX' : 'VULN',
         title: r.cleanTitle.replace(/^DOCUMENTED (VULN|UX):\s*/, ''),
         sev: sevOf(r.id),
+        fix: QUICK_FIX[r.id] || null,
+        file: r.file,
       }))
       .sort((a, b) => sevOrder[a.sev] - sevOrder[b.sev] || a.id.localeCompare(b.id));
 
     if (findings.length === 0) {
-      return el('div', { class: 'chart-panel findings' }, [
+      return el('div', { class: 'chart-panel findings empty-good' }, [
         el('div', { class: 'chart-panel-head' }, [
-          el('h3', {}, ['Known issues we test for ', el('span', { class: 'subtle' }, ['· none in this run'])]),
+          el('h3', {}, ['Bugs found ', el('span', { class: 'subtle' }, ['· none in this run 🎉'])]),
         ]),
       ]);
     }
@@ -909,33 +980,53 @@ const SCRIPT = `
     const sevBadge = (sev, label) =>
       counts[sev] ? el('span', { class: 'sev-badge sev-' + sev }, [counts[sev] + ' ' + label]) : null;
 
-    const SEV_LABEL = {
-      critical: 'Critical',
-      high:     'High',
-      medium:   'Medium',
-      low:      'Low',
-    };
-    const KIND_LABEL = {
-      VULN: 'Security bug',
-      UX:   'UX gap',
-    };
+    const SEV_LABEL = { critical: 'Critical', high: 'High', medium: 'Medium', low: 'Low' };
+    const KIND_LABEL = { VULN: 'Security bug', UX: 'UX gap' };
 
     const rows = findings.map((f) => {
-      const node = el('div', { class: 'finding-row sev-' + f.sev, title: 'Click to filter the test list to ' + f.id }, [
+      const isOpen = state.expandedFindings && state.expandedFindings.has(f.id);
+      const head = el('div', { class: 'finding-head' }, [
+        el('span', { class: 'fail-pill' }, ['● BUG FOUND']),
         el('span', { class: 'sev-badge sev-' + f.sev }, [SEV_LABEL[f.sev]]),
-        el('code', { class: 'finding-id' }, [f.id]),
         el('span', { class: 'kind kind-' + f.kind.toLowerCase() }, [KIND_LABEL[f.kind]]),
+        el('code', { class: 'finding-id' }, [f.id]),
         el('span', { class: 'finding-title' }, [f.title]),
+        el('span', { class: 'finding-caret' }, [isOpen ? '▾' : '▸']),
       ]);
-      node.addEventListener('click', () => { state.search = f.id.toLowerCase(); render(); });
+      const body = isOpen
+        ? el('div', { class: 'finding-body' }, [
+            el('div', { class: 'finding-fix' }, [
+              el('span', { class: 'fix-label' }, ['🔧  Quick fix']),
+              el('span', { class: 'fix-text' }, [f.fix || 'See docs/SECURITY-FINDINGS.md for the full write-up.']),
+            ]),
+            el('div', { class: 'finding-actions' }, [
+              (function() {
+                const b = el('button', { class: 'btn-secondary' }, ['Show this test in the list']);
+                b.addEventListener('click', (ev) => { ev.stopPropagation(); state.search = f.id.toLowerCase(); render(); });
+                return b;
+              })(),
+              el('a', { class: 'btn-secondary', href: '../docs/SECURITY-FINDINGS.md' }, ['Full write-up ↗']),
+            ]),
+          ])
+        : null;
+      const node = el('div', { class: 'finding-row sev-' + f.sev + (isOpen ? ' open' : ''), title: 'Click to expand the quick fix' }, [
+        head,
+        body,
+      ]);
+      node.addEventListener('click', () => {
+        if (!state.expandedFindings) state.expandedFindings = new Set();
+        if (state.expandedFindings.has(f.id)) state.expandedFindings.delete(f.id);
+        else state.expandedFindings.add(f.id);
+        render();
+      });
       return node;
     });
 
     return el('div', { class: 'chart-panel findings' }, [
       el('div', { class: 'chart-panel-head' }, [
         el('h3', {}, [
-          'Known issues we test for ',
-          el('span', { class: 'subtle' }, ['· ' + findings.length + ' total']),
+          '🐞 Bugs found ',
+          el('span', { class: 'subtle' }, ['· ' + findings.length + ' active']),
         ]),
         el('div', { class: 'kpi-line' }, [
           sevBadge('critical', 'critical'),
@@ -944,14 +1035,13 @@ const SCRIPT = `
           sevBadge('low', 'low'),
         ]),
       ]),
-      el('div', { class: 'plain' }, [
-        el('span', { class: 'icon' }, ['💡']),
-        'These tests pass because they assert that a known bug is still present in the build. ',
-        el('strong', {}, ['Green = bug still there, by design.']),
-        ' If a row turns red after a future code change, the team has fixed (or accidentally changed) something — investigate that test.',
+      el('div', { class: 'plain warn' }, [
+        el('span', { class: 'icon' }, ['⚠️']),
+        el('strong', {}, [findings.length + ' real bugs']),
+        ' were found in the build. Each row is one bug — click it for a one-line fix. The underlying tests pass only because the suite is currently asserting "yes, this bug still exists" — that is how we track them. The day a bug is fixed, its test will go red on this report so the team can confirm the fix landed.',
       ]),
       el('div', { class: 'findings-grid' }, rows),
-      el('div', { class: 'tagbar-hint' }, ['Click any row to filter the test list to that issue. Full write-up lives in ', el('a', { href: '../docs/SECURITY-FINDINGS.md' }, ['docs/SECURITY-FINDINGS.md']), '.']),
+      el('div', { class: 'tagbar-hint' }, ['Full write-up with severity, repro, and impact lives in ', el('a', { href: '../docs/SECURITY-FINDINGS.md' }, ['docs/SECURITY-FINDINGS.md']), '.']),
     ]);
   }
   function renderTrendChart() {
