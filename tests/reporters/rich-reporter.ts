@@ -446,12 +446,32 @@ pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
 .chip.active:hover { background: var(--accent); opacity: 0.9; }
 .chip .count { opacity: 0.6; margin-left: 4px; font-size: 10px; }
 
-/* charts (stacked: trend on top, coverage below — both full width) */
+/* charts (stacked: trend on top, coverage + findings below — all full width) */
 .chart-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 .chart-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
 .chart-panel.trend .spark { height: 110px; }
 .chart-panel.tag-coverage .tagbar-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 14px 24px; }
 @media (max-width: 720px) { .chart-panel.tag-coverage .tagbar-groups { grid-template-columns: 1fr; } }
+
+/* documented findings panel */
+.chart-panel.findings .findings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 6px 16px; margin-top: 8px; }
+.finding-row { display: grid; grid-template-columns: auto 90px auto 1fr; gap: 8px; align-items: center; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel-soft); cursor: pointer; transition: background 0.1s, transform 0.1s; }
+.finding-row:hover { background: var(--accent-soft); transform: translateX(2px); }
+.finding-id { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); }
+.finding-title { font-size: 12.5px; color: var(--ink); }
+.kind { font-family: var(--mono); font-size: 9.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; letter-spacing: 0.04em; }
+.kind-vuln { background: #fee2e2; color: #991b1b; }
+.kind-ux   { background: #e0e7ff; color: #3730a3; }
+
+.sev-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
+.sev-critical { background: #fef2f2; color: #7f1d1d; border: 1px solid #fca5a5; }
+.sev-high     { background: #fff7ed; color: #9a3412; border: 1px solid #fdba74; }
+.sev-medium   { background: #fefce8; color: #854d0e; border: 1px solid #fde68a; }
+.sev-low      { background: #f0f9ff; color: #075985; border: 1px solid #bae6fd; }
+.finding-row.sev-critical { border-left: 3px solid #dc2626; }
+.finding-row.sev-high     { border-left: 3px solid #ea580c; }
+.finding-row.sev-medium   { border-left: 3px solid #ca8a04; }
+.finding-row.sev-low      { border-left: 3px solid #0284c7; }
 .chart-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
 .chart-panel h3 { margin: 0; font-size: 14px; }
 .chart-panel h3 .subtle { color: var(--ink-faint); font-weight: 500; font-size: 12px; }
@@ -786,6 +806,72 @@ const SCRIPT = `
     return el('div', { class: 'chart-grid' }, [
       renderTrendChart(),
       renderTagBars(),
+      renderFindings(),
+    ]);
+  }
+  // Surfaces every DOCUMENTED VULN: / DOCUMENTED UX: row with a severity
+  // badge, mirroring docs/SECURITY-FINDINGS.md so the runtime report doubles
+  // as a security audit at a glance.
+  function renderFindings() {
+    const CRITICAL = ['TC-UI-120', 'TC-API-204'];
+    const HIGH     = ['TC-API-901','TC-API-1301','TC-API-904','TC-API-1621','TC-API-1001','TC-UI-720','TC-API-153','TC-API-168'];
+    const MEDIUM   = ['TC-API-1401','TC-API-1503','TC-API-110','TC-API-111','TC-API-112','TC-API-115','TC-API-302'];
+    function sevOf(id) {
+      if (CRITICAL.indexOf(id) >= 0) return 'critical';
+      if (HIGH.indexOf(id) >= 0)     return 'high';
+      if (MEDIUM.indexOf(id) >= 0)   return 'medium';
+      return 'low';
+    }
+    const sevOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+
+    const findings = data.records
+      .filter((r) => /DOCUMENTED (VULN|UX)/.test(r.title))
+      .map((r) => ({
+        id: r.id,
+        kind: /DOCUMENTED UX/.test(r.title) ? 'UX' : 'VULN',
+        title: r.cleanTitle.replace(/^DOCUMENTED (VULN|UX):\s*/, ''),
+        sev: sevOf(r.id),
+      }))
+      .sort((a, b) => sevOrder[a.sev] - sevOrder[b.sev] || a.id.localeCompare(b.id));
+
+    if (findings.length === 0) {
+      return el('div', { class: 'chart-panel findings' }, [
+        el('div', { class: 'chart-panel-head' }, [
+          el('h3', {}, ['Documented findings ', el('span', { class: 'subtle' }, ['· none in this run'])]),
+        ]),
+      ]);
+    }
+
+    const counts = findings.reduce((a, f) => { a[f.sev] = (a[f.sev] || 0) + 1; return a; }, {});
+    const sevBadge = (sev, label) =>
+      counts[sev] ? el('span', { class: 'sev-badge sev-' + sev }, [counts[sev] + ' ' + label]) : null;
+
+    const rows = findings.map((f) => {
+      const node = el('div', { class: 'finding-row sev-' + f.sev, title: 'Click to filter the list to ' + f.id }, [
+        el('span', { class: 'sev-badge sev-' + f.sev }, [f.sev]),
+        el('code', { class: 'finding-id' }, [f.id]),
+        el('span', { class: 'kind kind-' + f.kind.toLowerCase() }, [f.kind]),
+        el('span', { class: 'finding-title' }, [f.title]),
+      ]);
+      node.addEventListener('click', () => { state.search = f.id.toLowerCase(); render(); });
+      return node;
+    });
+
+    return el('div', { class: 'chart-panel findings' }, [
+      el('div', { class: 'chart-panel-head' }, [
+        el('h3', {}, [
+          'Documented findings ',
+          el('span', { class: 'subtle' }, ['· ' + findings.length + ' total']),
+        ]),
+        el('div', { class: 'kpi-line' }, [
+          sevBadge('critical', 'critical'),
+          sevBadge('high', 'high'),
+          sevBadge('medium', 'medium'),
+          sevBadge('low', 'low'),
+        ]),
+      ]),
+      el('div', { class: 'findings-grid' }, rows),
+      el('div', { class: 'tagbar-hint' }, ['💡  Click a row to filter the test list to that finding · full audit lives in docs/SECURITY-FINDINGS.md']),
     ]);
   }
   function renderTrendChart() {

@@ -1,42 +1,79 @@
 # Juice Shop QA Automation — Everstage Assignment
 
-Playwright + TypeScript end-to-end test suite for OWASP Juice Shop,
-built as a job-assessment deliverable for **Everstage**. The three
-required tasks are delivered, plus a deep-coverage expansion across UI
-and REST APIs and the full checkout flow that the existing Juice Shop
-suite never connected end-to-end.
+[![Playwright](https://img.shields.io/badge/Playwright-1.48-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.4-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Node](https://img.shields.io/badge/Node-%E2%89%A518-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![Pass rate](https://img.shields.io/badge/Pass%20rate-100%25-16A34A)](reports/test-report.html)
+[![Tests](https://img.shields.io/badge/Tests-226-2563EB)](docs/test-cases.md)
+[![Findings](https://img.shields.io/badge/Documented%20findings-32-DC2626)](docs/SECURITY-FINDINGS.md)
+[![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
+
+Playwright + TypeScript end-to-end test suite for OWASP Juice Shop, built as a
+job-assessment deliverable for **Everstage**. The three required tasks are
+delivered, plus a deep-coverage expansion across UI and REST APIs, the full
+checkout flow that the existing Juice Shop suite never connected end-to-end,
+and a **32-finding security audit** encoded as passing tests against the
+default vulnerable build.
 
 > **Result on a live `localhost:3000` Juice Shop:**
-> **223 / 223 tests passing**, sub-3-minute serial runtime,
-> 84 of those tests carry `@everstage-qa` (the assessment scope).
+> **226 / 226 tests passing**, sub-3-minute serial runtime,
+> 157 of those tests carry `@everstage-qa` (the assessment scope).
+
+## Architecture
+
+```mermaid
+flowchart LR
+  subgraph Specs[" tests/ui · tests/api "]
+    UI["UI specs<br/>page.goto · click · fill"]
+    API["API specs<br/>request fixture"]
+  end
+  POM["pages/*<br/>locators + actions"]
+  HLP["helpers/*<br/>login · banners · factories · seed"]
+  FIX["fixtures.ts<br/>authenticatedPage"]
+  Specs --> POM
+  Specs --> HLP
+  Specs --> FIX
+  POM & HLP & FIX --> JS[("Juice Shop<br/>localhost:3000")]
+  Specs --> RPT[/Reporters/]
+  RPT --> CSV["dashboard.html<br/>(trend + CSV history)"]
+  RPT --> RICH["test-report.html<br/>(rich, per-failure)"]
+  RPT --> JU["junit.xml<br/>(CI)"]
+  RPT --> MD["summary.md<br/>(PR / Slack)"]
+```
 
 ## At a glance
 
 | Metric | Value |
 |---|---|
-| Total tests | **223** (100% pass) |
-| Assessment-scope (`@everstage-qa`) | 84 |
+| Total tests | **226** (100% pass on default Juice Shop) |
+| Assessment-scope (`@everstage-qa`) | 157 |
 | **Assignment specs** (renamed for visibility) | `tests/ui/task1-login.spec.ts`, `tests/ui/task2-add-card.spec.ts`, `tests/api/task3-add-card.spec.ts` |
 | Page Object Models | 12 |
 | Custom Playwright fixtures | 3 (`apiSession`, `authenticatedPage`, `seededCheckout`) |
 | Helper modules | 7 |
+| Accessibility coverage (`@axe-core/playwright`) | 3 specs · WCAG 2.1 AA |
 | API request/response payloads captured per run | 240+ |
 | CI/CD pipelines (GH Actions / GitLab / Jenkins / Azure) | 4 |
 | Custom reporters (CSV history + rich HTML) | 2 |
-| Documented OWASP Juice Shop vulnerabilities + UX defects surfaced | 20 |
+| Documented OWASP Juice Shop vulnerabilities + UX gaps | **32** (2 critical, 8 high, 7 medium, 15 low — see [`SECURITY-FINDINGS.md`](docs/SECURITY-FINDINGS.md)) |
 
 ## For interviewers / assessors
 
+Three things first if you only have five minutes:
+
+1. **Run it** — `npm install && npm run test:everstage` (≈ 2 min, 145 tests).
+2. **Open it** — `npm run report:rich` opens `reports/test-report.html` — a self-contained, per-test drill-down with API request/response capture, traces, screenshots, and the Documented Findings panel.
+3. **Read this** — `docs/SECURITY-FINDINGS.md` — 32 vulnerabilities and UX gaps in default Juice Shop, each one encoded as a passing test that the suite will use as a regression net the day the build is hardened.
+
 | Document | Open this if you want… |
 |---|---|
-| [`docs/ASSIGNMENT.md`](docs/ASSIGNMENT.md) | The Everstage brief verbatim, plus a one-table map from each line of the brief to the file that satisfies it |
-| [`docs/PRESENTATION.md`](docs/PRESENTATION.md) | **Slide-by-slide deck** (12 slides, ~15 min) focused on Tasks 1 / 2 / 3. Paste into PowerPoint / Keynote / Slides. Speaker notes + tempo guide + talking-points cheat sheet. |
-| [`docs/DEMO-SCRIPT.md`](docs/DEMO-SCRIPT.md) | **Live demo runbook** — read it while presenting. Each slide has verbatim speech, live-coding cues (open file X, run command Y), and plain-English explanations for non-technical reviewers. Includes a pre-demo checklist, a "what to say if X fails" cheat sheet, and a tempo guide. |
-| [`docs/CODE-TOUR.md`](docs/CODE-TOUR.md) | Linear demo script for the pairing call — every assignment file embedded with its actual source code, split into **PART A (brief)** and **PART B (extras)** |
-| [`docs/INTERVIEW-PREP.md`](docs/INTERVIEW-PREP.md) | Locator-strategy rationale, 9 anticipated interview Q&As with prepared answers, troubleshooting cheat sheet, "what I'd add with more time" |
-| [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md) | The full catalogue of every test case with steps and expected results |
-| [`docs/test-cases.csv`](docs/test-cases.csv) / [`.xlsx`](docs/JuiceShop-TestCases.xlsx) | Same catalogue as machine-readable CSV / polished Excel |
-| this README | Architecture, scope, how to run, design decisions, findings |
+| [`docs/SECURITY-FINDINGS.md`](docs/SECURITY-FINDINGS.md) | A tiered (Critical / High / Medium / Low) audit of every documented finding, with surface, repro, impact, and a fix sketch per finding |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)           | One-page diagram-led tour of the codebase — pages, helpers, reporters, fixtures, tags |
+| [`docs/test-cases.md`](docs/test-cases.md)               | Auto-generated catalogue of every test grouped by feature (regenerate with `node tools/gen-catalog.js`) |
+| [`docs/test-cases.csv`](docs/test-cases.csv) / [`.xlsx`](docs/JuiceShop-TestCases.xlsx) | Same catalogue, machine-readable / polished Excel |
+| [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md)                 | Strategy doc — risks, scope, exit criteria |
+| [`CHANGELOG.md`](CHANGELOG.md)                           | Narrative of how the suite was delivered, in reverse chronological order |
+| this README                                              | Architecture, scope, how to run, design decisions |
 
 ---
 

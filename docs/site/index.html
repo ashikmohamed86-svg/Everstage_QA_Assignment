@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juice Shop QA Automation — Everstage Assessment · Ashik Mohamed</title>
+  <meta name="description" content="Playwright + TypeScript end-to-end test suite for OWASP Juice Shop. 223/223 tests passing, 24 modules covered, sub-3-min serial runtime." />
+  <meta name="author" content="Ashik Mohamed" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Juice Shop QA Automation — Everstage Assessment" />
+  <meta property="og:description" content="223/223 tests · 24 modules · Playwright + TypeScript" />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon (inline SVG green dot) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%2310B981'/%3E%3C/svg%3E" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0F172A;
+      --bg-soft: #1E293B;
+      --bg-soft-2: #0B1220;
+      --ink: #F8FAFC;
+      --ink-muted: #94A3B8;
+      --accent: #10B981;
+      --accent-2: #2563EB;
+      --warn: #F59E0B;
+      --danger: #DC2626;
+      --border: #334155;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 400;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
+
+    a { color: var(--accent-2); text-decoration: none; transition: color 0.15s; }
+    a:hover { color: var(--accent); }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ─── Nav ─── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; color: var(--ink); }
+    .logo-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { color: var(--ink-muted); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover { color: var(--ink); }
+    @media (max-width: 768px) { .nav-links { display: none; } }
+
+    /* ─── Hero ─── */
+    .hero { padding: 100px 0 80px; }
+    .kicker {
+      color: var(--accent); font-size: 12px; font-weight: 600;
+      letter-spacing: 6px; text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-size: clamp(40px, 7vw, 72px); font-weight: 700;
+      line-height: 1.05; letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    .hero-sub { font-size: 22px; color: var(--ink-muted); margin-bottom: 48px; }
+
+    .stat-row {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 24px; margin-bottom: 48px;
+    }
+    .stat-card { padding: 24px 0; border-top: 1px solid var(--border); }
+    .stat-num {
+      font-size: clamp(32px, 4.5vw, 56px); font-weight: 700;
+      color: var(--accent); line-height: 1; margin-bottom: 8px;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-label { color: var(--ink-muted); font-size: 13px; font-weight: 500; }
+    @media (max-width: 768px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }
+
+    .cta-row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 6px;
+      font-weight: 600; font-size: 15px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      cursor: pointer; border: 0;
+    }
+    .btn-primary { background: var(--accent); color: var(--bg); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow); color: var(--bg); }
+    .btn-secondary {
+      background: transparent; color: var(--accent);
+      border: 1.5px solid var(--accent);
+    }
+    .btn-secondary:hover { transform: translateY(-2px); background: rgba(16, 185, 129, 0.08); color: var(--accent); }
+
+    /* ─── Section ─── */
+    section { padding: 80px 0; border-top: 1px solid var(--border); }
+    .section-kicker {
+      color: var(--accent); font-size: 12px; font-weight: 600;
+      letter-spacing: 4px; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-size: clamp(32px, 4vw, 44px); font-weight: 700;
+      letter-spacing: -0.02em; margin-bottom: 12px;
+    }
+    .section-sub { font-size: 18px; color: var(--ink-muted); margin-bottom: 48px; }
+
+    /* ─── Task cards ─── */
+    .task-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+    @media (max-width: 900px) { .task-grid { grid-template-columns: 1fr; } }
+
+    .task-card {
+      background: var(--bg-soft); border-radius: 12px;
+      padding: 32px; position: relative;
+      border: 1px solid transparent;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .task-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: var(--shadow);
+    }
+    .task-num {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--accent); color: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 20px; margin-bottom: 20px;
+    }
+    .task-title { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
+    .task-desc { color: var(--ink-muted); font-size: 14px; margin-bottom: 16px; }
+    .task-file {
+      display: block; font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; color: var(--ink-muted);
+      background: var(--bg-soft-2); padding: 10px 14px;
+      border-radius: 6px; margin-bottom: 16px;
+      overflow-x: auto; white-space: nowrap;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 12px; font-weight: 600;
+    }
+    .badge-pass { background: rgba(16, 185, 129, 0.15); color: var(--accent); }
+
+    /* ─── Architecture diagram ─── */
+    .arch-wrap { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+    .arch-top {
+      background: var(--bg-soft); border: 2px solid var(--accent);
+      border-radius: 12px; padding: 16px 32px;
+      font-weight: 600; font-size: 16px;
+    }
+    .arch-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+      width: 100%; max-width: 700px;
+    }
+    .arch-box {
+      background: var(--bg-soft); border-radius: 12px;
+      padding: 24px; text-align: center;
+      border: 2px solid;
+    }
+    .arch-box.ui { border-color: var(--accent-2); }
+    .arch-box.api { border-color: var(--accent); }
+    .arch-box-title { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+    .arch-box-sub { color: var(--ink-muted); font-size: 13px; }
+
+    .infra-row {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 12px; width: 100%; margin-top: 16px;
+    }
+    .infra-card {
+      background: var(--bg-soft); border-radius: 8px;
+      padding: 16px 8px; text-align: center;
+    }
+    .infra-num {
+      font-size: 28px; font-weight: 700; color: var(--accent);
+      line-height: 1; margin-bottom: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .infra-label { color: var(--ink-muted); font-size: 11px; }
+    @media (max-width: 768px) {
+      .arch-row { grid-template-columns: 1fr; }
+      .infra-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ─── Tables ─── */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%; border-collapse: collapse;
+      background: var(--bg-soft); border-radius: 12px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 14px 18px; text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    th {
+      background: var(--bg-soft-2); color: var(--ink-muted);
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
+
+    .check-pass { color: var(--accent); font-weight: 600; }
+    .check-warn { color: var(--warn); font-weight: 600; }
+    .check-fail { color: var(--danger); font-weight: 600; }
+
+    .sev-badge {
+      display: inline-block; padding: 3px 10px;
+      border-radius: 999px; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .sev-critical { background: rgba(220, 38, 38, 0.18); color: #FCA5A5; }
+    .sev-high     { background: rgba(245, 158, 11, 0.18); color: #FCD34D; }
+    .sev-medium   { background: rgba(245, 158, 11, 0.13); color: #FDE68A; }
+    .sev-low      { background: rgba(37, 99, 235, 0.18);  color: #93C5FD; }
+    .sev-info     { background: rgba(16, 185, 129, 0.15); color: var(--accent); }
+
+    /* ─── Tag cards ─── */
+    .tag-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+    @media (max-width: 900px) { .tag-grid { grid-template-columns: 1fr; } }
+
+    .tag-card {
+      background: var(--bg-soft); border-radius: 12px;
+      padding: 28px; transition: transform 0.2s, box-shadow 0.2s;
+      border-left: 4px solid var(--accent);
+    }
+    .tag-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .tag-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px; font-weight: 500; color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .tag-count {
+      font-size: 36px; font-weight: 700;
+      margin-bottom: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .tag-audience { color: var(--ink-muted); font-size: 13px; margin-bottom: 16px; }
+    .tag-cmd {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; color: var(--ink);
+      background: var(--bg-soft-2); padding: 10px 14px;
+      border-radius: 6px;
+    }
+
+    /* ─── Resources ─── */
+    .res-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    }
+    @media (max-width: 768px) { .res-grid { grid-template-columns: 1fr; } }
+
+    .res-link {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 24px; background: var(--bg-soft);
+      border-radius: 8px; transition: transform 0.15s, background 0.15s;
+      color: var(--ink);
+    }
+    .res-link:hover {
+      transform: translateX(4px); background: var(--bg-soft-2);
+      color: var(--ink);
+    }
+    .res-name { font-weight: 600; font-size: 15px; }
+    .res-path { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-muted); }
+
+    /* ─── Footer ─── */
+    footer {
+      padding: 60px 0 40px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .footer-line { color: var(--ink-muted); font-size: 14px; margin-bottom: 20px; }
+    .footer-icons { display: flex; justify-content: center; gap: 20px; }
+    .footer-icons a {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--bg-soft); display: flex;
+      align-items: center; justify-content: center;
+      color: var(--ink-muted); transition: color 0.15s, background 0.15s;
+    }
+    .footer-icons a:hover { color: var(--accent); background: var(--bg-soft-2); }
+    .footer-icons svg { width: 18px; height: 18px; }
+  </style>
+</head>
+<body>
+
+<!-- ───────── Nav ───────── -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">
+      <span class="logo-dot"></span>
+      <span>Everstage QA</span>
+    </div>
+    <div class="nav-links">
+      <a href="#tasks">Tasks</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#findings">Findings</a>
+      <a href="#resources">Resources</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ───────── Hero ───────── -->
+<header class="hero">
+  <div class="container">
+    <div class="kicker">Everstage · QA Assessment</div>
+    <h1>Juice Shop QA Automation</h1>
+    <p class="hero-sub">Playwright + TypeScript · end-to-end test suite</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-num" data-count="223">0</div>
+        <div class="stat-label">Tests passing (of 223)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" data-count="24">0</div>
+        <div class="stat-label">Modules covered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">&lt; 3 min</div>
+        <div class="stat-label">Serial runtime</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" data-count="20">0</div>
+        <div class="stat-label">Documented findings</div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a href="https://github.com/ashikmohamed86/EverStage" class="btn btn-primary" target="_blank" rel="noopener">View on GitHub →</a>
+      <a href="#resources" class="btn btn-secondary">Run the report</a>
+    </div>
+  </div>
+</header>
+
+<!-- ───────── Section: Tasks ───────── -->
+<section id="tasks">
+  <div class="container">
+    <div class="section-kicker">The brief</div>
+    <h2>Three required tasks, all delivered</h2>
+    <p class="section-sub">Plus a missing checkout flow and senior-signal probes on top.</p>
+
+    <div class="task-grid">
+      <div class="task-card">
+        <div class="task-num">1</div>
+        <div class="task-title"><code>beforeEach</code> login</div>
+        <p class="task-desc">Manually create a user, save credentials in <code>new-user.json</code>, run the login script before every test.</p>
+        <code class="task-file">tests/helpers/login.ts · 15 tests</code>
+        <span class="badge badge-pass">✓ All passing</span>
+      </div>
+
+      <div class="task-card">
+        <div class="task-num">2</div>
+        <div class="task-title">UI — add card</div>
+        <p class="task-desc">Navigate from the home screen to <em>My Payments</em> and add card details with full validation coverage.</p>
+        <code class="task-file">tests/ui/task2-add-card.spec.ts · 23 tests</code>
+        <span class="badge badge-pass">✓ All passing</span>
+      </div>
+
+      <div class="task-card">
+        <div class="task-num">3</div>
+        <div class="task-title">API — unique card</div>
+        <p class="task-desc">POST a unique card via the REST API. Visa-prefix + 12 random digits = 10¹² unique values, no parallel collisions.</p>
+        <code class="task-file">tests/api/task3-add-card.spec.ts · 46 tests</code>
+        <span class="badge badge-pass">✓ All passing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── Section: Architecture ───────── -->
+<section id="architecture">
+  <div class="container">
+    <div class="section-kicker">Architecture</div>
+    <h2>One picture, two layers</h2>
+    <p class="section-sub">UI tests drive a real browser. API tests hit HTTP directly. They share the same helpers and fixtures.</p>
+
+    <div class="arch-wrap">
+      <div class="arch-top">223 tests · 24 modules</div>
+      <div class="arch-row">
+        <div class="arch-box ui">
+          <div class="arch-box-title">UI Layer · 89 tests</div>
+          <div class="arch-box-sub">Playwright drives a real browser</div>
+        </div>
+        <div class="arch-box api">
+          <div class="arch-box-title">API Layer · 125 tests</div>
+          <div class="arch-box-sub">Playwright + direct HTTP</div>
+        </div>
+      </div>
+      <div class="infra-row">
+        <div class="infra-card"><div class="infra-num">12</div><div class="infra-label">Page Objects</div></div>
+        <div class="infra-card"><div class="infra-num">7</div><div class="infra-label">Helpers</div></div>
+        <div class="infra-card"><div class="infra-num">3</div><div class="infra-label">Fixtures</div></div>
+        <div class="infra-card"><div class="infra-num">2</div><div class="infra-label">Reporters</div></div>
+        <div class="infra-card"><div class="infra-num">4</div><div class="infra-label">CI Pipelines</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── Section: Locator strategy ───────── -->
+<section>
+  <div class="container">
+    <div class="section-kicker">Stable selectors first</div>
+    <h2>Locator strategy</h2>
+    <p class="section-sub">Ranked by how long each method survives Material UI upgrades.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 80px;">Tier</th>
+            <th>Method</th>
+            <th>Example</th>
+            <th style="width: 200px;">Survives?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>1</strong></td><td><strong>Stable IDs</strong></td><td><code class="mono">page.locator('#submitButton')</code></td><td><span class="check-pass">✓ Material upgrades</span></td></tr>
+          <tr><td><strong>2</strong></td><td><strong>ARIA role + name</strong></td><td><code class="mono">getByRole('button', {{ name: 'Login' }})</code></td><td><span class="check-pass">✓ ARIA changes only</span></td></tr>
+          <tr><td><strong>3</strong></td><td><strong>ARIA label</strong></td><td><code class="mono">getByLabel('Card Number')</code></td><td><span class="check-pass">✓ Label text only</span></td></tr>
+          <tr><td>4</td><td>Tag + text/regex</td><td><code class="mono">locator('simple-snack-bar', {{ hasText: /saved/i }})</code></td><td><span class="check-warn">⚠ Wording changes</span></td></tr>
+          <tr><td><strong style="color: var(--danger);">✗</strong></td><td><strong style="color: var(--danger);">FORBIDDEN</strong></td><td><code class="mono">.mat-mdc-form-field-2 > div:nth-child(3)</code></td><td><span class="check-fail">✗ Every release</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── Section: Findings ───────── -->
+<section id="findings">
+  <div class="container">
+    <div class="section-kicker">Findings</div>
+    <h2>Defects against default Juice Shop</h2>
+    <p class="section-sub">Documented as actual behavior in green tests — flip the assertion on a hardened build.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 60px;">#</th>
+            <th style="width: 130px;">Severity</th>
+            <th>Finding</th>
+            <th style="width: 180px;">Test ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>F1</strong></td><td><span class="sev-badge sev-critical">Critical</span></td><td>SQL-injection in login email field bypasses authentication</td><td class="mono">TC-UI-120, TC-API-204</td></tr>
+          <tr><td><strong>F2</strong></td><td><span class="sev-badge sev-high">High</span></td><td>Registration accepts missing password</td><td class="mono">TC-API-302</td></tr>
+          <tr><td><strong>F3</strong></td><td><span class="sev-badge sev-medium">Medium</span></td><td>Basket accepts zero / negative quantity</td><td class="mono">TC-API-503, TC-API-504</td></tr>
+          <tr><td><strong>F4</strong></td><td><span class="sev-badge sev-medium">Medium</span></td><td>Feedback rating not bounded to 1-5</td><td class="mono">TC-API-802, TC-API-803</td></tr>
+          <tr><td><strong>F5</strong></td><td><span class="sev-badge sev-low">Low</span></td><td>Empty-basket Checkout button stays enabled (UX)</td><td class="mono">TC-UI-504</td></tr>
+          <tr><td><strong>F6</strong></td><td><span class="sev-badge sev-medium">Medium</span></td><td>Empty basket still mints an order</td><td class="mono">TC-API-1611</td></tr>
+          <tr><td><strong>F7</strong></td><td><span class="sev-badge sev-critical">Critical</span></td><td>BOLA — any user can checkout any basket</td><td class="mono">TC-API-1621</td></tr>
+          <tr><td><strong>F8</strong></td><td><span class="sev-badge sev-info">Info</span></td><td>XSS in search renders as text — verified safe</td><td class="mono">TC-UI-403</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── Section: Tag matrix ───────── -->
+<section>
+  <div class="container">
+    <div class="section-kicker">Tag matrix</div>
+    <h2>One suite, three audiences</h2>
+    <p class="section-sub">Same code, different slices — every audience gets the right runtime.</p>
+
+    <div class="tag-grid">
+      <div class="tag-card">
+        <div class="tag-name">@smoke</div>
+        <div class="tag-count">9</div>
+        <div class="tag-audience">PR gate (every PR) · runs in &lt; 60s</div>
+        <code class="tag-cmd">npm run test:smoke</code>
+      </div>
+      <div class="tag-card">
+        <div class="tag-name">@regression</div>
+        <div class="tag-count">71</div>
+        <div class="tag-audience">Nightly / pre-deploy</div>
+        <code class="tag-cmd">npm run test:regression</code>
+      </div>
+      <div class="tag-card">
+        <div class="tag-name">@everstage-qa</div>
+        <div class="tag-count">84</div>
+        <div class="tag-audience">Assessment review</div>
+        <code class="tag-cmd">npm run test:everstage</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── Section: Resources ───────── -->
+<section id="resources">
+  <div class="container">
+    <div class="section-kicker">Resources</div>
+    <h2>Where to dig deeper</h2>
+    <p class="section-sub">Six artifacts. One coherent submission.</p>
+
+    <div class="res-grid">
+      <a href="../docs/TEST-PLAN.md" class="res-link">
+        <span class="res-name">📋 Test Plan</span>
+        <span class="res-path">docs/TEST-PLAN.md</span>
+      </a>
+      <a href="../docs/CODE-TOUR.md" class="res-link">
+        <span class="res-name">🧭 Code Tour</span>
+        <span class="res-path">docs/CODE-TOUR.md</span>
+      </a>
+      <a href="../docs/CODE-EXPLANATION.md" class="res-link">
+        <span class="res-name">📚 Code Explanation</span>
+        <span class="res-path">docs/CODE-EXPLANATION.md</span>
+      </a>
+      <a href="../docs/Everstage-QA-Presentation.pptx" class="res-link">
+        <span class="res-name">🎬 Slide Deck</span>
+        <span class="res-path">docs/Everstage-QA-Presentation.pptx</span>
+      </a>
+      <a href="../docs/JuiceShop-TestCases.xlsx" class="res-link">
+        <span class="res-name">📊 Test Catalog (Excel)</span>
+        <span class="res-path">docs/JuiceShop-TestCases.xlsx</span>
+      </a>
+      <a href="../docs/DEEP-TEST-REPORT.md" class="res-link">
+        <span class="res-name">🧪 Deep Test Report</span>
+        <span class="res-path">docs/DEEP-TEST-REPORT.md</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── Footer ───────── -->
+<footer>
+  <div class="container">
+    <p class="footer-line">Ashik Mohamed · 2026 · Built with Playwright + TypeScript</p>
+    <div class="footer-icons">
+      <a href="https://github.com/ashikmohamed86" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.3 3.4 9.8 8.2 11.4.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2 1-.3 2-.4 3-.4s2 .1 3 .4c2.3-1.5 3.3-1.2 3.3-1.2.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6C20.6 21.8 24 17.3 24 12c0-6.6-5.4-12-12-12z"/></svg>
+      </a>
+      <a href="mailto:ashikmohamed86@gmail.com" aria-label="Email">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/ashik-mohamed/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.8 0-5 2.2-5 5v14c0 2.8 2.2 5 5 5h14c2.8 0 5-2.2 5-5V5c0-2.8-2.2-5-5-5zM8 19H5V8h3v11zM6.5 6.7c-1 0-1.7-.8-1.7-1.7s.8-1.7 1.7-1.7 1.7.8 1.7 1.7-.7 1.7-1.7 1.7zM20 19h-3v-5.6c0-3.4-4-3.1-4 0V19h-3V8h3v1.8c1.4-2.6 7-2.8 7 2.5V19z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Animate stat numbers from 0 to their final value on page load
+  document.querySelectorAll('.stat-num[data-count]').forEach(el => {
+    const target = parseInt(el.getAttribute('data-count'), 10);
+    if (isNaN(target)) return;
+    const duration = 1200;
+    const start = performance.now();
+
+    function step(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(target * eased);
+      el.textContent = current.toLocaleString();
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+</script>
+
+</body>
+</html>

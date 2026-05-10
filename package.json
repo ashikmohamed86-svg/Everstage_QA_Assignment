@@ -41,6 +41,7 @@
     "trace": "playwright show-trace"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
     "@playwright/test": "^1.48.0",
     "@types/node": "^20.11.0",
     "typescript": "^5.4.0"

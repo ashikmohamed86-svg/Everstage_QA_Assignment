@@ -11,5 +11,11 @@ dist/
 # Rotated historical CSVs from the custom reporter (kept locally, noisy in git)
 reports/run-history.legacy-*.csv
 
+# Playwright artifacts written every run — heavy & always regenerated
+reports/last-run.json
+
 # LibreOffice / OpenOffice lock files
 .~lock.*#
+
+# macOS metadata (defence-in-depth — also covered by .DS_Store above)
+**/.DS_Store
