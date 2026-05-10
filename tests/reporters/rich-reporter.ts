@@ -442,6 +442,10 @@ pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
 
 /* search + filters */
 .controls { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); margin-bottom: 16px; position: sticky; top: 8px; z-index: 5; backdrop-filter: saturate(140%) blur(6px); }
+.controls-reset-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); flex-wrap: wrap; }
+.controls-reset-summary { font-size: 12px; color: var(--ink-soft); }
+.controls-reset { font: inherit; font-size: 12px; padding: 6px 14px; border: 1px solid var(--accent); border-radius: 6px; background: var(--accent-soft); color: var(--accent); cursor: pointer; font-weight: 600; }
+.controls-reset:hover { background: var(--accent); color: white; }
 .search-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .search-input { flex: 1 1 280px; min-width: 240px; padding: 9px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; background: var(--panel-soft); }
 .search-input:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
@@ -1133,7 +1137,17 @@ const SCRIPT = `
             el('div', { class: 'finding-actions' }, [
               (function() {
                 const b = el('button', { class: 'btn-secondary' }, ['Show this test in the list']);
-                b.addEventListener('click', (ev) => { ev.stopPropagation(); state.search = f.id.toLowerCase(); render(); });
+                b.addEventListener('click', (ev) => {
+                  ev.stopPropagation();
+                  state.search = f.id.toLowerCase();
+                  render();
+                  // After the re-render, scroll the test list into view so
+                  // the user doesn't have to chase it down the page.
+                  requestAnimationFrame(() => {
+                    const list = document.querySelector('.test-list');
+                    if (list) list.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  });
+                });
                 return b;
               })(),
               f.fix ? (function() {
@@ -1486,6 +1500,35 @@ const SCRIPT = `
       { key: '@regression', label: '@regression' },
       { key: '@e2e', label: '@e2e' },
     ], gateCounts));
+
+    // Reset button — only appears when something is active so the bar
+    // doesn't grow a permanent dead zone.
+    const anyActive =
+      !!state.search ||
+      state.filters.status.size > 0 ||
+      state.filters.area.size > 0 ||
+      state.filters.category.size > 0 ||
+      state.filters.gate.size > 0;
+    if (anyActive) {
+      const resetRow = el('div', { class: 'controls-reset-row' }, [
+        el('span', { class: 'controls-reset-summary' }, [
+          'Filters active — narrowed to ' + applyFilters(data.records).length + ' of ' + data.records.length + ' tests',
+        ]),
+        (function() {
+          const btn = el('button', { class: 'controls-reset', title: 'Clear search + every filter chip' }, ['↺  Reset all filters']);
+          btn.addEventListener('click', () => {
+            state.search = '';
+            state.filters.status.clear();
+            state.filters.area.clear();
+            state.filters.category.clear();
+            state.filters.gate.clear();
+            render();
+          });
+          return btn;
+        })(),
+      ]);
+      wrap.appendChild(resetRow);
+    }
 
     return wrap;
   }
