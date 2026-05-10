@@ -446,15 +446,12 @@ pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
 .chip.active:hover { background: var(--accent); opacity: 0.9; }
 .chip .count { opacity: 0.6; margin-left: 4px; font-size: 10px; }
 
-/* charts */
-.chart-grid { display: grid; grid-template-columns: 2fr 3fr; gap: 12px; margin-bottom: 16px; align-items: stretch; }
-@media (max-width: 900px) { .chart-grid { grid-template-columns: 1fr; } }
+/* charts (stacked: trend on top, coverage below — both full width) */
+.chart-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 .chart-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
-.chart-panel.tag-coverage { max-height: 520px; }
-.chart-panel.tag-coverage .tagbar-groups { flex: 1 1 auto; overflow-y: auto; padding-right: 6px; margin-right: -6px; }
-.chart-panel.tag-coverage .tagbar-hint { flex: 0 0 auto; }
-.chart-panel.trend { min-height: 0; }
-.chart-panel.trend .spark-chart { flex: 1 1 auto; }
+.chart-panel.trend .spark { height: 110px; }
+.chart-panel.tag-coverage .tagbar-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 14px 24px; }
+@media (max-width: 720px) { .chart-panel.tag-coverage .tagbar-groups { grid-template-columns: 1fr; } }
 .chart-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
 .chart-panel h3 { margin: 0; font-size: 14px; }
 .chart-panel h3 .subtle { color: var(--ink-faint); font-weight: 500; font-size: 12px; }
@@ -878,8 +875,10 @@ const SCRIPT = `
   function renderTagBars() {
     // Also filter at render-time so older reports whose persisted data
     // already contains junk tags (e.g. an email substring like @x.test
-    // captured by Playwright's @\S+ scanner) still render cleanly.
-    const validTag = /^@[\w-]+$/;
+    // captured by Playwright's @\\S+ scanner) still render cleanly.
+    // Note: this whole function lives inside a template literal — every
+    // backslash that should reach the emitted JS must be doubled here.
+    const validTag = /^@[\\w-]+$/;
     const map = new Map();
     for (const r of data.records) {
       for (const t of r.tags) {
