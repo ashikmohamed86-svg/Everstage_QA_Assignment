@@ -69,6 +69,8 @@ Three things first if you only have five minutes:
 |---|---|
 | [`docs/SECURITY-FINDINGS.md`](docs/SECURITY-FINDINGS.md) | A tiered (Critical / High / Medium / Low) audit of every documented finding, with surface, repro, impact, and a fix sketch per finding |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)           | One-page diagram-led tour of the codebase — pages, helpers, reporters, fixtures, tags |
+| **[`docs/INTERVIEW-PREP.md`](docs/INTERVIEW-PREP.md)**   | **Interview cheat-sheet — 30-second pitch, 5-minute walkthrough, report / CI/CD / logic talking points, ~30 Q&A.** Read this on the walk in. |
+| **[`docs/CODE-ANALYSIS.md`](docs/CODE-ANALYSIS.md)**     | **Deep-dive — every file explained line-by-line, 50+ anticipated questions, "if they ask X open Y" map.** Read the night before. |
 | [`docs/test-cases.md`](docs/test-cases.md)               | Auto-generated catalogue of every test grouped by feature (regenerate with `node tools/gen-catalog.js`) |
 | [`docs/test-cases.csv`](docs/test-cases.csv) / [`.xlsx`](docs/JuiceShop-TestCases.xlsx) | Same catalogue, machine-readable / polished Excel |
 | [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md)                 | Strategy doc — risks, scope, exit criteria |
